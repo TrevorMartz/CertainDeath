@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\IDAL.cs" />
     <Compile Include="Models\AI\AbstractAI.cs" />
     <Compile Include="Models\AI\PatrolAI.cs" />
     <Compile Include="Models\GameObject.cs" />
