@@ -9,6 +9,15 @@ namespace CertainDeathEngine.Models
     public class GameWorld
     {
         public Tile CurrentTile { get; set; }
-        public List<GameObject> Objects { get; set; }
+
+        public GameWorld()
+        {
+            this.CurrentTile = new Tile();
+        }
+
+        public void AddObject(GameObject obj)
+        {
+            this.CurrentTile.AddObject(obj);
+        }
     }
 }

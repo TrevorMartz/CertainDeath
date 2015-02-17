@@ -10,7 +10,11 @@ namespace CertainDeathEngine.Models.AI
     {
         public override void Update()
         {
-            throw new NotImplementedException();
+            foreach (var n in NPCs)
+            {
+                // Move the NPC
+                // n.Position = null
+            }
         }
     }
 }
