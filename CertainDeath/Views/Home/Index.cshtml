@@ -2,14 +2,14 @@
 @using Microsoft.AspNet.Facebook.Models
 @model MyAppUser
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "CERTAIN DEATH!";
 }
 
 <article class="intro">
     <span id="profilePicture">
         @if (Model.ProfilePicture != null && Model.ProfilePicture.Data != null)
         {
-            <img src="@Model.ProfilePicture.Data.Url" />
+            <img src="@Model.ProfilePicture.Data.Url" height="150"/>
         }
     </span>
     <h3>Welcome @Model.Name</h3>
@@ -17,7 +17,8 @@
 </article>
 
 <article id="content">
-    <div class="left">
+    <canvas id="gameCanvas" height="760" width="760"></canvas>
+    @*<div class="left">
         <h4>Friends</h4>
         @if (Model.Friends != null && Model.Friends.Data != null && Model.Friends.Data.Count > 0)
         {
@@ -56,5 +57,5 @@
         {
             <p>No photo available.</p>
         }
-    </div>
+    </div>*@
 </article>
