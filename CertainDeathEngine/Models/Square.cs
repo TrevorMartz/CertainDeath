@@ -9,7 +9,14 @@ namespace CertainDeathEngine.Models
 {
     public class Square
     {
+        public static string DEFAULT_SQUARE_IMAGE = "\\Content\\default_square.png";
+
         public Image BackgroundImage { get; set; }
         public Resource Resource { get; set; }
+
+        public Square()
+        {
+            this.BackgroundImage = Image.FromFile(DEFAULT_SQUARE_IMAGE);
+        }
     }
 }
