@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.AspNet.Facebook;
+using CertainDeathEngine;
 
 namespace CertainDeath
 {
@@ -14,6 +15,7 @@ namespace CertainDeath
     {
         protected void Application_Start()
         {
+            RandomGen.Init();
             AreaRegistration.RegisterAllAreas();
             FacebookConfig.Register(GlobalFacebookConfiguration.Configuration);
             GlobalConfiguration.Configure(WebApiConfig.Register);
