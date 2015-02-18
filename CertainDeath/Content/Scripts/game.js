@@ -2,8 +2,13 @@
 
 var game = new Phaser.Game("", "", Phaser.AUTO, "body", { preload: preload, create: create, update: update, render: render });
 
+var buildings;
+var resources;
+var monsters;
+
 var preload = new function () {
     // download all sprites
+    game.load.atlas();
 }
 
 var create = new function () {
@@ -12,6 +17,7 @@ var create = new function () {
 
 var update = new function () {
     // called every frame
+
 }
 
 var render = new function () {
