@@ -16,9 +16,10 @@ namespace CertainDeath.Controllers
             if (ModelState.IsValid)
             {
                 var user = await context.Client.GetCurrentUserAsync<MyAppUser>();
-                return View(user);
+                if (Request.IsAjaxRequest())
+                    return PartialView("_FriendView", user);
+                else return View(user);
             }
-
             return View("Error");
         }
 
