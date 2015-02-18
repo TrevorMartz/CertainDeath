@@ -12,5 +12,40 @@ namespace CertainDeathEngine
 		{
 			throw new NotImplementedException();
 		}
+
+		void EngineInterface.MoveUp()
+		{
+			throw new NotImplementedException();
+		}
+
+		void EngineInterface.MoveDown()
+		{
+			throw new NotImplementedException();
+		}
+
+		void EngineInterface.MoveLeft()
+		{
+			throw new NotImplementedException();
+		}
+
+		void EngineInterface.MoveRight()
+		{
+			throw new NotImplementedException();
+		}
+
+		string EngineInterface.SquareClicked(int x, int y)
+		{
+			throw new NotImplementedException();
+		}
+
+		string EngineInterface.MonsterClicked(int monsterid)
+		{
+			throw new NotImplementedException();
+		}
+
+		string EngineInterface.IncrementTimeAndReturnDeta(int millis)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
