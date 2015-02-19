@@ -16,7 +16,7 @@ namespace CertainDeathEngine
         {
 			if (!Initted)
 			{
-				RandomGen.Init();
+				RandomGen.InitUnseeded();
 				Tile.InitSize();
 				Initted = true;
 			}

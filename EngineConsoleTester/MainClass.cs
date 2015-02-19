@@ -1,7 +1,9 @@
 ﻿using CertainDeathEngine;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.World;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +19,22 @@ namespace EngineConsoleTester
 		{
 			//ShayneTests();
 			Init.InitAll();
-			GameWorldGenerator generator = new GameWorldGenerator();
-			generator.GenerateTile().PrintTile();
+            //double total = 0;
+            //for(int i = 0; i < 1000; i++)
+            //{
+            //    double d = RandomGen.Random.NextDouble();
+            //    total += d;
+            //    Trace.WriteLine(d);
+            //}
+            //Trace.WriteLine(total / 1000);
+            //while (true)
+            //{
+            GameWorldGenerator generator = new GameWorldGenerator();
+            GameWorld world = generator.GenerateWorld(10);
+
+            //    generator.GenerateTile().PrintTile();
+            //    Console.ReadLine();
+            //}
 		}
 
 		public static void ShayneTests()
