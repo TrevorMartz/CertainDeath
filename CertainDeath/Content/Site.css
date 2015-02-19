@@ -6,7 +6,7 @@
 
 header {
     overflow: hidden;
-    height: 100px;
+    height: 50px;
     padding: 20px;
     margin: 0;
     width: 700px;
@@ -25,6 +25,16 @@ header {
         color: #004C66;
         margin: 0;
         font-weight: normal;
+    }
+
+    header a {
+        text-decoration: none;
+        color: #444;
+    }
+    header a:hover {
+        color: #FFF;
+        font-weight: normal;
+        text-shadow: none;
     }
 
 h3 {

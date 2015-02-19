@@ -31,7 +31,9 @@
 
     <div id="wrapper">
         <header id="topHeader">
-            <h1>[replace with awesome header]</h1>
+            <nav>
+                @Ajax.ActionLink("Friends", "Index", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
+            </nav>
         </header>
         @RenderBody()
         <footer>
