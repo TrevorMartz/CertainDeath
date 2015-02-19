@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace CertainDeathEngine.DAL
 {
     public interface IDAL
     {
-        void SaveWorld(GameWorld world);
+        void SaveGame(EngineInterface engine);
 
-        GameWorld LoadWorld(int worldId);
+        EngineInterface LoadGame(CertainDeathUser user);
     }
 }

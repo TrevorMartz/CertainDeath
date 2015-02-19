@@ -55,7 +55,7 @@ namespace CertainDeathEngine
 		 * JSON: This has not been created yet and will not be needed until there is more of a game
 		 *		Such as movement, damage, picking up resources, etc.
 		 */
-		string IncrementTimeAndReturnDeta(int millis);
+		string IncrementTimeAndReturnDelta(int millis);
 
 		/* returns a JSON string representing the game state including: Squares, monsters, resources, and buildings.
 		 * 
