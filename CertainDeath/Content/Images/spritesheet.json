@@ -1,0 +1,28 @@
+﻿{
+    "frames": [
+        {
+            "filename": "campfire",
+            "frame" :  {"x": 0, "y": 0, "w": 32, "h": 32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x": 0, "y": 0, "w": 32, "h": 32},
+            "sourceSize" :  {"w": 32, "h": 16}
+        },
+        {
+            "filename": "grass",
+            "frame" :  {"x": 32, "y": 0, "w": 32, "h": 32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x": 0, "y": 0, "w": 32, "h": 32},
+            "sourceSize" :  {"w": 32, "h": 16}
+        },
+        {
+            "filename": "torch",
+            "frame" :  {"x": 64, "y": 0, "w": 32, "h": 32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x": 0, "y": 0, "w": 32, "h": 32},
+            "sourceSize" :  {"w": 32, "h": 16}
+        }
+    ]
+}
