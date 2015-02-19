@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace CertainDeathEngine.Models
 {
+
+	[JsonObject(MemberSerialization.OptIn)]
     public class Tile
     {
         
         public static int SQUARE_SIZE = 20;
 
+		[JsonProperty]
         public Square[,] Squares { get; set; }
 
         #region TileReferences
@@ -52,7 +57,7 @@ namespace CertainDeathEngine.Models
 
         private Tile _below;
 
-        public Tile below
+        public Tile Below
         {
             get { return _below; }
             set 
@@ -61,14 +66,37 @@ namespace CertainDeathEngine.Models
                 value._above = this;
             }
         }
+
+		[JsonProperty]
+		public bool HasAbove { get { return Above != null; } }
+		[JsonProperty]
+		public bool HasBelow { get { return Below != null; } }
+		[JsonProperty]
+		public bool HasLeft { get { return Left != null; } }
+		[JsonProperty]
+		public bool HasRight { get { return Right != null; } }
         #endregion
 
+		[JsonProperty]
         public List<GameObject> Objects { get; set; }
 
         public Tile()
         {
-            this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
+            SetSquares();
             this.Objects = new List<GameObject>();
+        }
+
+        public void SetSquares()
+        {
+            this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    Squares[row, col] = new Square();
+                }
+                Trace.WriteLine("");
+            }
         }
 
         public void AddObject(GameObject obj)
@@ -82,10 +110,26 @@ namespace CertainDeathEngine.Models
             {
                 string s = ConfigurationManager.AppSettings["TileSquareSize"];
                 SQUARE_SIZE = Convert.ToInt32(s);
+                if(SQUARE_SIZE <= 0)
+                {
+                    SQUARE_SIZE = 20;
+                }
             }
             catch(Exception)
             {
                 SQUARE_SIZE = 20;
+            }
+        }
+
+        public void PrintTile()
+        {
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    Trace.Write((int)Squares[row, col].Type);
+                }
+                Trace.WriteLine("");
             }
         }
     }

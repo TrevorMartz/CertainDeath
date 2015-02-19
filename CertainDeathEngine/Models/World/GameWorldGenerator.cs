@@ -154,17 +154,6 @@ namespace CertainDeathEngine.Models.World
             }
         }
 
-        public void PrintTile(Tile t)
-        {
-            for (int row = 0; row < Tile.SQUARE_SIZE; row++)
-            {
-                for (int col = 0; col < Tile.SQUARE_SIZE; col++)
-                {
-					Trace.Write((int)t.Squares[row, col].Type);
-                    //Trace.Write(t.Squares[row, col]);//no way to test what type of square it is.
-                }
-                Trace.WriteLine("");
-            }
-        }
+        
     }
 }
