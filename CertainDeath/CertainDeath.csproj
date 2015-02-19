@@ -145,14 +145,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\Fire.png" />
+    <Content Include="Content\Images\Grass.png" />
+    <Content Include="Content\Images\spritesheet.png" />
+    <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Scripts\game.js" />
     <Content Include="Content\Scripts\phaser.js" />
     <Content Include="Images\background.png" />
     <Content Include="Images\arrow.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\Fire.png" />
+    <Content Include="Images\Grass.png" />
+    <Content Include="Images\Torch.png" />
     <Content Include="packages.config" />
     <Content Include="Json\ToClient.json" />
+    <Content Include="Content\Images\spritesheet.json" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

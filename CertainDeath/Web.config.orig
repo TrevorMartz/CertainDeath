@@ -5,6 +5,7 @@
   -->
 <configuration>
   <appSettings>
+<<<<<<< HEAD
     <add key="webpages:Version" value="3.0.0.0"/>
     <add key="webpages:Enabled" value="false"/>
     <add key="ClientValidationEnabled" value="true"/>
@@ -14,7 +15,18 @@
     <add key="Facebook:AppNamespace" value="certaindeath"/>
     <add key="Facebook:AuthorizationRedirectPath" value="~/Home/Permissions"/>
     <add key="Facebook:VerifyToken:User" value=""/>
-    <add key="RandomNumberSeed" value="123456"/>
+=======
+    <add key="webpages:Version" value="3.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <add key="Facebook:AppId" value="1023089477720660" />
+    <add key="Facebook:AppSecret" value="d63e53270302be55e3df0be79d68aab1" />
+    <add key="Facebook:AppNamespace" value="certaindeath" />
+    <add key="Facebook:AuthorizationRedirectPath" value="~/Home/Permissions" />
+    <add key="Facebook:VerifyToken:User" value="" />
+    <add key="RandomNumberSeed" value="1234567"/>
+>>>>>>> ee4399890818968633c50c19304b4f4effbdd248
   </appSettings>
   <!--
     For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
@@ -25,15 +37,9 @@
       </system.Web>
   -->
   <system.web>
-<<<<<<< HEAD
-    <compilation debug="true" targetFramework="4.5.2"/>
+    <compilation debug="true" targetFramework="4.5"/>
     <httpRuntime targetFramework="4.5"/>
     <authentication mode="None"/>
-=======
-    <compilation debug="true" targetFramework="4.5.2" />
-    <httpRuntime targetFramework="4.5" />
-    <authentication mode="None" />
->>>>>>> 6b3c56533dad6c8c3a023efac413a4506bf52a54
   </system.web>
   <runtime>
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
