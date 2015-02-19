@@ -8,5 +8,6 @@ namespace CertainDeathEngine.Models.Resources
 {
     public class Corn : Resource
     {
+
     }
 }

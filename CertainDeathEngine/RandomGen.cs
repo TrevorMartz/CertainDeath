@@ -18,11 +18,9 @@ namespace CertainDeathEngine
             try
             {
                 Random = new Random(Convert.ToInt32(s));
-                Trace.WriteLine("seed " + s);
             }
             catch (Exception)
             {
-                Trace.WriteLine("Error with the random number seed. Creating a default random object.");
                 Random = new Random();
             }
         }
