@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CertainDeathEngine.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,17 @@ namespace CertainDeathEngine
 {
 	class Game : EngineInterface
 	{
+		GameWorld World;
+		public Game()
+		{
+			Init.InitAll();
+			World = new GameWorld();
+		}
+
 		string EngineInterface.ToJSON()
 		{
-			throw new NotImplementedException();
+			String json = JsonConvert.ToString(World.CurrentTile);
+			return json;
 		}
 
 		void EngineInterface.MoveUp()

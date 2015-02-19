@@ -1,4 +1,5 @@
-﻿using CertainDeathEngine.Models.World;
+﻿using CertainDeathEngine;
+using CertainDeathEngine.Models.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace EngineConsoleTester
 	{
 		static void Main(string[] args)
 		{
+			Init.InitAll();
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Console.WriteLine(generator.GenerateTile().ToString());
 		}
