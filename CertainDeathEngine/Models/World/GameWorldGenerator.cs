@@ -117,15 +117,15 @@ namespace CertainDeathEngine.Models.World
             {
                 for (int col = 0; col < Tile.SQUARE_SIZE; col++)
                 {
-                    newTile.Squares[row, col].SetBackground(Square.GRASS);//would like to change this to start with the most common tile type based on rarity values.
+					newTile.Squares[row, col].Type = SquareType.GRASS; //would like to change this to start with the most common tile type based on rarity values.
                 }
             }
-            AddNewBackground(ref newTile, DirtRarity, Square.DIRT);
-            AddNewBackground(ref newTile, SandRarity, Square.SAND);
+            AddNewBackground(ref newTile, DirtRarity, SquareType.DIRT);
+            AddNewBackground(ref newTile, SandRarity, SquareType.SAND);
             return newTile;
         }
 
-        public void AddNewBackground(ref Tile tile, float rarity, string backgroundPath)
+        public void AddNewBackground(ref Tile tile, float rarity, SquareType type)
         {
             //if random double is greater than the rarity of the item, stop spreading. pick x number of random points where x is the rarity * 10, rounded down
             for (int i = 0; i < rarity * 10f; i++)
@@ -134,7 +134,7 @@ namespace CertainDeathEngine.Models.World
                 int col = RandomGen.Random.Next(Tile.SQUARE_SIZE);
                 while (RandomGen.Random.NextDouble() > rarity)
                 {
-                    tile.Squares[row, col].SetBackground(backgroundPath);
+					tile.Squares[row, col].Type = type;
                     switch (RandomGen.Random.Next(4))
                     {
                         case 0:
@@ -160,7 +160,8 @@ namespace CertainDeathEngine.Models.World
             {
                 for (int col = 0; col < Tile.SQUARE_SIZE; col++)
                 {
-                    Trace.Write(t.Squares[row, col]);//no way to test what type of square it is.
+					Trace.Write((int)t.Squares[row, col].Type);
+                    //Trace.Write(t.Squares[row, col]);//no way to test what type of square it is.
                 }
                 Trace.WriteLine("");
             }
