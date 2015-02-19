@@ -11,10 +11,15 @@ namespace CertainDeathEngine
 {
     public static class Init
     {
+		public static bool Initted { get; private set; }
         public static void InitAll()
         {
-            RandomGen.Init();
-            Tile.InitSize();
+			if (!Initted)
+			{
+				RandomGen.Init();
+				Tile.InitSize();
+				Initted = true;
+			}
         }
     }
 }

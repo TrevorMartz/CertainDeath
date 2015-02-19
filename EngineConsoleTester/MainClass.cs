@@ -15,9 +15,17 @@ namespace EngineConsoleTester
 	{
 		public static void Main(string[] args)
 		{
+			//ShayneTests();
 			Init.InitAll();
 			GameWorldGenerator generator = new GameWorldGenerator();
 			generator.GenerateTile().PrintTile();
+		}
+
+		public static void ShayneTests()
+		{
+			EngineInterface g = new Game();
+			string json = g.ToJSON();
+			Console.WriteLine(json);
 		}
 	}
 }
