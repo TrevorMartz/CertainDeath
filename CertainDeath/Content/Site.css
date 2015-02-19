@@ -6,15 +6,15 @@
 
 header {
     overflow: hidden;
-    height: 229px;
+    height: 50px;
     padding: 20px;
     margin: 0;
     width: 700px;
 }
 
     header h1 {
-        font-size: 80px;
-        color: #004C66;
+        font-size: 30px;
+        color: #444;
         margin: 0;
         padding-top: 20px;
         font-weight: normal;
@@ -25,6 +25,20 @@ header {
         color: #004C66;
         margin: 0;
         font-weight: normal;
+    }
+
+    header a {
+        text-decoration: none;
+        font-size: 20px;
+        color: #FFF;
+        text-shadow: 2px 2px 2px #000;
+    }
+    header a:hover {
+        color: #F00;
+    }
+    header a:active {
+        color: #444;
+        text-shadow: 2px 2px 2px #999;
     }
 
 h3 {
@@ -52,7 +66,6 @@ p {
     /*background-image: url("../images/background.png");*/
     background: #444;
     font-weight: bold;
-    text-shadow: 2px 2px 5px #CCC;
 }
 
     #topHeader p {

@@ -13,35 +13,16 @@ namespace CertainDeathEngine
 	public class Game : EngineInterface
 	{
 		GameWorld World;
-		public Game()
-		{
-			Init.InitAll();
-			World = new GameWorldGenerator().GenerateWorld();
-		}
+
+        public Game(GameWorld world)
+        {
+            Init.InitAll();
+            World = world;
+        }
 
 		string EngineInterface.ToJSON()
 		{
 			return JsonConvert.SerializeObject(World.CurrentTile);
-		}
-
-		void EngineInterface.MoveUp()
-		{
-			throw new NotImplementedException();
-		}
-
-		void EngineInterface.MoveDown()
-		{
-			throw new NotImplementedException();
-		}
-
-		void EngineInterface.MoveLeft()
-		{
-			throw new NotImplementedException();
-		}
-
-		void EngineInterface.MoveRight()
-		{
-			throw new NotImplementedException();
 		}
 
 		string EngineInterface.SquareClicked(int x, int y)
@@ -54,9 +35,45 @@ namespace CertainDeathEngine
 			throw new NotImplementedException();
 		}
 
-		string EngineInterface.IncrementTimeAndReturnDeta(int millis)
+		string EngineInterface.IncrementTimeAndReturnDelta(int millis)
 		{
 			throw new NotImplementedException();
+		}
+
+		string EngineInterface.MoveUp()
+		{
+			if (World.CurrentTile.HasAbove)
+			{
+				World.CurrentTile = World.CurrentTile.Above;
+			}
+			return ((EngineInterface)this).ToJSON();
+		}
+
+		string EngineInterface.MoveDown()
+		{
+			if (World.CurrentTile.HasBelow)
+			{
+				World.CurrentTile = World.CurrentTile.Below;
+			}
+			return ((EngineInterface)this).ToJSON();
+		}
+
+		string EngineInterface.MoveLeft()
+		{
+			if (World.CurrentTile.HasLeft)
+			{
+				World.CurrentTile = World.CurrentTile.Left;
+			}
+			return ((EngineInterface)this).ToJSON();
+		}
+
+		string EngineInterface.MoveRight()
+		{
+			if (World.CurrentTile.HasRight)
+			{
+				World.CurrentTile = World.CurrentTile.Right;
+			}
+			return ((EngineInterface)this).ToJSON();
 		}
 	}
 }

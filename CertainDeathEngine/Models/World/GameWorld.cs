@@ -8,14 +8,13 @@ namespace CertainDeathEngine.Models
 {
     public class GameWorld
     {
+        public int Id { get; set; }
+
         public Tile CurrentTile { get; set; }
 
-        public GameWorld()
-        {
-            this.CurrentTile = new Tile();
-        }
+        public GameWorld(int worldId) : this(new Tile(), worldId) { }
 
-        public GameWorld(Tile t)
+        public GameWorld(Tile t, int worldId)
         {
             this.CurrentTile = t;
         }

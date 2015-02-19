@@ -17,7 +17,7 @@ namespace EngineConsoleTester
 	{
 		public static void Main(string[] args)
 		{
-			//ShayneTests();
+			ShayneTests();
 			Init.InitAll();
             //double total = 0;
             //for(int i = 0; i < 1000; i++)
@@ -38,8 +38,10 @@ namespace EngineConsoleTester
 		}
 
 		public static void ShayneTests()
-		{
-			EngineInterface g = new Game();
+        {
+            Init.InitAll();
+			GameWorldGenerator generator = new GameWorldGenerator();
+            EngineInterface g = new Game(generator.GenerateWorld(7));
 			string json = g.ToJSON();
 			Console.WriteLine(json);
 		}
