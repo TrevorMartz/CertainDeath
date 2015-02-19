@@ -13,11 +13,12 @@ namespace CertainDeathEngine
 	public class Game : EngineInterface
 	{
 		GameWorld World;
-		public Game()
-		{
-			Init.InitAll();
-			World = new GameWorldGenerator().GenerateWorld();
-		}
+
+        public Game(GameWorld world)
+        {
+            Init.InitAll();
+            World = world;
+        }
 
 		string EngineInterface.ToJSON()
 		{
@@ -34,7 +35,7 @@ namespace CertainDeathEngine
 			throw new NotImplementedException();
 		}
 
-		string EngineInterface.IncrementTimeAndReturnDeta(int millis)
+		string EngineInterface.IncrementTimeAndReturnDelta(int millis)
 		{
 			throw new NotImplementedException();
 		}

@@ -22,8 +22,8 @@ namespace EngineConsoleTester
 		}
 
 		public static void ShayneTests()
-		{
-            
+        {
+            Init.InitAll();
 			GameWorldGenerator generator = new GameWorldGenerator();
             EngineInterface g = new Game(generator.GenerateWorld(7));
 			string json = g.ToJSON();
