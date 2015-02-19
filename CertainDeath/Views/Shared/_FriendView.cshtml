@@ -1,9 +1,6 @@
 ﻿@using CertainDeath.Models
 @using Microsoft.AspNet.Facebook.Models
 @model MyAppUser
-@{
-    ViewBag.Title = "Friends";
-}
 
 <h4>Friends</h4>
 @if (Model.Friends != null && Model.Friends.Data != null && Model.Friends.Data.Count > 0)
