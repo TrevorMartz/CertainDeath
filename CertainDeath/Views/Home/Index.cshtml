@@ -5,7 +5,7 @@
     ViewBag.Title = "CERTAIN DEATH!";
 }
 
-<article class="intro">
+@*<article class="intro">
     <span id="profilePicture">
         @if (Model.ProfilePicture != null && Model.ProfilePicture.Data != null)
         {
@@ -14,10 +14,8 @@
     </span>
     <h3>Welcome @Model.Name</h3>
     <label>Email: @Model.Email</label>
-</article>
-<nav>
-    @Ajax.ActionLink("Friends", "Index", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
-</nav>
+</article>*@
+
 <article id="content">
     <script src="~/Content/Scripts/phaser.js"></script>
     <script src="~/Content/Scripts/game.js"></script>
