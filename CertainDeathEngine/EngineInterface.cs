@@ -7,28 +7,33 @@ using Newtonsoft;
 
 namespace CertainDeathEngine
 {
-	interface EngineInterface
+	public interface EngineInterface
 	{
 		
 		/* Changed the current tile to be the tile directly above the current current tile.
 		 * If there is no above tile, does nothing.
+		 * 
+		 * Returns ToJSON
 		 */
-		void MoveUp();
+		string MoveUp();
 
 		/* Changed the current tile to be the tile directly below the current current tile.
 		 * If there is no below tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveDown();
+		string MoveDown();
 
 		/* Changed the current tile to be the tile directly to the left of the current current tile.
 		 * If there is no left tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveLeft();
+		string MoveLeft();
 
 		/* Changed the current tile to be the tile directly to the right of the current current tile.
 		 * If there is no right tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveRight();
+		string MoveRight();
 
 		/* Notify the game engine that a user has clicked on a sqaure. If there is a resource on that 
 		 * square the resource will be added to the user's inventory. Otherwise nothing will happen.
@@ -60,33 +65,27 @@ namespace CertainDeathEngine
 		/* returns a JSON string representing the game state including: Squares, monsters, resources, and buildings.
 		 * 
 		 * Example:
-		 *			{
-			 *			squares:[
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url]
-			 *			], 
-			 *			directions: [{canMoveUp : true}, {canMoveDown : true}, {canMoveLeft : false}, {canMoveUp : true}],
-			 *			resources: [{type: corn, square_x: 5, square_y: 10, quantity: 25}, {type: wood, square_x: 12, square_y: 19, quantity: 6}],
-			 *			monsters: [{id: 0, health: 100, damage: 15, top_left_pixel_x: 115, top_left_pixel_y: 200}],
-			 *			buildings: [{type: turret_1, damage: 500, fire_rate: .5, size: 2, top_left_x: 7 top_left_y: 3}]
-		 *			}
+		 * 
+		 * { "HasAbove" : false,
+			  "HasBelow" : false,
+			  "HasLeft" : false,
+			  "HasRight" : false,
+			  "Objects" : [ (I don't know how this will look yet) ],
+			  "Squares" : [ [ 
+		            { "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" }
+				  ],
+				  [ { "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					...
+				  ]
+		          ...
+			   ]
+			}
 		 */
 		string ToJSON();
 	}

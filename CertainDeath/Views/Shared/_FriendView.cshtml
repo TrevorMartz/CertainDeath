@@ -1,0 +1,24 @@
+﻿@using CertainDeath.Models
+@using Microsoft.AspNet.Facebook.Models
+@model MyAppUser
+
+<h4>Friends</h4>
+@if (Model.Friends != null && Model.Friends.Data != null && Model.Friends.Data.Count > 0)
+{
+    foreach (var myFriend in @Model.Friends.Data)
+    {
+        <a href="@myFriend.Link" target="_blank">
+            <div class="photoTile">
+                <label>@myFriend.Name</label>
+                @if (myFriend.Picture != null && myFriend.Picture.Data != null)
+                {
+                    <img src="@myFriend.Picture.Data.Url" />
+                }
+            </div>
+        </a>
+    }
+}
+else
+{
+    <p>No friends found.</p>
+}

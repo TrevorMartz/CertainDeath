@@ -9,5 +9,6 @@ namespace CertainDeathEngine.Models.Resources
     {
         public int Quantity { get; set; }
         public float RegenRate { get; set; }
+		public string Type { get; protected set; }
     }
 }

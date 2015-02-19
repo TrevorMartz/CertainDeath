@@ -6,15 +6,15 @@
 
 header {
     overflow: hidden;
-    height: 229px;
+    height: 100px;
     padding: 20px;
     margin: 0;
     width: 700px;
 }
 
     header h1 {
-        font-size: 80px;
-        color: #004C66;
+        font-size: 30px;
+        color: #444;
         margin: 0;
         padding-top: 20px;
         font-weight: normal;
@@ -52,7 +52,7 @@ p {
     /*background-image: url("../images/background.png");*/
     background: #444;
     font-weight: bold;
-    text-shadow: 2px 2px 5px #CCC;
+    text-shadow: 2px 2px 2px #CCC;
 }
 
     #topHeader p {

@@ -8,5 +8,9 @@ namespace CertainDeathEngine.Models.Resources
 {
     public class Wood : Resource
     {
+		public Wood()
+		{
+			Type = "Wood";
+		}
     }
 }

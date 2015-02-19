@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -29,12 +31,7 @@
 
     <div id="wrapper">
         <header id="topHeader">
-            <h1>CERTAIN DEATH!</h1>
-            @*<span id="arrow"></span>
-            <h2>You will die.</h2>*@
-            @*<p>
-                Learn more about <a href="http://go.microsoft.com/fwlink/?LinkId=301873" target="_blank">building Facebook apps using ASP.NET MVC</a>.
-            </p>*@
+            <h1>[replace with awesome header]</h1>
         </header>
         @RenderBody()
         <footer>
