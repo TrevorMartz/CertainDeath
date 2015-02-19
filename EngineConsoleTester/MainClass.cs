@@ -15,7 +15,7 @@ namespace EngineConsoleTester
 	{
 		public static void Main(string[] args)
 		{
-			//ShayneTests();
+			ShayneTests();
 			Init.InitAll();
 			GameWorldGenerator generator = new GameWorldGenerator();
 			generator.GenerateTile().PrintTile();
