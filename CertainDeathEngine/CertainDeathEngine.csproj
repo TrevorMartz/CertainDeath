@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\FileDAL.cs" />
+    <Compile Include="DAL\IDAL.cs" />
     <Compile Include="EngineInterface.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Init.cs" />
