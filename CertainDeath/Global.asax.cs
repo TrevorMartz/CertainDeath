@@ -15,13 +15,14 @@ namespace CertainDeath
     {
         protected void Application_Start()
         {
-            RandomGen.Init();
             AreaRegistration.RegisterAllAreas();
             FacebookConfig.Register(GlobalFacebookConfiguration.Configuration);
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            CertainDeathEngine.Init.InitAll();
         }
     }
 }

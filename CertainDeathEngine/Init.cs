@@ -1,0 +1,20 @@
+﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.Resources;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CertainDeathEngine
+{
+    public static class Init
+    {
+        public static void InitAll()
+        {
+            RandomGen.Init();
+            Tile.InitSize();
+        }
+    }
+}
