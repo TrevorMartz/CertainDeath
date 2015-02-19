@@ -17,6 +17,12 @@ namespace CertainDeathEngine.Models
 		[JsonProperty]
 		public string TypeName { get { return Type.ToString(); } }
 
-        public Resource Resource { get; set; }
+		[JsonProperty]
+		public Resource Resource { get; set; }
+
+		public bool ShouldSerializeResource()
+		{
+			return Resource != null;
+		}
     }
 }

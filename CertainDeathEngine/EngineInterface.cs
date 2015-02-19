@@ -12,23 +12,28 @@ namespace CertainDeathEngine
 		
 		/* Changed the current tile to be the tile directly above the current current tile.
 		 * If there is no above tile, does nothing.
+		 * 
+		 * Returns ToJSON
 		 */
-		void MoveUp();
+		string MoveUp();
 
 		/* Changed the current tile to be the tile directly below the current current tile.
 		 * If there is no below tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveDown();
+		string MoveDown();
 
 		/* Changed the current tile to be the tile directly to the left of the current current tile.
 		 * If there is no left tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveLeft();
+		string MoveLeft();
 
 		/* Changed the current tile to be the tile directly to the right of the current current tile.
 		 * If there is no right tile, does nothing.
+		 * Returns ToJSON
 		 */
-		void MoveRight();
+		string MoveRight();
 
 		/* Notify the game engine that a user has clicked on a sqaure. If there is a resource on that 
 		 * square the resource will be added to the user's inventory. Otherwise nothing will happen.
