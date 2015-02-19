@@ -7,7 +7,7 @@ using Newtonsoft;
 
 namespace CertainDeathEngine
 {
-	interface EngineInterface
+	public interface EngineInterface
 	{
 		
 		/* Changed the current tile to be the tile directly above the current current tile.
@@ -60,33 +60,27 @@ namespace CertainDeathEngine
 		/* returns a JSON string representing the game state including: Squares, monsters, resources, and buildings.
 		 * 
 		 * Example:
-		 *			{
-			 *			squares:[
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url],
-			 *				[url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url, url]
-			 *			], 
-			 *			directions: [{canMoveUp : true}, {canMoveDown : true}, {canMoveLeft : false}, {canMoveUp : true}],
-			 *			resources: [{type: corn, square_x: 5, square_y: 10, quantity: 25}, {type: wood, square_x: 12, square_y: 19, quantity: 6}],
-			 *			monsters: [{id: 0, health: 100, damage: 15, top_left_pixel_x: 115, top_left_pixel_y: 200}],
-			 *			buildings: [{type: turret_1, damage: 500, fire_rate: .5, size: 2, top_left_x: 7 top_left_y: 3}]
-		 *			}
+		 * 
+		 * { "HasAbove" : false,
+			  "HasBelow" : false,
+			  "HasLeft" : false,
+			  "HasRight" : false,
+			  "Objects" : [ (I don't know how this will look yet) ],
+			  "Squares" : [ [ 
+		            { "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" }
+				  ],
+				  [ { "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },{ "TypeName" : "GRASS" },
+					...
+				  ]
+		          ...
+			   ]
+			}
 		 */
 		string ToJSON();
 	}

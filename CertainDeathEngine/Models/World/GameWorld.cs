@@ -15,6 +15,11 @@ namespace CertainDeathEngine.Models
             this.CurrentTile = new Tile();
         }
 
+        public GameWorld(Tile t)
+        {
+            this.CurrentTile = t;
+        }
+
         public void AddObject(GameObject obj)
         {
             this.CurrentTile.AddObject(obj);

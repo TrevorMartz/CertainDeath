@@ -1,16 +1,27 @@
-﻿using System;
+﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.World;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace CertainDeathEngine
 {
-	class Game : EngineInterface
+	public class Game : EngineInterface
 	{
+		GameWorld World;
+		public Game()
+		{
+			Init.InitAll();
+			World = new GameWorldGenerator().GenerateWorld();
+		}
+
 		string EngineInterface.ToJSON()
 		{
-			throw new NotImplementedException();
+			return JsonConvert.SerializeObject(World.CurrentTile);
 		}
 
 		void EngineInterface.MoveUp()
