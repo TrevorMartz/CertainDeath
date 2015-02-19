@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 // for testing and debuging
 namespace EngineConsoleTester
 {
-	class MainClass
+	public class MainClass
 	{
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 			Init.InitAll();
 			GameWorldGenerator generator = new GameWorldGenerator();
-			Console.WriteLine(generator.GenerateTile().ToString());
+			generator.GenerateTile().PrintTile();
 		}
 	}
 }

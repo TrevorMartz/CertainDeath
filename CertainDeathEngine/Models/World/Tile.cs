@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace CertainDeathEngine.Models
 {
@@ -67,8 +68,21 @@ namespace CertainDeathEngine.Models
 
         public Tile()
         {
-            this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
+            SetSquares();
             this.Objects = new List<GameObject>();
+        }
+
+        public void SetSquares()
+        {
+            this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    Squares[row, col] = new Square();
+                }
+                Trace.WriteLine("");
+            }
         }
 
         public void AddObject(GameObject obj)
@@ -82,10 +96,26 @@ namespace CertainDeathEngine.Models
             {
                 string s = ConfigurationManager.AppSettings["TileSquareSize"];
                 SQUARE_SIZE = Convert.ToInt32(s);
+                if(SQUARE_SIZE <= 0)
+                {
+                    SQUARE_SIZE = 20;
+                }
             }
             catch(Exception)
             {
                 SQUARE_SIZE = 20;
+            }
+        }
+
+        public void PrintTile()
+        {
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    Trace.Write((int)Squares[row, col].Type);
+                }
+                Trace.WriteLine("");
             }
         }
     }
