@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.User;
+using CertainDeathEngine.Models.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +11,17 @@ namespace CertainDeathEngine.DAL
 {
     public class FileDAL : IDAL
     {
-        public void SaveWorld(Models.GameWorld world)
+        public void SaveGame(EngineInterface engine)
         {
             throw new NotImplementedException();
         }
 
-        public Models.GameWorld LoadWorld(int worldId)
+        public EngineInterface LoadGame(CertainDeathUser user)
         {
-            throw new NotImplementedException();
+            int worldId = user.WorldId;
+            GameWorld world = new GameWorldGenerator().GenerateWorld(worldId);
+            Game g = new Game(world);
+            return g;
         }
     }
 }

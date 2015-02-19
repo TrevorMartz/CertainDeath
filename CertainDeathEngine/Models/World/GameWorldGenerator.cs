@@ -104,9 +104,9 @@ namespace CertainDeathEngine.Models.World
             return f;
         }
 
-        public GameWorld GenerateWorld()
+        public GameWorld GenerateWorld(int worldId)
         {
-            return new GameWorld(GenerateTile());
+            return new GameWorld(GenerateTile(), worldId);
         }
 
         public Tile GenerateTile()

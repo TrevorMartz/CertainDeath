@@ -54,6 +54,7 @@
     <Compile Include="Models\AI\AbstractAI.cs" />
     <Compile Include="Models\AI\PatrolAI.cs" />
     <Compile Include="Models\GameObject.cs" />
+    <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="Models\World\GameWorld.cs" />
     <Compile Include="Models\NPC\Building.cs" />
     <Compile Include="Models\NPC\Monster.cs" />
