@@ -1,7 +1,7 @@
-﻿namespace CertainDeath.Models
-{
-    public class FacebookPicture
-    {
-        public string Url { get; set; }
-    }
-}
+﻿//namespace CertainDeath.Models
+//{
+//    public class FacebookPicture
+//    {
+//        public string Url { get; set; }
+//    }
+//}

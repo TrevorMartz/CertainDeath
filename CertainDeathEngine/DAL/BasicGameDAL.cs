@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
-    public class FileDAL : IDAL
+    public class BasicGameDAL : IGameDAL
     {
         public void SaveGame(EngineInterface engine)
         {
             throw new NotImplementedException();
         }
 
-        public EngineInterface LoadGame(CertainDeathUser user)
+        public EngineInterface LoadGame(int worldId)
         {
-            int worldId = user.WorldId;
+            //int worldId = user.WorldId;
             GameWorld world = new GameWorldGenerator().GenerateWorld(worldId);
             Game g = new Game(world);
             return g;

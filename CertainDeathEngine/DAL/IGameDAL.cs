@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
-    public interface IDAL
+    public interface IGameDAL
     {
         void SaveGame(EngineInterface engine);
 
-        EngineInterface LoadGame(CertainDeathUser user);
+        EngineInterface LoadGame(int worldId);
     }
 }
