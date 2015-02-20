@@ -54,14 +54,13 @@
     <Compile Include="Models\AI\AbstractAI.cs" />
     <Compile Include="Models\AI\PatrolAI.cs" />
     <Compile Include="Models\GameObject.cs" />
+    <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="Models\World\GameWorld.cs" />
     <Compile Include="Models\NPC\Building.cs" />
     <Compile Include="Models\NPC\Monster.cs" />
     <Compile Include="Models\NPC\NPC.cs" />
-    <Compile Include="Models\Resources\Corn.cs" />
     <Compile Include="Models\Resources\Resource.cs" />
-    <Compile Include="Models\Resources\Wood.cs" />
     <Compile Include="Models\World\Square.cs" />
     <Compile Include="Models\World\SquareType.cs" />
     <Compile Include="Models\World\Tile.cs" />

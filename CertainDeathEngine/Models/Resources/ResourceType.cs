@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.Resources
 {
-    public class Corn : Resource
+    public enum ResourceType
     {
-		public Corn()
-		{
-			Type = "Corn";
-		}
+        Wood,
+        Corn,
+        Stone,
+        Iron,
+        Coal
     }
 }
