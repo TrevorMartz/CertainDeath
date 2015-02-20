@@ -11,7 +11,8 @@ namespace CertainDeathEngine.DAL
     {
         public CertainDeathUser GetUser(MyAppUser fbUser)
         {
-            throw new NotImplementedException();
+            return new CertainDeathUser() { WorldId = 7 };
+
         }
     }
 }

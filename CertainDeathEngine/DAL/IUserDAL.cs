@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
-    interface IUserDAL
+    public interface IUserDAL
     {
         CertainDeathUser GetUser(MyAppUser fbUser);
 
