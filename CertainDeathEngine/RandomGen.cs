@@ -10,7 +10,7 @@ namespace CertainDeathEngine
 {
     public class RandomGen
     {
-        public static Random Random { get; set; }
+        public static Random Random { get; private set; }
 
         public static void Init()
         {
@@ -23,6 +23,11 @@ namespace CertainDeathEngine
             {
                 Random = new Random();
             }
+        }
+
+        public static void InitUnseeded()
+        {
+            Random = new Random();
         }
     }
 }

@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 namespace CertainDeathEngine.Models
 {
 
-	[JsonObject(MemberSerialization.OptIn)]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Tile
     {
-        
+
         public static int SQUARE_SIZE = 20;
 
-		[JsonProperty]
+        [JsonProperty]
         public Square[,] Squares { get; set; }
 
         #region TileReferences
@@ -24,8 +24,8 @@ namespace CertainDeathEngine.Models
         public Tile Left
         {
             get { return _left; }
-            set 
-            { 
+            set
+            {
                 _left = value;
                 value._right = this;
             }
@@ -36,8 +36,8 @@ namespace CertainDeathEngine.Models
         public Tile Right
         {
             get { return _right; }
-            set 
-            { 
+            set
+            {
                 _right = value;
                 value._left = this;
             }
@@ -48,8 +48,8 @@ namespace CertainDeathEngine.Models
         public Tile Above
         {
             get { return _above; }
-            set 
-            { 
+            set
+            {
                 _above = value;
                 value._below = this;
             }
@@ -60,24 +60,24 @@ namespace CertainDeathEngine.Models
         public Tile Below
         {
             get { return _below; }
-            set 
+            set
             {
                 _below = value;
                 value._above = this;
             }
         }
 
-		[JsonProperty]
-		public bool HasAbove { get { return Above != null; } }
-		[JsonProperty]
-		public bool HasBelow { get { return Below != null; } }
-		[JsonProperty]
-		public bool HasLeft { get { return Left != null; } }
-		[JsonProperty]
-		public bool HasRight { get { return Right != null; } }
+        [JsonProperty]
+        public bool HasAbove { get { return Above != null; } }
+        [JsonProperty]
+        public bool HasBelow { get { return Below != null; } }
+        [JsonProperty]
+        public bool HasLeft { get { return Left != null; } }
+        [JsonProperty]
+        public bool HasRight { get { return Right != null; } }
         #endregion
 
-		[JsonProperty]
+        [JsonProperty]
         public List<GameObject> Objects { get; set; }
 
         public Tile()
@@ -95,7 +95,6 @@ namespace CertainDeathEngine.Models
                 {
                     Squares[row, col] = new Square();
                 }
-                Trace.WriteLine("");
             }
         }
 
@@ -110,12 +109,12 @@ namespace CertainDeathEngine.Models
             {
                 string s = ConfigurationManager.AppSettings["TileSquareSize"];
                 SQUARE_SIZE = Convert.ToInt32(s);
-                if(SQUARE_SIZE <= 0)
+                if (SQUARE_SIZE <= 0)
                 {
                     SQUARE_SIZE = 20;
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SQUARE_SIZE = 20;
             }

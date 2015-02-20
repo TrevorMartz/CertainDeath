@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Facebook;
 using Microsoft.AspNet.Facebook.Client;
-using CertainDeath.Models;
+using CertainDeathEngine.Models.User;
+//using CertainDeath.Models;
 
 namespace CertainDeath.Controllers
 {

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNet.Facebook;
 
-// Add any fields you want to be saved for each user and specify the field name in the JSON coming back from Facebook
-// http://go.microsoft.com/fwlink/?LinkId=301877
-
-namespace CertainDeath.Models
+namespace CertainDeathEngine.Models.User
 {
     public class MyAppUserFriend
     {
