@@ -8,10 +8,10 @@ namespace CertainDeathEngine.Models.Resources
 {
     public enum ResourceType
     {
-        Wood,
-        Corn,
-        Stone,
-        Iron,
-        Coal
+        WOOD,
+        CORN,
+        STONE,
+        IRON,
+        COAL
     }
 }
