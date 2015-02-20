@@ -19,7 +19,7 @@ var server;
 
 function preload () {
     // download all sprites
-    game.load.atlas("objects", "/Content/Images/spritesheet.png", "/Content/Images/spritesheet.json");
+    game.load.atlas("objects", "/Content/Images/spritesheet2.png", "/Content/Images/spritesheet2.json");
     //server = new Server("", onerror, onclose);
 }
 
