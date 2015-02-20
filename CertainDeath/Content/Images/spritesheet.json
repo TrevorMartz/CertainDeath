@@ -1,7 +1,7 @@
 ﻿{
     "frames": [
         {
-            "filename": "campfire",
+            "filename": "DIRT",
             "frame" :  {"x": 0, "y": 0, "w": 32, "h": 32},
             "rotated": false,
             "trimmed": false,
@@ -9,7 +9,7 @@
             "sourceSize" :  {"w": 32, "h": 16}
         },
         {
-            "filename": "grass",
+            "filename": "GRASS",
             "frame" :  {"x": 32, "y": 0, "w": 32, "h": 32},
             "rotated": false,
             "trimmed": false,
@@ -17,7 +17,7 @@
             "sourceSize" :  {"w": 32, "h": 16}
         },
         {
-            "filename": "torch",
+            "filename": "SAND",
             "frame" :  {"x": 64, "y": 0, "w": 32, "h": 32},
             "rotated": false,
             "trimmed": false,
