@@ -170,11 +170,11 @@ namespace CertainDeathEngine.Models.World
             }
             AddNewBackground(ref newTile, DirtRarity, SquareType.DIRT);
             AddNewBackground(ref newTile, SandRarity, SquareType.SAND);
-            AddResources(ref newTile, WoodRarity, ResourceType.Wood);
-            AddResources(ref newTile, StoneRarity, ResourceType.Stone);
-            AddResources(ref newTile, CoalRarity, ResourceType.Coal);
-            AddResources(ref newTile, IronRarity, ResourceType.Iron);
-            AddResources(ref newTile, CornRarity, ResourceType.Corn);
+            AddResources(ref newTile, WoodRarity, ResourceType.WOOD);
+            AddResources(ref newTile, StoneRarity, ResourceType.STONE);
+            AddResources(ref newTile, CoalRarity, ResourceType.COAL);
+            AddResources(ref newTile, IronRarity, ResourceType.IRON);
+            AddResources(ref newTile, CornRarity, ResourceType.CORN);
             return newTile;
         }
 
