@@ -60,6 +60,8 @@ View = (function () {
         this._pointerDown = false;
         this.squaresWide = 0;
         this.squaresHigh = 0;
+        this.boardX = 0;
+        this.boardY = 0;
     }
     MainGameScreen.prototype = Object.create(Screen.prototype, {
         create: {
@@ -75,12 +77,21 @@ View = (function () {
                     if (msg.Squares != 'undefined') {
                         this.squaresWide = msg.Squares.length;
                         this.squaresHigh = msg.Squares[0].length;
+
+                        this.boardX = (game.world.width - this.squaresWide * 32) / 2;
+                        this.boardY = (game.world.height - this.squaresHigh * 32) / 2;
+
                         for (var i = 0; i < msg.Squares.length; i++) {
                             for (var j = 0; j < msg.Squares[i].length; j++) {
                                 objects = new Array();
-                                objects += game.add.tileSprite(i * (game.world.width/msg.Squares.length), j * (game.world.height/msg.Squares[i].length),
-                                    game.world.width / msg.Squares.length, game.world.height / msg.Squares[i].length,
-                                    "objects", msg.Squares[i][j].TypeName);
+                                var rand = Math.ceil(Math.random() * 3);
+                                objects += game.add.sprite(i * 32 + this.boardX, j * 32 + this.boardY,
+                                    "objects", msg.Squares[i][j].TypeName + rand);
+                                if (msg.Squares.Resource != 'undefined') {
+                                    console.log(msg.Squares.Resource);
+                                    objects += game.add.sprite(i * 32 + this.boardX, j * 32 + this.boardY,
+                                        "objects", "CORN")
+                                }
                             }
                         }
                     }

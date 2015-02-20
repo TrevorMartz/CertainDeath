@@ -143,15 +143,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyAppUserFriend.cs" />
-    <Compile Include="Models\MyAppUser.cs" />
-    <Compile Include="Models\FacebookPicture.cs" />
-    <Compile Include="Models\FacebookPhoto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\Fire.png" />
-    <Content Include="Content\Images\Grass.png" />
+    <Content Include="Content\Images\DIRT.png" />
+    <Content Include="Content\Images\GRASS3.png" />
+    <Content Include="Content\Images\GRASS2.png" />
+    <Content Include="Content\Images\GRASS1.png" />
+    <Content Include="Content\Images\SAND3.png" />
+    <Content Include="Content\Images\SAND2.png" />
+    <Content Include="Content\Images\SAND1.png" />
+    <Content Include="Content\Images\GRASS.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Scripts\game.js" />
@@ -197,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Data\User\" />
+    <Folder Include="Data\World\" />
     <Folder Include="Views\WebSocket\" />
   </ItemGroup>
   <ItemGroup>

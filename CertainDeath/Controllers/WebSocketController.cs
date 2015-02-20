@@ -10,11 +10,13 @@ using System.Web.Mvc;
 using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models.User;
 using System.Diagnostics;
+using System.Web.Hosting;
 
 namespace CertainDeath.Controllers
 {
     public class WebSocketController : ApiController
     {
+
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
         {
@@ -25,6 +27,8 @@ namespace CertainDeath.Controllers
         public class GameWebSocketHandler : WebSocketHandler
         {
             private int id;
+            IGameDAL GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
+            IUserDAL UserDAL = new BasicUserDAL();
 
             public GameWebSocketHandler(int id)
             {
@@ -37,9 +41,8 @@ namespace CertainDeath.Controllers
 
             public override void OnOpen()
             {
-                CertainDeathUser user = new CertainDeathUser() { WorldId = id };
-                IGameDAL dal = new BasicGameDAL();
-                Send(dal.LoadGame(user.WorldId).ToJSON());
+                CertainDeathUser user = UserDAL.GetUser(null);// need to pass in some fb context
+                Send(GameDAL.LoadGame(user.WorldId).ToJSON());
             }
 
             public override void OnClose()
