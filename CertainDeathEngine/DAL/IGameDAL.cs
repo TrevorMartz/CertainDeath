@@ -14,6 +14,8 @@ namespace CertainDeathEngine.DAL
 
         EngineInterface LoadGame(int worldId);
 
+        GameWorld CreateWorld();
+
         GameWorld LoadWorld(int worldId);
     }
 }
