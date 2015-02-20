@@ -1,4 +1,5 @@
-﻿namespace CertainDeath.Models
+﻿
+namespace CertainDeathEngine.Models.User
 {
     public class FacebookPicture
     {
