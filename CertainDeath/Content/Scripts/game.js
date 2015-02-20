@@ -1,5 +1,5 @@
 ﻿/// <reference path="phaser.js" />
-var game = new Phaser.Game(600, 600, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game("100", "100", Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render});
 var CD = {};
 
 /**
