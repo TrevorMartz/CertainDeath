@@ -106,7 +106,7 @@ namespace CertainDeathEngine.Models.World
         }
 
         public GameWorld GenerateWorld(int worldId, int worldSize = 3)
-        {            
+        {
             Tile[,] baseWorld = new Tile[worldSize, worldSize];
             for (int row = 0; row < worldSize; row++)
             {
@@ -119,12 +119,12 @@ namespace CertainDeathEngine.Models.World
             {
                 for (int col = 0; col < worldSize; col++)
                 {
-                    if(row > 0)
+                    if (row > 0)
                     {
                         baseWorld[row, col].Above = baseWorld[row - 1, col];
                     }
 
-                    if(row < worldSize - 1)
+                    if (row < worldSize - 1)
                     {
                         baseWorld[row, col].Below = baseWorld[row + 1, col];
                     }
@@ -144,16 +144,16 @@ namespace CertainDeathEngine.Models.World
             //Trace.WriteLine("Middle: " + middle);
             GameWorld newWorld = new GameWorld(baseWorld[middle, middle], worldId);
 
-            //for(int row = 0; row < worldSize; row++)
-            //{
-            //    Tile[] tiles = new Tile[worldSize];
-            //    for (int col = 0; col < worldSize; col++ )
-            //    {
-            //        tiles[col] = baseWorld[row, col];
-            //    }
-            //    PrintTilesSideBySide(tiles);
-            //    Trace.WriteLine("");
-            //}
+            for (int row = 0; row < worldSize; row++)
+            {
+                Tile[] tiles = new Tile[worldSize];
+                for (int col = 0; col < worldSize; col++)
+                {
+                    tiles[col] = baseWorld[row, col];
+                }
+                PrintTilesResourceSideBySide(tiles);
+                Trace.WriteLine("");
+            }
             return newWorld;
         }
 
@@ -170,6 +170,11 @@ namespace CertainDeathEngine.Models.World
             }
             AddNewBackground(ref newTile, DirtRarity, SquareType.DIRT);
             AddNewBackground(ref newTile, SandRarity, SquareType.SAND);
+            AddResources(ref newTile, WoodRarity, ResourceType.Wood);
+            AddResources(ref newTile, StoneRarity, ResourceType.Stone);
+            AddResources(ref newTile, CoalRarity, ResourceType.Coal);
+            AddResources(ref newTile, IronRarity, ResourceType.Iron);
+            AddResources(ref newTile, CornRarity, ResourceType.Corn);
             return newTile;
         }
 
@@ -205,6 +210,35 @@ namespace CertainDeathEngine.Models.World
             }
         }
 
+        public void AddResources(ref Tile tile, float rarity, ResourceType type)
+        {
+            //would like to make this so it won't override other resources.
+            for (float i = ((float)RandomGen.Random.NextDouble()) + .1f; i > rarity; i -= .1f)
+            {
+                int row = RandomGen.Random.Next(Tile.SQUARE_SIZE);
+                int col = RandomGen.Random.Next(Tile.SQUARE_SIZE);
+                while ((RandomGen.Random.NextDouble() * 3) > rarity)
+                {
+                    tile.Squares[row, col].Resource = new Resource(type, 1);
+                    switch (RandomGen.Random.Next(4))
+                    {
+                        case 0://east
+                            row += (row < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                            break;
+                        case 1://west
+                            row -= (row > 0 ? 1 : -1);
+                            break;
+                        case 2://sout
+                            col += (col < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                            break;
+                        case 3://north
+                            col -= (col > 0 ? 1 : -1);
+                            break;
+                    }
+                }
+            }
+        }
+
         public static void PrintTilesSideBySide(Tile[] tiles)
         {
             for (int row = 0; row < Tile.SQUARE_SIZE; row++)
@@ -214,6 +248,29 @@ namespace CertainDeathEngine.Models.World
                     for (int col = 0; col < Tile.SQUARE_SIZE; col++)
                     {
                         Trace.Write((int)t.Squares[row, col].Type);
+                    }
+                    Trace.Write(" ");
+                }
+                Trace.WriteLine("");
+            }
+        }
+
+        public static void PrintTilesResourceSideBySide(Tile[] tiles)
+        {
+            for (int row = 0; row < Tile.SQUARE_SIZE; row++)
+            {
+                foreach (Tile t in tiles)
+                {
+                    for (int col = 0; col < Tile.SQUARE_SIZE; col++)
+                    {
+                        if (t.Squares[row, col].Resource == null)
+                        {
+                            Trace.Write("-");
+                        }
+                        else
+                        {
+                            Trace.Write((int)t.Squares[row, col].Resource.Type);
+                        }
                     }
                     Trace.Write(" ");
                 }

@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 // for testing and debuging
 namespace EngineConsoleTester
 {
-	public class MainClass
-	{
-		public static void Main(string[] args)
-		{
-			ShayneTests();
-			Init.InitAll();
+    public class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            //ShayneTests();
+            Init.InitAll();
             //double total = 0;
             //for(int i = 0; i < 1000; i++)
             //{
@@ -27,23 +27,23 @@ namespace EngineConsoleTester
             //    Trace.WriteLine(d);
             //}
             //Trace.WriteLine(total / 1000);
-            //while (true)
-            //{
-            GameWorldGenerator generator = new GameWorldGenerator();
-            GameWorld world = generator.GenerateWorld(10);
+            while (true)
+            {
+                GameWorldGenerator generator = new GameWorldGenerator();
+                GameWorld world = generator.GenerateWorld(3);
 
-            //    generator.GenerateTile().PrintTile();
-            //    Console.ReadLine();
-            //}
-		}
+                //    generator.GenerateTile().PrintTile();
+                Console.ReadLine();
+            }
+        }
 
-		public static void ShayneTests()
+        public static void ShayneTests()
         {
             Init.InitAll();
-			GameWorldGenerator generator = new GameWorldGenerator();
+            GameWorldGenerator generator = new GameWorldGenerator();
             EngineInterface g = new Game(generator.GenerateWorld(7));
-			string json = g.ToJSON();
-			Console.WriteLine(json);
-		}
-	}
+            string json = g.ToJSON();
+            Console.WriteLine(json);
+        }
+    }
 }
