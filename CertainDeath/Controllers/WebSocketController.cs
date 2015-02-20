@@ -37,9 +37,9 @@ namespace CertainDeath.Controllers
 
             public override void OnOpen()
             {
-                CertainDeathUser user = new CertainDeathUser() { Id = id };
-                FileDAL dal = new FileDAL();
-                Send(dal.LoadGame(user).ToJSON());
+                CertainDeathUser user = new CertainDeathUser() { WorldId = id };
+                IGameDAL dal = new BasicGameDAL();
+                Send(dal.LoadGame(user.WorldId).ToJSON());
             }
 
             public override void OnClose()
