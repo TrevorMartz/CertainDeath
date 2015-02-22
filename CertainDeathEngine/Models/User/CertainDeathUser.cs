@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CertainDeathEngine.Models.User
 {
+    [Serializable]
     public class CertainDeathUser
     {
         public MyAppUser FBUser { get; set; }

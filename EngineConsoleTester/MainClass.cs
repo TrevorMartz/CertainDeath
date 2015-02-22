@@ -42,10 +42,10 @@ namespace EngineConsoleTester
 
         private static void BlakeIsSOOOOOOSexy()
         {
-            IUserDAL UserDAL = new BasicUserDAL();
             IGameDAL GameDAL = new BasicGameDAL("c:\\_\\test\\");
+            IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\", GameDAL);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 2; i++)
             {
                 GameWorld w1 = GameDAL.CreateWorld();
                 GameDAL.SaveWorld(w1);

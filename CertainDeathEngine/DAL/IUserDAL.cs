@@ -9,7 +9,9 @@ namespace CertainDeathEngine.DAL
 {
     public interface IUserDAL
     {
-        CertainDeathUser GetUser(MyAppUser fbUser);
+        CertainDeathUser CreateGameUser(MyAppUser fbUser);
+        CertainDeathUser GetGameUser(MyAppUser fbUser);
+
 
         
     }

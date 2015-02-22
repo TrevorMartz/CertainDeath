@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
+
+    // for blake
+    // http://www.reddnet.net/entity-framework-json-column/
     public interface IGameDAL
     {
         void SaveWorld(GameWorld world);
@@ -17,5 +20,7 @@ namespace CertainDeathEngine.DAL
         GameWorld CreateWorld();
 
         GameWorld LoadWorld(int worldId);
+
+        //Tile LoadTile(int tileId);
     }
 }
