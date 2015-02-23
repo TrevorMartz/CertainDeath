@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace CertainDeathEngine.Models
 {
+    [Serializable]
 	[JsonObject(MemberSerialization.OptIn)]
     public class Square
     {

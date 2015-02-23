@@ -6,6 +6,7 @@ using System.Text;
 
 namespace CertainDeathEngine.Models
 {
+    [Serializable]
     public abstract class GameObject
     {
 
