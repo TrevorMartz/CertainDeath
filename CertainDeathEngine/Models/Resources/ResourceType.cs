@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.Resources
 {
+    [Serializable]
     public enum ResourceType
     {
         WOOD,

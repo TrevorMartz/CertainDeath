@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC
 {
+    [Serializable]
     public class NPC : GameObject
     {
         public AbstractAI AI { get; set; }

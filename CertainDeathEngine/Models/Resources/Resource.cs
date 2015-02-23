@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CertainDeathEngine.Models.Resources
 {
+    [Serializable]
     public class Resource : GameObject
     {
         public int Quantity { get; set; }

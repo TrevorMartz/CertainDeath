@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models
 {
+    [Serializable]
     public class GameWorld
     {
         [JsonProperty]
