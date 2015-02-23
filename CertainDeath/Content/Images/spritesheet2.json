@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "CORN",
+	"filename": "COAL",
 	"frame": {"x":388,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -9,31 +9,15 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
+	"filename": "CORN",
+	"frame": {"x":422,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
 	"filename": "DIRT1",
-	"frame": {"x":422,"y":2,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-{
-	"filename": "DIRT2",
-	"frame": {"x":422,"y":2,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-{
-	"filename": "DIRT3",
-	"frame": {"x":422,"y":2,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-{
-	"filename": "Fire",
 	"frame": {"x":456,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +25,23 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "GRASS1",
+	"filename": "DIRT2",
+	"frame": {"x":456,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "DIRT3",
+	"frame": {"x":456,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "Fire",
 	"frame": {"x":490,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "GRASS2",
+	"filename": "GRASS1",
 	"frame": {"x":524,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "GRASS3",
+	"filename": "GRASS2",
 	"frame": {"x":558,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "SAND1",
+	"filename": "GRASS3",
 	"frame": {"x":592,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "SAND2",
+	"filename": "IRON",
 	"frame": {"x":626,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -81,8 +81,32 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "SAND3",
+	"filename": "SAND1",
 	"frame": {"x":660,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "SAND2",
+	"frame": {"x":694,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "SAND3",
+	"frame": {"x":728,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "STONE",
+	"frame": {"x":762,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -98,7 +122,15 @@
 },
 {
 	"filename": "Torch",
-	"frame": {"x":694,"y":2,"w":32,"h":32},
+	"frame": {"x":796,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "WOOD",
+	"frame": {"x":830,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -109,8 +141,8 @@
 	"version": "1.0",
 	"image": "spritesheet2.png",
 	"format": "RGBA8888",
-	"size": {"w":728,"h":36},
+	"size": {"w":864,"h":36},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:14bebecabbe349742c99ad232e4bb0b9:82785b66e3fcdacd5f1a3a41ba06f922:bc5e4c3e253241b36d5edc96e79f938b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8a202e92797fdedf898eed6844d0201e:fd6748ee0f2ffc66f807144402bd936d:bc5e4c3e253241b36d5edc96e79f938b$"
 }
 }
