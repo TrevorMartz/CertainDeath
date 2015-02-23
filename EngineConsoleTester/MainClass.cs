@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine;
+using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.World;
 using System;
@@ -17,8 +18,9 @@ namespace EngineConsoleTester
     {
         public static void Main(string[] args)
         {
-            ShayneTests();
             Init.InitAll();
+            //ShayneTests();
+            BlakeIsSOOOOOOSexy();
             //double total = 0;
             //for(int i = 0; i < 1000; i++)
             //{
@@ -27,14 +29,32 @@ namespace EngineConsoleTester
             //    Trace.WriteLine(d);
             //}
             //Trace.WriteLine(total / 1000);
-            while (true)
-            {
-                GameWorldGenerator generator = new GameWorldGenerator();
-                GameWorld world = generator.GenerateWorld(3);
 
-                //    generator.GenerateTile().PrintTile();
-                Console.ReadLine();
+            //while (true)
+            //{
+            //    GameWorldGenerator generator = new GameWorldGenerator();
+            //    GameWorld world = generator.GenerateWorld(3);
+
+            //    //    generator.GenerateTile().PrintTile();
+            //    Console.ReadLine();
+            //}
+        }
+
+        private static void BlakeIsSOOOOOOSexy()
+        {
+            IGameDAL GameDAL = new BasicGameDAL("c:\\_\\test\\");
+            IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\", GameDAL);
+
+            for (int i = 0; i < 2; i++)
+            {
+                GameWorld w1 = GameDAL.CreateWorld();
+                GameDAL.SaveWorld(w1);
             }
+
+            GameWorld loaded = GameDAL.LoadWorld(2);
+
+            int asdf = 7;
+
         }
 
         public static void ShayneTests()

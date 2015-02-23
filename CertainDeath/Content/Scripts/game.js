@@ -42,6 +42,7 @@ function render () {
     // Docs say it's not used often, so...
 }
 
+//TODO: the 10 below is the game id that we need to get from the matching user session.
 var Server = new WebSocket("wss://" + window.location.host + "/api/WebSocket/10");
 Server.messages = new Array();
 Server.onmessage = function (message) {

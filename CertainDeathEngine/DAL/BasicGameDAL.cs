@@ -1,6 +1,7 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.User;
 using CertainDeathEngine.Models.World;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,17 +14,39 @@ namespace CertainDeathEngine.DAL
     public class BasicGameDAL : IGameDAL
     {
         private string FilePath;
+        static int nextWorldId = 1;
+        private GameWorldGenerator gen;
 
         public BasicGameDAL(string path)
         {
-            FilePath = path;
+            FilePath = String.Format("{0}\\World", path);
+            gen = new GameWorldGenerator();
+            SetNextWorldId();
+        }
+
+        private void SetNextWorldId()
+        {
+            try
+            {
+                DirectoryInfo di = new DirectoryInfo(FilePath);
+                FileInfo[] worldFiles = di.GetFiles();
+
+                string maxFile = worldFiles.Max(x => x.Name.Substring(0, x.Name.Length - 6));
+                int maxFileNumber = int.Parse(maxFile);
+                nextWorldId = maxFileNumber + 1;
+            }
+            catch (Exception e)
+            {
+                int poop = 5;
+            }
         }
 
         public void SaveWorld(GameWorld world)
         {
-            FileStream fs = File.OpenWrite(String.Format("{0}\\World\\{1}.world", FilePath, world.Id));
-            //fs.Write();
+            StreamWriter fs = new StreamWriter(String.Format("{0}\\{1}.world", FilePath, world.Id), true);
 
+            string worldJson = JsonConvert.SerializeObject(world);  
+            fs.WriteLine(worldJson);
             fs.Flush();
             fs.Close();
             fs.Dispose();
@@ -40,19 +63,44 @@ namespace CertainDeathEngine.DAL
         {
             try
             {
-                FileStream fs = File.Open(String.Format("{0}\\World\\{1}.world", FilePath, worldId), FileMode.Open);
+                DirectoryInfo di = new DirectoryInfo(FilePath);
+                FileInfo[] worldFiles = di.GetFiles();
 
-                //object obj = formatter.Deserialize(fs);
-                //ProductList products = (ProductList)obj;
-                //fs.Flush();
-                //fs.Close();
-                //fs.Dispose();
-                return new GameWorldGenerator().GenerateWorld(worldId);
+                if (worldFiles.Where(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())).Count() != 0)
+                {
+                    StreamReader fs = new StreamReader(String.Format("{0}\\{1}.world", FilePath, worldId));
+                    //FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
+                    string worldJson = fs.ReadToEnd();
+
+                    var world = JsonConvert.DeserializeObject<GameWorld>(worldJson);
+
+                    //object obj = formatter.Deserialize(fs);
+                    //ProductList products = (ProductList)obj;
+                    fs.Close();
+                    fs.Dispose();
+                    return world;
+
+                    // return the world
+                }
+                else
+                {
+                    // there is not a world with that id
+                    return CreateWorld();
+                }
             }
             catch (Exception e)
             {
-                return new GameWorldGenerator().GenerateWorld(worldId);
+                // error...
+                return CreateWorld();
             }
+        }
+
+        public GameWorld CreateWorld()
+        {
+            int worldId = nextWorldId++;
+            GameWorld newWorld = gen.GenerateWorld(worldId);
+            SaveWorld(newWorld);
+            return newWorld;
         }
     }
 }
