@@ -155,7 +155,7 @@
     <Content Include="Content\Images\SAND3.png" />
     <Content Include="Content\Images\SAND2.png" />
     <Content Include="Content\Images\SAND1.png" />
-    <Content Include="Content\Images\GRASS.png" />
+    <Content Include="Content\Images\GRASS_old.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Scripts\game.js" />
@@ -191,14 +191,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Game.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Permissions.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_FriendView.cshtml" />
-    <Content Include="Views\Home\GameRegistration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

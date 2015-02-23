@@ -29,7 +29,7 @@ function create () {
     //grass = game.add.tileSprite(0, 0, game.world.width, game.world.height, "objects", "grass");
     View.current = new View.MainGameScreen(game, Server);
     View.current.create();
-    game.stage.backgroundColor = 0xffffff;
+    game.stage.backgroundColor = 0xbbddff;
 }
 
 function update () {
