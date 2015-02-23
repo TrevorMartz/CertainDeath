@@ -15,13 +15,13 @@ namespace CertainDeathEngine
 	public class Game : EngineInterface
 	{
 		GameWorld World;
-        BuildingFactory buildingFactory;
+        GameFactory buildingFactory;
 
         public Game(GameWorld world)
         {
             Init.InitAll();
             World = world;
-            buildingFactory = new BuildingFactory();
+            buildingFactory = new GameFactory();
         }
 
         public string ToJSON()

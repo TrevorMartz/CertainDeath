@@ -7,18 +7,23 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Factories
 {
-    public class BuildingFactory
+    public class GameFactory
     {
-        static int nextBuildingId = 1;
+        static int nextObjectId = 1;
 
-        public BuildingFactory()
+        public GameFactory()
         {
 
         }
 
         public Building BuildBuilding(string buildingType)
         {
-            return new Building();
+            return new Building() { Id = nextObjectId++ };
+        }
+
+        public Monster BuildMonster(string monsterType)
+        {
+            return new Monster() { Id = nextObjectId++ };
         }
     }
 }
