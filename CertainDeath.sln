@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertainDeath", "CertainDeath\CertainDeath.csproj", "{F1A5EA0C-576E-4B39-A41D-979F94AF0C75}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58CABAA4-492A-40FD-BFDF-2909D65D923C} = {58CABAA4-492A-40FD-BFDF-2909D65D923C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertainDeathEngine", "CertainDeathEngine\CertainDeathEngine.csproj", "{58CABAA4-492A-40FD-BFDF-2909D65D923C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineConsoleTester", "EngineConsoleTester\EngineConsoleTester.csproj", "{85F840AE-A3F8-4A6C-900A-D2E571CF2810}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58CABAA4-492A-40FD-BFDF-2909D65D923C} = {58CABAA4-492A-40FD-BFDF-2909D65D923C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

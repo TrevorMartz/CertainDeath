@@ -5,15 +5,20 @@ using System.Text;
 using System.Configuration;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Windows;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine.Models
 {
-
+    [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
     public class Tile
     {
 
         public static int SQUARE_SIZE = 20;
+		public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;
+		public static int SQUARES = SQUARE_SIZE * SQUARE_SIZE;
+
 
         [JsonProperty]
         public Square[,] Squares { get; set; }
@@ -77,13 +82,26 @@ namespace CertainDeathEngine.Models
         public bool HasRight { get { return Right != null; } }
         #endregion
 
-        [JsonProperty]
-        public List<GameObject> Objects { get; set; }
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<GameObject> Objects { get; set; }
 
-        public Tile()
+		[JsonProperty]
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<Monster> Monsters { get; set; }
+
+		[JsonProperty]
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<Building> Buildings { get; set; }
+
+		public Point Position { get; private set; }
+
+        public Tile(int x, int y)
         {
             SetSquares();
-            this.Objects = new List<GameObject>();
+			Position = new Point(x, y);
+			this.Objects = new List<GameObject>();
+			this.Monsters = new List<Monster>();
+			this.Buildings = new List<Building>();
         }
 
         public void SetSquares()
@@ -100,8 +118,21 @@ namespace CertainDeathEngine.Models
 
         public void AddObject(GameObject obj)
         {
-            this.Objects.Add(obj);
+            Objects.Add(obj);
+			if (obj is Monster)
+				Monsters.Add(obj as Monster);
+			if(obj is Building)
+				Buildings.Add(obj as Building);
         }
+
+		public void RemoveObject(GameObject obj)
+		{
+			Objects.Remove(obj);
+			if (obj is Monster)
+				Monsters.Remove(obj as Monster);
+			if (obj is Building)
+				Buildings.Remove(obj as Building);
+		}
 
         public static void InitSize()
         {
@@ -118,6 +149,7 @@ namespace CertainDeathEngine.Models
             {
                 SQUARE_SIZE = 20;
             }
+            SQUARES = SQUARE_SIZE * SQUARE_SIZE;
         }
 
         public void PrintTile()

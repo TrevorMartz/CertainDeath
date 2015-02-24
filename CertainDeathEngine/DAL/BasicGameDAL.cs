@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
@@ -35,31 +37,37 @@ namespace CertainDeathEngine.DAL
                 int maxFileNumber = int.Parse(maxFile);
                 nextWorldId = maxFileNumber + 1;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                int poop = 5;
+                // TODO do we want to do something better for this exception?
             }
         }
 
         public void SaveWorld(GameWorld world)
         {
-            StreamWriter fs = new StreamWriter(String.Format("{0}\\{1}.world", FilePath, world.Id), true);
-
-            string worldJson = JsonConvert.SerializeObject(world);  
-            fs.WriteLine(worldJson);
-            fs.Flush();
-            fs.Close();
-            fs.Dispose();
+            System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", FilePath, world.Id));
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(ms, world); 
+            ms.Flush();
+            ms.Close();
+            ms.Dispose();
         }
 
         public EngineInterface LoadGame(int worldId)
         {
             GameWorld world = LoadWorld(worldId);
-            Game g = new Game(world);
+            Game g = new Game(world, new Player());
+
+            // TODO: move the thread spawn to a better location
+            Updater u = new Updater(g);
+            Thread updater = new Thread(u.Run);
+            updater.Name = "Updater thread";
+            UpdateManager.Instance.AddGameThread(world.Id, updater);
+
             return g;
         }
 
-        public GameWorld LoadWorld(int worldId)
+        private GameWorld LoadWorld(int worldId)
         {
             try
             {
@@ -68,34 +76,33 @@ namespace CertainDeathEngine.DAL
 
                 if (worldFiles.Where(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())).Count() != 0)
                 {
-                    StreamReader fs = new StreamReader(String.Format("{0}\\{1}.world", FilePath, worldId));
-                    //FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
-                    string worldJson = fs.ReadToEnd();
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
 
-                    var world = JsonConvert.DeserializeObject<GameWorld>(worldJson);
-
-                    //object obj = formatter.Deserialize(fs);
-                    //ProductList products = (ProductList)obj;
+                    object obj = formatter.Deserialize(fs);
+                    GameWorld world = (GameWorld)obj;
+                    fs.Flush();
                     fs.Close();
                     fs.Dispose();
-                    return world;
-
                     // return the world
+                    return world;
                 }
+
+                
                 else
                 {
                     // there is not a world with that id
                     return CreateWorld();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // error...
+                // TODO do we want to do something better for this exception?
                 return CreateWorld();
             }
         }
 
-        public GameWorld CreateWorld()
+        private GameWorld CreateWorld()
         {
             int worldId = nextWorldId++;
             GameWorld newWorld = gen.GenerateWorld(worldId);

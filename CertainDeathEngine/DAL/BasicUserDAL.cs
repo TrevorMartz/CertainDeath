@@ -14,12 +14,10 @@ namespace CertainDeathEngine.DAL
     {
         private string FilePath;
         private List<CertainDeathUser> users;
-        private IGameDAL GameDAL;
 
-        public BasicUserDAL(string path, IGameDAL gameDal)
+        public BasicUserDAL(string path)
         {
             FilePath = String.Format("{0}\\User", path);
-            GameDAL = gameDal;
             users = Load();
         }
 
@@ -27,8 +25,7 @@ namespace CertainDeathEngine.DAL
         {
             if (users.Where(x => x.FBUser.Email.Equals(fbUser.Email)).Count() == 0)
             {
-                GameWorld newWorld = GameDAL.CreateWorld();
-                CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = newWorld.Id };
+                CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = -1 };
                 users.Add(newUser);
                 Save();
                 return newUser;
@@ -44,7 +41,7 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
-            return (users.Where(x => x.FBUser.Email.Equals(fbUser.Email)).FirstOrDefault());
+            return (users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
             //// Everyone can add their email here until we get a real user db to test with.
             //// We can each test with our own world id 
 
@@ -86,10 +83,9 @@ namespace CertainDeathEngine.DAL
             {
                 Serialize(users, "users.bin");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // not much we can do....
-                int i = 7;
+                // TODO: do something about this exception
             }
         }
 
@@ -122,8 +118,9 @@ namespace CertainDeathEngine.DAL
                 fs.Dispose();
                 return list;
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // TODO do we want to do something better for this exception?
                 return new List<CertainDeathUser>();
             }
         }

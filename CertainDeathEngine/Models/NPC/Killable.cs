@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC
 {
-    public class NPC : GameObject
+    [Serializable]
+    public class Killable : GameObject
     {
-        public AbstractAI AI { get; set; }
-        public int HealthPoints { get; set; }
+        public float HealthPoints { get; set; }
         public int MaxHealthPoints { get; set; }
     }
 }
