@@ -26,6 +26,7 @@ namespace CertainDeathEngine.Models
 		protected Point _Position;
 		protected int _Height;
 		protected int _Width;
+		protected double psuedoRadius;
 
         public GameObject()
         {
@@ -60,6 +61,41 @@ namespace CertainDeathEngine.Models
 						);
 				}
 			}
+			psuedoRadius = (halfHeight + halfWidth) / 2; 
+		}
+
+		// Gets the distance between two objects based on its center point and psuedoRadius.
+		// Since this is a rectangle and not a circle this will be very inacurrate
+		// around the corners, but takes only 1 distance comparison
+		public double GetFastDistance(GameObject obj)
+		{
+			return Distance(
+				this.Position.X + psuedoRadius,
+				obj.Position.X + psuedoRadius,
+				this.Position.Y + psuedoRadius,
+				obj.Position.Y + psuedoRadius
+				);
+		}
+
+		// Gets the distance between two objects based on the distance between each of its corners
+		// For each corner it will find the distance to each of the other object's corners
+		// This will be a total of 16 distance comparisons, but should be ery accurate.
+		public double GetAccurateDistance(GameObject obj)
+		{
+
+			return 0;
+		}
+
+		public double Distance(double x1, double x2, double y1, double y2)
+		{
+			double xDist = x1 - x2;
+			double yDist = y1 - y2;
+			return Distance(xDist, yDist);
+		}
+
+		public double Distance(double xDist, double yDist)
+		{
+			return Math.Sqrt(xDist * xDist + yDist * yDist);
 		}
     }
 }

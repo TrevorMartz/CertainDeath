@@ -47,7 +47,7 @@ namespace CertainDeathEngine.Models.NPC
 			{
 				_Position = value;
 				CalculateCorners();
-				CalculateDirection();
+				Find3SignificantCorners();
 			}
 		}
 		public override int Width { get { return _Width; } 
@@ -55,14 +55,14 @@ namespace CertainDeathEngine.Models.NPC
 			{
 				_Width = value;
 				CalculateCorners();
-				CalculateDirection();
+				Find3SignificantCorners();
 			} }
 		public override int Height { get { return _Height; } 
 			set
 			{
 				_Height = value;
 				CalculateCorners();
-				CalculateDirection();
+				Find3SignificantCorners();
 			} }
 
 		// Monsters's current state {WALKING, ATTAKING, or DYING}
@@ -144,7 +144,24 @@ namespace CertainDeathEngine.Models.NPC
 			//	}
 
 			//}
-			Move(millis);
+			Point XYdist = GetDistanceOverTime(millis);
+			double distanceCanGo = Distance(XYdist.X, XYdist.Y);
+			bool somethingIsClose = false;
+			for (int i = 0; i < Tile.Buildings.Count && ! somethingIsClose; i++)
+			{
+				double dist = GetFastDistance(Tile.Buildings[i]);
+				somethingIsClose = dist <= distanceCanGo;
+			}
+
+			if (somethingIsClose)
+			{
+				// more accurate cals
+				int blakeisdumb = 0;
+			}
+			else
+			{
+				Move(XYdist);
+			}
 			return null;
 		}
 
@@ -169,12 +186,8 @@ namespace CertainDeathEngine.Models.NPC
 		// Moves the monster the distance they would go after millisecond have elapsed
 		// This will need to return something or call a callback to notify the front end
 		// if a monster moves from one tile to another. (if we aren't sending the whole game)
-		public void Move(long milliseconds)
+		public void Move(Point distance)
 		{
-			// calculate how far the monster will move
-			Point distance = new Point(
-				Direction.X * Speed * (milliseconds / 1000.0),
-				Direction.Y * Speed * (milliseconds / 1000.0));
 			// add their movement to their current position
 			Position = new Point(
 				Position.X + distance.X,
@@ -195,6 +208,14 @@ namespace CertainDeathEngine.Models.NPC
 				else if (Position.Y >= Tile.TOTAL_PIXELS)
 					MoveToTile(Tile.Below, new Point(0, -Tile.TOTAL_PIXELS));
 			}
+		}
+
+		// calculate how far the monster will move
+		public Point GetDistanceOverTime(long milliseconds)
+		{
+			return new Point(
+				Direction.X * Speed * (milliseconds / 1000.0),
+				Direction.Y * Speed * (milliseconds / 1000.0));
 		}
 
 		private void MoveToTile(Tile tile, Point positionChange)
@@ -240,20 +261,9 @@ namespace CertainDeathEngine.Models.NPC
 			double yDist = Goal.Y - (Position.Y + Tile.Position.Y * Tile.TOTAL_PIXELS);
 			double distance = Distance(xDist, yDist);
 			Direction = new Point(xDist / distance, yDist / distance);
-			Find3SignificantCorners();
 			//Rotation = Math.Atan2(Direction.Y, Direction.X);
 		}
 
-		private double Distance(double x1, double x2, double y1, double y2) {
-			double xDist = x1 - x2;
-			double yDist = y1 - y2;
-			return Distance(xDist, yDist);
-		}
-
-		private double Distance(double xDist, double yDist)
-		{
-			return Math.Sqrt(xDist * xDist + yDist * yDist);
-		}
 
 		private void Find3SignificantCorners()
 		{
