@@ -32,6 +32,12 @@ namespace CertainDeathEngine.Models.NPC
 		// can go towards the FireOfLife
 		public Tile Tile { get; private set; }
 
+		// Monster's damage per second
+		// This will be used when it is in contact with a building
+		// We can improve this later with attack speed and attack damage
+		// if we end up having animaitions.
+		public float Damage { get; set; }
+
 		public Monster(Tile t, Point starting, Point goal, int speed)
 		{
 			Tile = t;

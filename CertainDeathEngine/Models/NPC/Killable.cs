@@ -10,7 +10,7 @@ namespace CertainDeathEngine.Models.NPC
     [Serializable]
     public class Killable : GameObject
     {
-        public int HealthPoints { get; set; }
+        public float HealthPoints { get; set; }
         public int MaxHealthPoints { get; set; }
     }
 }
