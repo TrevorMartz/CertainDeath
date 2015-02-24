@@ -28,7 +28,7 @@ namespace CertainDeathEngine
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory();
-			MonsterGenerator = new MonsterGenerator(buildingFactory, World.Tiles) 
+			MonsterGenerator = new MonsterGenerator(buildingFactory, World) 
 				{ InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
 			MonsterGenerator.Update(1);
             Player = player;
