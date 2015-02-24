@@ -23,9 +23,9 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
+            ShayneTests();
             //BlakeIsSOOOOOOUgly();
-            TrevorTests();
+            //TrevorTests();
 
             Console.ReadLine();
         }
@@ -62,9 +62,12 @@ namespace EngineConsoleTester
 			{
 				g.MonsterGenerator.Update(500);
 				PrintGame(g);
-				foreach (Tile t in g.World.Tiles) 
-					for (int i = 0; i < t.Objects.Count; i++) //each (GameObject m in t.Objects)
-						((Temporal)t.Objects[i]).Update(500);
+				foreach (Tile t in g.World.Tiles)
+				{
+					IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
+					foreach (Temporal tim in timeObjects)
+						tim.Update(500);
+				}
 				Console.ReadLine();
 			}
 			//string json = g.ToJSON();

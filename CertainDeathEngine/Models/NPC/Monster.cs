@@ -36,7 +36,7 @@ namespace CertainDeathEngine.Models.NPC
 			double xDist = goal.X - Position.X;
 			double yDist = goal.Y - Position.Y;
 			double distance = Math.Sqrt(xDist * xDist + yDist * yDist);
-			Direction = new Point(xDist / distance, yDist / distance);
+			CalculateDirection();
 		}
 		public void Update(long millis)
 		{
@@ -61,6 +61,7 @@ namespace CertainDeathEngine.Models.NPC
 			if (Position.X < 0 || Position.X >= Tile.TOTAL_PIXELS ||
 				Position.Y < 0 || Position.Y >= Tile.TOTAL_PIXELS)
 			{
+				
 				if (Position.X < 0)
 					MoveToTile(Tile.Left, new Point(Tile.TOTAL_PIXELS, 0));
 				else if (Position.X >= Tile.TOTAL_PIXELS)
@@ -75,12 +76,23 @@ namespace CertainDeathEngine.Models.NPC
 
 		private void MoveToTile(Tile tile, Point positionChange)
 		{
-			Tile.Objects.Remove(this);
-			Tile = tile;
-			tile.AddObject(this);
-			Position = new Point(
-				Position.X + positionChange.X,
-				Position.Y + positionChange.Y);
+			if (tile == null)
+			{
+				// Then the monster has walked off the universe.
+				// Either it has killed the fire of life, the game
+				// didn't end, and he kept walking.
+				// or he is trying to get to the fire of life and walked
+				// through a null tile. 
+				Tile.Objects.Remove(this);
+			}
+			else {
+				Tile.Objects.Remove(this);
+				Tile = tile;
+				tile.AddObject(this);
+				Position = new Point(
+					Position.X + positionChange.X,
+					Position.Y + positionChange.Y);
+			}
 		}
 
 		/* 
@@ -101,7 +113,7 @@ namespace CertainDeathEngine.Models.NPC
 		 */
 		private void CalculateDirection()
 		{
-			double xDist = Goal.X - (Position.X + Tile.Position.X * Tile.TOTAL_PIXELS); 
+			double xDist = Goal.X - (Position.X + Tile.Position.X * Tile.TOTAL_PIXELS);
 			double yDist = Goal.Y - (Position.Y + Tile.Position.Y * Tile.TOTAL_PIXELS); 
 			double distance = Math.Sqrt(xDist * xDist + yDist * yDist);
 			Direction = new Point(xDist / distance, yDist / distance);
