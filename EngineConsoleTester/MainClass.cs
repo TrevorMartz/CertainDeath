@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using CertainDeathEngine.Models.NPC;
 using System.Threading;
 using CertainDeathEngine.Models.User;
+using System.Globalization;
 
 
 // This project will be used to provide console output for the CertainDeathEngine
@@ -24,17 +25,25 @@ namespace EngineConsoleTester
         {
             Init.InitAll();
             //ShayneTests();
-            BlakeIsSOOOOOOUgly();
-            //TrevorTests();
+            //BlakeIsSOOOOOOUgly();
+            TrevorTests();
 
             Console.ReadLine();
         }
 
         public static void TrevorTests()
         {
+
             GameWorldGenerator gen = new GameWorldGenerator();
-            gen.GenerateWorld(12);
-            Console.ReadLine();
+            //gen.GenerateWorld(12);
+            Game game = new Game(gen.GenerateWorld(3, 3, true), new Player());
+            while (true)
+            {
+                string row = Console.ReadLine();
+                string col = Console.ReadLine();
+                game.SquareClicked(float.Parse(row, CultureInfo.InvariantCulture), float.Parse(col, CultureInfo.InvariantCulture));
+            }
+            //Console.ReadLine();
         }
 
         private static void BlakeIsSOOOOOOUgly()
