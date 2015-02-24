@@ -23,8 +23,8 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            ShayneTests();
-            //BlakeIsSOOOOOOUgly();
+            //ShayneTests();
+            BlakeIsSOOOOOOUgly();
             //TrevorTests();
 
             Console.ReadLine();
@@ -40,14 +40,17 @@ namespace EngineConsoleTester
         private static void BlakeIsSOOOOOOUgly()
         {
             IGameDAL GameDAL = new BasicGameDAL("c:\\_\\test\\");
-            IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\", GameDAL);
+            IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\");
 
-            for (int i = 0; i < 2; i++)
+            Game g = null;
+            g = (Game)GameDAL.LoadGame(10);
+            GameDAL.SaveWorld(g.World);
+            while (true)
             {
-                GameWorld w1 = GameDAL.CreateWorld();
-                GameDAL.SaveWorld(w1);
+
+                PrintGame(g);
             }
-            Game g = (Game)GameDAL.LoadGame(2);
+            //Game g = (Game)GameDAL.LoadGame(2);
             //GameWorld loaded = GameDAL.LoadWorld(2);
 
 
@@ -57,7 +60,7 @@ namespace EngineConsoleTester
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Game g = new Game(generator.GenerateWorld(3), new Player());
-			IncrementTime(g);
+            //IncrementTime(g);
 			string json = g.ToJSON();
 			Console.WriteLine(json);
         }

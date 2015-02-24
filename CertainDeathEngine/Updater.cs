@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.NPC;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace CertainDeathEngine
         private bool Running;
         private Game Game;
         private GameWorld World;
-        private int LastTimeInMillis = 0;
+        private int LastTimeInMillis;
         private int updateCount;
         private Random Rand;
 
@@ -36,6 +37,7 @@ namespace CertainDeathEngine
             Running = true;
             updateCount = 1;
 
+            LastTimeInMillis = GetCurrentTime() - FRAME_TICK_COUNT - FRAME_TICK_COUNT;
             while (Running)
             {
                 while (GetCurrentTime() < LastTimeInMillis + FRAME_TICK_COUNT)
@@ -60,10 +62,12 @@ namespace CertainDeathEngine
             lock (World.CurrentTile.Objects)
             {
                 // update monsters
-                foreach (GameObject obj in World.CurrentTile.Objects)
-                {
-                    // call the update method for the object
-                }
+                //foreach (Tile t in World.Tiles)
+                //{
+                    IEnumerable<Temporal> timeObjects = new List<Temporal>(World.CurrentTile.Objects.OfType<Temporal>());
+                    foreach (Temporal tim in timeObjects)
+                        tim.Update(delta);
+                //}
             }
 
             lock (World.CurrentTile.Squares)
@@ -80,6 +84,7 @@ namespace CertainDeathEngine
             }
 
             // add spawns
+            //g.MonsterGenerator.Update(500);
 
             // save everything
             if ((updateCount % 100) == 0)

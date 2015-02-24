@@ -14,12 +14,10 @@ namespace CertainDeathEngine.DAL
     {
         private string FilePath;
         private List<CertainDeathUser> users;
-        private IGameDAL GameDAL;
 
-        public BasicUserDAL(string path, IGameDAL gameDal)
+        public BasicUserDAL(string path)
         {
             FilePath = String.Format("{0}\\User", path);
-            GameDAL = gameDal;
             users = Load();
         }
 
@@ -27,8 +25,7 @@ namespace CertainDeathEngine.DAL
         {
             if (users.Where(x => x.FBUser.Email.Equals(fbUser.Email)).Count() == 0)
             {
-                GameWorld newWorld = GameDAL.CreateWorld();
-                CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = newWorld.Id };
+                CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = -1 };
                 users.Add(newUser);
                 Save();
                 return newUser;

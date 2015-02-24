@@ -102,7 +102,7 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        public GameWorld CreateWorld()
+        private GameWorld CreateWorld()
         {
             int worldId = nextWorldId++;
             GameWorld newWorld = gen.GenerateWorld(worldId);
