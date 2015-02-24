@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine
 {
@@ -88,5 +89,9 @@ namespace CertainDeathEngine
 			}
 		 */
 		string ToJSON();
+
+        IEnumerable<string> GetBuildableBuildingsList();
+
+        Building BuildBuildingAtSquare(int row, int column, string buildingType);
 	}
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.User
 {
+    [Serializable]
     public class Player : GameObject
     {
         public List<Resource> Resources { get; set; }

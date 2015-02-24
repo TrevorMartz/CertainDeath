@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC
 {
+    [Serializable]
     public class Building : NPC
     {
         public float HarvestRate { get; set; }

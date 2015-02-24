@@ -19,8 +19,8 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
-            BlakeIsSOOOOOOSexy();
+            ShayneTests();
+            //BlakeIsSOOOOOOSexy();
             //double total = 0;
             //for(int i = 0; i < 1000; i++)
             //{
