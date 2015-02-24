@@ -8,7 +8,6 @@ namespace CertainDeathEngine.Models.Resources
     public class Resource : GameObject
     {
         public int Quantity { get; set; }
-        public float RegenRate { get; set; }//put regen rates on the enum?
 		public ResourceType Type { get; set; }
 
         public Resource(ResourceType type, int quantity)

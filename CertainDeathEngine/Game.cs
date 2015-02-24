@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.User;
 using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
 using System;
@@ -13,8 +14,9 @@ namespace CertainDeathEngine
 	public class Game : EngineInterface
 	{
 		GameWorld World;
+        Player player;
 
-        public Game(GameWorld world)
+        public Game(GameWorld world, Player player)
         {
             Init.InitAll();
             World = world;

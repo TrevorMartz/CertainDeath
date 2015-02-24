@@ -20,27 +20,18 @@ namespace EngineConsoleTester
         {
             Init.InitAll();
             //ShayneTests();
-            BlakeIsSOOOOOOSexy();
-            //double total = 0;
-            //for(int i = 0; i < 1000; i++)
-            //{
-            //    double d = RandomGen.Random.NextDouble();
-            //    total += d;
-            //    Trace.WriteLine(d);
-            //}
-            //Trace.WriteLine(total / 1000);
+            //BlakeIsSOOOOOOUgly();
+            TrevorTests();
 
-            //while (true)
-            //{
-            //    GameWorldGenerator generator = new GameWorldGenerator();
-            //    GameWorld world = generator.GenerateWorld(3);
-
-            //    //    generator.GenerateTile().PrintTile();
-            //    Console.ReadLine();
-            //}
+            Console.ReadLine();
         }
 
-        private static void BlakeIsSOOOOOOSexy()
+        public static void TrevorTests()
+        {
+            Player p = new Player();
+        }
+
+        private static void BlakeIsSOOOOOOUgly()
         {
             IGameDAL GameDAL = new BasicGameDAL("c:\\_\\test\\");
             IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\", GameDAL);
@@ -61,7 +52,7 @@ namespace EngineConsoleTester
         {
             Init.InitAll();
             GameWorldGenerator generator = new GameWorldGenerator();
-            EngineInterface g = new Game(generator.GenerateWorld(7));
+            EngineInterface g = new Game(generator.GenerateWorld(7), new Player());
             string json = g.ToJSON();
             Console.WriteLine(json);
         }

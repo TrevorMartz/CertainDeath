@@ -118,7 +118,7 @@
     <Compile Include="Models\World\Square.cs" />
     <Compile Include="Models\World\SquareType.cs" />
     <Compile Include="Models\World\Tile.cs" />
-    <Compile Include="Models\User\Player.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\World\GameWorldGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGen.cs" />
