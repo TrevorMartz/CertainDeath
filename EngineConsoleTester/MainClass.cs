@@ -11,6 +11,7 @@ using System.Windows;
 using System.Threading.Tasks;
 using CertainDeathEngine.Models.NPC;
 using System.Threading;
+using CertainDeathEngine.Models.User;
 
 
 // This project will be used to provide console output for the CertainDeathEngine
