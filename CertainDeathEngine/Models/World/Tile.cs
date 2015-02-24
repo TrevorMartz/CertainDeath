@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine.Models
 {
@@ -81,8 +82,16 @@ namespace CertainDeathEngine.Models
         public bool HasRight { get { return Right != null; } }
         #endregion
 
-        [JsonProperty]
-        public List<GameObject> Objects { get; set; }
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<GameObject> Objects { get; set; }
+
+		[JsonProperty]
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<Monster> Monsters { get; set; }
+
+		[JsonProperty]
+		// Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
+		public List<Building> Buildings { get; set; }
 
 		public Point Position { get; private set; }
 
@@ -90,7 +99,9 @@ namespace CertainDeathEngine.Models
         {
             SetSquares();
 			Position = new Point(x, y);
-            this.Objects = new List<GameObject>();
+			this.Objects = new List<GameObject>();
+			this.Monsters = new List<Monster>();
+			this.Buildings = new List<Building>();
         }
 
         public void SetSquares()
@@ -107,8 +118,21 @@ namespace CertainDeathEngine.Models
 
         public void AddObject(GameObject obj)
         {
-            this.Objects.Add(obj);
+            Objects.Add(obj);
+			if (obj is Monster)
+				Monsters.Add(obj as Monster);
+			if(obj is Building)
+				Buildings.Add(obj as Building);
         }
+
+		public void RemoveObject(GameObject obj)
+		{
+			Objects.Remove(obj);
+			if (obj is Monster)
+				Monsters.Remove(obj as Monster);
+			if (obj is Building)
+				Buildings.Remove(obj as Building);
+		}
 
         public static void InitSize()
         {

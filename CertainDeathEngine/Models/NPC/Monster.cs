@@ -94,10 +94,10 @@ namespace CertainDeathEngine.Models.NPC
 				// didn't end, and he kept walking.
 				// or he is trying to get to the fire of life and walked
 				// through a null tile. 
-				Tile.Objects.Remove(this);
+				Tile.RemoveObject(this);
 			}
 			else {
-				Tile.Objects.Remove(this);
+				Tile.RemoveObject(this);
 				Tile = tile;
 				tile.AddObject(this);
 				Position = new Point(
