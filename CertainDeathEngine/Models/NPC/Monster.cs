@@ -8,5 +8,6 @@ namespace CertainDeathEngine.Models.NPC
 {
     public class Monster : NPC
     {
+
     }
 }

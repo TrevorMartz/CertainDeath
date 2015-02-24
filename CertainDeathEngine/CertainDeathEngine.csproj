@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\BasicUserDAL.cs" />
+    <Compile Include="Models\NPC\MonsterGenerator.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />
