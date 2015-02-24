@@ -1,6 +1,5 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.User;
-﻿using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.World;
@@ -13,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using CertainDeathEngine.Models.Resources;
 using System.Diagnostics;
+using CertainDeathEngine.Factories;
 
 namespace CertainDeathEngine
 {
@@ -35,7 +35,9 @@ namespace CertainDeathEngine
 
         public string ToJSON()
 		{
-			return JsonConvert.SerializeObject(World.CurrentTile);
+            // lock something...
+            string jsonString = JsonConvert.SerializeObject(World.CurrentTile);;
+            return jsonString;
 		}
 
         public string SquareClicked(float row, float col)
@@ -111,6 +113,13 @@ namespace CertainDeathEngine
             // persist the building
 
             return buildingInstance;
+        }
+
+        public void SaveWorld()
+        {
+            // TODO: make a save game work
+
+            // Move the world creation stuff into the game class
         }
 
     }

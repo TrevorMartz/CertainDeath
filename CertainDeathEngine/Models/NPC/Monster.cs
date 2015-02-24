@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,6 +91,8 @@ namespace CertainDeathEngine.Models.NPC
 		}
 		public void Update(long millis)
 		{
+            //millis = millis * 1000;
+            Trace.WriteLine("Monster " + Id + " is updating");
 			if (State == MonsterState.ATTACKING)
 			{
 				if (Attacking.HealthPoints >= 0)
