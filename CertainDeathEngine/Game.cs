@@ -16,12 +16,15 @@ namespace CertainDeathEngine
 	{
 		public GameWorld World;
         public GameFactory buildingFactory;
+		public MonsterGenerator MonsterGenerator;
 
         public Game(GameWorld world)
         {
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory();
+			MonsterGenerator = new MonsterGenerator(buildingFactory, World.Tiles) 
+				{ InitialSpawnSize = 5, SpawnSize = 2, Delay = 0, Rate = 3000 };
         }
 
         public string ToJSON()

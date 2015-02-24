@@ -2,7 +2,6 @@
 using CertainDeathEngine.Models.NPC;
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,36 +19,17 @@ namespace CertainDeathEngine.Factories
 
         public Building BuildBuilding(string buildingType)
         {
-            return new Building() { Id = nextObjectId++ };
+			return new Building() { Id = GetNextId()};
         }
 
-        public Monster BuildMonster(string monsterType)
+		public int GetNextId()
 		{
-			// top (x, 0)
-			// bottom (x, Tile.TOTAL_PIXELS)
-			// left (0, y)
-			// right (Tile.TOTAL_PIXELS, y)
-
-			int side = RandomGen.Random.Next() % 4;
-			int placement = RandomGen.Random.Next(Tile.TOTAL_PIXELS - 2);
-			Point Position;
-			if(side % 2 == 0) 
+			int id;
+			lock (this)
 			{
-				Position = new Point(placement,
-					side == 1 ? 1 : Tile.TOTAL_PIXELS - 2);
+				id = nextObjectId++;
 			}
-			else
-			{
-				Position = new Point(
-					side == 3 ? 1 : Tile.TOTAL_PIXELS - 2,
-					placement);
-			}
-
-			Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
-			int Speed = 25;
-			Monster m = new Monster(Position, Goal, Speed) { Id = nextObjectId++ };
-			
-			return m;
-        }
+			return id;
+		}
     }
 }

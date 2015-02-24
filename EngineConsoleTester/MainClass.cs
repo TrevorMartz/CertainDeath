@@ -33,14 +33,14 @@ namespace EngineConsoleTester
             //}
             //Trace.WriteLine(total / 1000);
 
-			while (true)
-			{
-				GameWorldGenerator generator = new GameWorldGenerator();
-				GameWorld world = generator.GenerateWorld(3);
+			//while (true)
+			//{
+			//	GameWorldGenerator generator = new GameWorldGenerator();
+			//	GameWorld world = generator.GenerateWorld(3);
 
-				//    generator.GenerateTile().PrintTile();
-				Console.ReadLine();
-			}
+			//	//    generator.GenerateTile().PrintTile();
+			//	Console.ReadLine();
+			//}
         }
 
         private static void BlakeIsSOOOOOOSexy()
@@ -62,48 +62,46 @@ namespace EngineConsoleTester
 
         public static void ShayneTests()
         {
-			Init.InitAll();
-			//GameWorldGenerator generator = new GameWorldGenerator();
-			//Game g = new Game(generator.GenerateWorld(7));
-			//for (int i = 0; i < 50; i++)
-			//{
-			//	PrintGame(g);
-			//	foreach (Monster m in g.World.CurrentTile.Objects)
-			//	{
-			//		m.Move(500);
-			//	}
-			//	Thread.Sleep(500);
-			//	Console.WriteLine();
-			//}
+			GameWorldGenerator generator = new GameWorldGenerator();
+			Game g = new Game(generator.GenerateWorld(3));
+			while(true)
+			{
+				g.MonsterGenerator.Update(500);
+				PrintGame(g);
+				foreach (Tile t in g.World.Tiles) 
+					for (int i = 0; i < t.Objects.Count; i++) //each (GameObject m in t.Objects)
+						((Temporal)t.Objects[i]).Update(500);
+				Console.ReadLine();
+			}
 			//string json = g.ToJSON();
 			//Console.WriteLine(json);
         }
 
 		public static void PrintGame(Game g)
 		{
-			//List<Point> MonsterSquares = new List<Point>();
-			//foreach (Monster m in g.Monsters)
-			//{
-			//	MonsterSquares.Add(m.ApproxSquare());
-			//}
+			List<Point> MonsterSquares = new List<Point>();
+			foreach (Monster m in g.World.CurrentTile.Objects)
+			{
+				MonsterSquares.Add(m.ApproxSquare());
+			}
 
 			for (int y = 0; y < Tile.SQUARE_SIZE; y++)
 			{
 				for (int x = 0; x < Tile.SQUARE_SIZE; x++)
 				{
 					Point square = new Point(x, y);
-					//if (MonsterSquares.Contains(square))
+					if (MonsterSquares.Contains(square))
+					{
+						Console.Write("M");
+					}
+					//else if (g.World.CurrentTile.Squares[y, x].Resource != null)
 					//{
-					//	Console.Write("M");
+					//	Console.Write("R");
 					//}
-					////else if (g.World.CurrentTile.Squares[y, x].Resource != null)
-					////{
-					////	Console.Write("R");
-					////}
-					//else
-					//{
-					//	Console.Write(".");
-					//}
+					else
+					{
+						Console.Write(".");
+					}
 				}
 				Console.WriteLine();
 			}

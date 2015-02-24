@@ -144,7 +144,7 @@ namespace CertainDeathEngine.Models.World
                 }
             }
             //Trace.WriteLine("Middle: " + middle);
-            GameWorld newWorld = new GameWorld(baseWorld[middle, middle], worldId);
+			GameWorld newWorld = new GameWorld(baseWorld, baseWorld[middle, middle], worldId);
 
             for (int row = 0; row < worldSize; row++)
             {

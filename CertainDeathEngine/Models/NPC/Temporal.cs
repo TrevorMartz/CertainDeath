@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC
 {
-	interface Temporal
+	public interface Temporal
 	{
 		// Represents the passing of time
 		void Update(long millis);

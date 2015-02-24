@@ -17,9 +17,7 @@ namespace CertainDeathEngine.Models
         [JsonProperty]
         public Tile CurrentTile { get; set; }
 
-		public Tile Center { get; private set; }
-
-		public List<Tile> Borders { get; private set; }
+		public  List<Tile> Tiles { get; private set; }
 
         public GameWorld()
         {
@@ -28,11 +26,21 @@ namespace CertainDeathEngine.Models
 
         public GameWorld(int worldId) : this(new Tile(0, 0), worldId) { }
 
-        public GameWorld(Tile t, int worldId)
-        {
-            this.CurrentTile = t;
-            this.Id = worldId;
-        }
+		public GameWorld(Tile t, int worldId)
+		{
+			this.CurrentTile = t;
+			this.Id = worldId;
+			Tiles = new List<Tile>();
+			Tiles.Add(t);
+		}
+
+		public GameWorld(Tile[,] tiles, Tile t, int worldId)
+		{
+			this.CurrentTile = t;
+			this.Id = worldId;
+
+			Tiles = tiles.Cast<Tile>().ToList();
+		}
 
         //public void AddObject(GameObject obj)
         //{
