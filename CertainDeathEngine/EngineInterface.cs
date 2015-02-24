@@ -93,5 +93,7 @@ namespace CertainDeathEngine
         IEnumerable<string> GetBuildableBuildingsList();
 
         Building BuildBuildingAtSquare(int row, int column, string buildingType);
+
+        void SaveWorld();
 	}
 }
