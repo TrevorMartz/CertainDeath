@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using CertainDeathEngine.Models.Resources;
+using System.Diagnostics;
 
 namespace CertainDeathEngine
 {
@@ -36,9 +38,17 @@ namespace CertainDeathEngine
 			return JsonConvert.SerializeObject(World.CurrentTile);
 		}
 
-        public string SquareClicked(int x, int y)
+        public string SquareClicked(float row, float col)
 		{
-			throw new NotImplementedException();
+            Resource res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
+            if(res != null)
+            {
+                ResourceType type = res.Type;
+                int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
+                player.AddResource(type, gathered);
+                Trace.WriteLine("Resource: " + type + " player count: " + player.GetResourceCount(type));
+            }
+            return ToJSON();
 		}
 
         public string MonsterClicked(int monsterid)
