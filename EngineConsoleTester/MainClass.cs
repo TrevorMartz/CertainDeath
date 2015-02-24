@@ -32,7 +32,9 @@ namespace EngineConsoleTester
 
         public static void TrevorTests()
         {
-            Player p = new Player();
+            GameWorldGenerator gen = new GameWorldGenerator();
+            gen.GenerateWorld(12);
+            Console.ReadLine();
         }
 
         private static void BlakeIsSOOOOOOUgly()
