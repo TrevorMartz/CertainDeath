@@ -1,3 +1,5 @@
+﻿using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.User;
 ﻿using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
@@ -14,14 +16,19 @@ namespace CertainDeathEngine
 {
 	public class Game : EngineInterface
 	{
-		GameWorld World;
-        GameFactory buildingFactory;
+        Player player;
+		public GameWorld World;
+        public GameFactory buildingFactory;
+		public MonsterGenerator MonsterGenerator;
 
-        public Game(GameWorld world)
+        public Game(GameWorld world, Player player)
         {
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory();
+			MonsterGenerator = new MonsterGenerator(buildingFactory, World.Tiles) 
+				{ InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
+			MonsterGenerator.Update(1);
         }
 
         public string ToJSON()

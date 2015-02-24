@@ -42,6 +42,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CertainDeathEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CertainDeathEngine\bin\Debug\CertainDeathEngine.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Facebook">
       <HintPath>..\packages\Microsoft.AspNet.Facebook.1.1.0\lib\net45\Microsoft.AspNet.Facebook.dll</HintPath>
     </Reference>
@@ -204,12 +208,6 @@
     <Folder Include="Data\User\" />
     <Folder Include="Data\World\" />
     <Folder Include="Views\WebSocket\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CertainDeathEngine\CertainDeathEngine.csproj">
-      <Project>{58cabaa4-492a-40fd-bfdf-2909d65d923c}</Project>
-      <Name>CertainDeathEngine</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

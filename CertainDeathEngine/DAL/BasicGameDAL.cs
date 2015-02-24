@@ -36,7 +36,7 @@ namespace CertainDeathEngine.DAL
                 int maxFileNumber = int.Parse(maxFile);
                 nextWorldId = maxFileNumber + 1;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 int poop = 5;
             }
@@ -55,7 +55,7 @@ namespace CertainDeathEngine.DAL
         public EngineInterface LoadGame(int worldId)
         {
             GameWorld world = LoadWorld(worldId);
-            Game g = new Game(world);
+            Game g = new Game(world, new Player());
             return g;
         }
 
@@ -87,7 +87,7 @@ namespace CertainDeathEngine.DAL
                     return CreateWorld();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // error...
                 return CreateWorld();

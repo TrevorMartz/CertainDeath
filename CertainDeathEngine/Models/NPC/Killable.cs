@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 namespace CertainDeathEngine.Models.NPC
 {
     [Serializable]
-    public class NPC : GameObject
+    public class Killable : GameObject
     {
-        public AbstractAI AI { get; set; }
-        public int HealthPoints { get; set; }
+        public float HealthPoints { get; set; }
         public int MaxHealthPoints { get; set; }
     }
 }
