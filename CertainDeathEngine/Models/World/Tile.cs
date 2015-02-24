@@ -14,6 +14,8 @@ namespace CertainDeathEngine.Models
     {
 
         public static int SQUARE_SIZE = 20;
+		public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;
+
 
         [JsonProperty]
         public Square[,] Squares { get; set; }

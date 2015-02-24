@@ -14,8 +14,8 @@ namespace CertainDeathEngine
 {
 	public class Game : EngineInterface
 	{
-		GameWorld World;
-        GameFactory buildingFactory;
+		public GameWorld World;
+        public GameFactory buildingFactory;
 
         public Game(GameWorld world)
         {

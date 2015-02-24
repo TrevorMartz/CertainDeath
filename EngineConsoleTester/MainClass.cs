@@ -7,7 +7,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Threading.Tasks;
+using CertainDeathEngine.Models.NPC;
+using System.Threading;
 
 
 // This project will be used to provide console output for the CertainDeathEngine
@@ -61,9 +64,50 @@ namespace EngineConsoleTester
         {
             Init.InitAll();
             GameWorldGenerator generator = new GameWorldGenerator();
-            EngineInterface g = new Game(generator.GenerateWorld(7));
-            string json = g.ToJSON();
-            Console.WriteLine(json);
+            Game g = new Game(generator.GenerateWorld(7));
+			Console.ReadLine();
+			for (int i = 0; i < 50; i++)
+			{
+				PrintGame(g);
+				foreach (Monster m in g.World.CurrentTile.Objects)
+				{
+					m.Move(500);
+				}
+				Thread.Sleep(500);
+				Console.WriteLine();
+			}
+			//string json = g.ToJSON();
+			//Console.WriteLine(json);
         }
+
+		public static void PrintGame(Game g)
+		{
+			//List<Point> MonsterSquares = new List<Point>();
+			//foreach (Monster m in g.Monsters)
+			//{
+			//	MonsterSquares.Add(m.ApproxSquare());
+			//}
+
+			for (int y = 0; y < Tile.SQUARE_SIZE; y++)
+			{
+				for (int x = 0; x < Tile.SQUARE_SIZE; x++)
+				{
+					Point square = new Point(x, y);
+					//if (MonsterSquares.Contains(square))
+					//{
+					//	Console.Write("M");
+					//}
+					////else if (g.World.CurrentTile.Squares[y, x].Resource != null)
+					////{
+					////	Console.Write("R");
+					////}
+					//else
+					//{
+					//	Console.Write(".");
+					//}
+				}
+				Console.WriteLine();
+			}
+		}
     }
 }
