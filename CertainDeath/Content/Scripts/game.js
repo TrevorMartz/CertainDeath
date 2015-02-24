@@ -27,7 +27,15 @@ function create () {
     // add all objects to game to be displayed
     //grass = new game.add.sprite(game.world.centerX, 500, 'grass', 'objects');
     //grass = game.add.tileSprite(0, 0, game.world.width, game.world.height, "objects", "grass");
-    View.current = new View.MainGameScreen(game, Server);
+    View.current = new View.MainGameScreen(game, Server, 10, 10, game.width - 20, game.height - 20);
+    var views = [
+        {
+            screen: new View.LoadingScreen(10, 10, game.width - 20, game.height - 20),
+            x: 10,
+            y: 10,
+        }
+    ];
+    View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
     game.stage.backgroundColor = 0xbbddff;
 }

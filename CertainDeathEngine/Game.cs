@@ -1,6 +1,5 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.User;
-using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;

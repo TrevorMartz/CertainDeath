@@ -4,8 +4,20 @@ View = (function () {
     /**
      * The base screen class
      **/
-    function Screen() {
-        // The basic screen doesn't store any data
+    function Screen(x, y, width, height) {
+        // The coordinates of the screen
+        if (x === undefined)
+            x = 0;
+        if (y === undefined)
+            y = 0;
+        if (width === undefined)
+            throw new Error("width must be defined.");
+        if (height === undefined)
+            throw new Error("height must be defined.");
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
     Screen.prototype = {
         /**
@@ -24,7 +36,10 @@ View = (function () {
     /**
      * The loading screen. Requires access to the game object.
      */
-    function LoadingScreen(game) {
+    function LoadingScreen(game, x, y, width, height) {
+        width = width || game.width;
+        height = height || game.height;
+        Screen.call(x, y, width, height);
         this.text = null;
         this.graphics = null;
         this.game = game;
@@ -53,7 +68,10 @@ View = (function () {
      * @param game - A Phaser.js game object
      * @param server - A Server object to send and recieve 
      */
-    function MainGameScreen(game, server){
+    function MainGameScreen(game, server, x, y, width, height) {
+        width = width || game.width;
+        height = height || game.height;
+        Screen.call(x, y, width, height);
         this.game = game;
         this.server = server;
         this.objects = new Array();
@@ -78,8 +96,8 @@ View = (function () {
                         this.squaresWide = msg.Squares.length;
                         this.squaresHigh = msg.Squares[0].length;
 
-                        this.boardX = (game.world.width - this.squaresWide * 32) / 2;
-                        this.boardY = (game.world.height - this.squaresHigh * 32) / 2;
+                        this.boardX = (this.width - this.squaresWide * 32) / 2 + this.x;
+                        this.boardY = (this.height - this.squaresHigh * 32) / 2 + this.y;
 
                         for (var i = 0; i < msg.Squares.length; i++) {
                             for (var j = 0; j < msg.Squares[i].length; j++) {
@@ -121,9 +139,56 @@ View = (function () {
         }
     });
 
+    /**
+     * A ContainerScreen takes an array of objects that contain a screen,
+     * and x and y coordinates on the screen. Provide the screen objects
+     * in the order that you want their lifecycle methods to be called.
+     */
+    function ScreenContainer(screens, x, y, width, height) {
+        Screen.call(x, y, width, height);
+
+        if (!(typeof (screens) === typeof (Array) && screen in screens[0] && x in screens[0] && y in screens[0])) {
+            throw new Error("The object passed into GameScreen did not match the expected format.")
+        }
+
+        this.screens = screens;
+    }
+
+    ScreenContainer.prototype = Object.create(Screen.prototype, {
+        create: {
+            value: function () {
+                for (var x in screens) {
+                    x.screen.create();
+                }
+            }
+        },
+        update: {
+            value: function () {
+                for (var x in screens) {
+                    x.screen.update();
+                }
+            }
+        },
+        click: {
+            value: function (evt) {
+                for (var x in screens) {
+                    x.screen.click();
+                }
+            }
+        },
+        destroy: {
+            value: function () {
+                for (var x in screens) {
+                    x.screen.destroy();
+                }
+            }
+        }
+    });
+
     return {
         MainGameScreen: MainGameScreen,
         LoadingScreen: LoadingScreen,
+        ScreenContainer: ScreenContainer,
         Screen: Screen,
         current: new Screen()
     }
