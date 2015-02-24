@@ -142,8 +142,8 @@ namespace CertainDeathEngine.Models.NPC
 			//			return b;
 			//		}
 			//	}
-
 			//}
+
 			Point XYdist = GetDistanceOverTime(millis);
 			double distanceCanGo = Distance(XYdist.X, XYdist.Y);
 			bool somethingIsClose = false;

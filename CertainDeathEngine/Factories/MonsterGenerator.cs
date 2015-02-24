@@ -12,7 +12,7 @@ namespace CertainDeathEngine.Factories
 	public class MonsterGenerator : Temporal
 	{
 		private GameFactory Factory;
-		private List<Tile> Tiles;
+		private GameWorld World;
 		private long Time = 0;
 		private bool Delaying = true;
 
@@ -28,10 +28,10 @@ namespace CertainDeathEngine.Factories
 		// How many monsters spawn after the initial spawn
 		public int SpawnSize { get; set; }
 
-		public MonsterGenerator(GameFactory factory, List<Tile> tiles)
+		public MonsterGenerator(GameFactory factory, GameWorld world)
 		{
 			Factory = factory;
-			Tiles = tiles;
+			World = world;
 		}
 
 		// This will need to return something or have a call back
@@ -67,7 +67,7 @@ namespace CertainDeathEngine.Factories
 			// left (0, y)
 			// right (Tile.TOTAL_PIXELS, y)
 
-			Tile randTile = Tiles[RandomGen.Random.Next(Tiles.Count())];
+			Tile randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
 			int squareIndex = RandomGen.Random.Next(Tile.SQUARES);
 			
 			Point Position = new Point(
