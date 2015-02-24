@@ -6,7 +6,7 @@ using System.Text;
 namespace CertainDeathEngine.Models.Resources
 {
     [Serializable]
-    public class Resource : GameObject
+    public class Resource
     {
         public int Quantity { get; set; }
         public float RegenRate { get; set; }//put regen rates on the enum?

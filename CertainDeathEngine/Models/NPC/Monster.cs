@@ -8,7 +8,7 @@ using System.Windows;
 namespace CertainDeathEngine.Models.NPC
 {
     [Serializable]
-    public class Monster : Killable
+    public class Monster : Killable, Temporal
     {
 		// Get the pixel location of the monster's goal
 		public Point Goal { get; set; }
@@ -32,11 +32,17 @@ namespace CertainDeathEngine.Models.NPC
 			double distance = Math.Sqrt(xDist * xDist + yDist * yDist);
 			Direction = new Point(xDist / distance, yDist / distance);
 		}
+		public void Update(long millis)
+		{
+			Move(millis);
+		}
 
 		// Moves the monster the distance they would go after millisecond have elapsed
-		public void Move(int milliseconds)
+		public void Move(long milliseconds)
 		{
-			Point distance = new Point(Direction.X * Speed * (milliseconds / 1000.0), Direction.Y * Speed * (milliseconds / 1000.0));
+			Point distance = new Point(
+				Direction.X * Speed * (milliseconds / 1000.0),
+				Direction.Y * Speed * (milliseconds / 1000.0));
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
@@ -51,5 +57,7 @@ namespace CertainDeathEngine.Models.NPC
 			return new Point(col, row);
 		}
 
-    }
+
+		
+	}
 }

@@ -108,13 +108,16 @@ namespace CertainDeathEngine.Models.World
         public GameWorld GenerateWorld(int worldId, int worldSize = 3)
         {
             Tile[,] baseWorld = new Tile[worldSize, worldSize];
+			int middle = worldSize / 2;
+
             for (int row = 0; row < worldSize; row++)
             {
                 for (int col = 0; col < worldSize; col++)
                 {
-                    baseWorld[row, col] = GenerateTile();
+					baseWorld[row, col] = GenerateTile(col - middle, row - middle);
                 }
             }
+
             for (int row = 0; row < worldSize; row++)
             {
                 for (int col = 0; col < worldSize; col++)
@@ -140,7 +143,6 @@ namespace CertainDeathEngine.Models.World
                     }
                 }
             }
-            int middle = worldSize / 2;
             //Trace.WriteLine("Middle: " + middle);
             GameWorld newWorld = new GameWorld(baseWorld[middle, middle], worldId);
 
@@ -157,9 +159,9 @@ namespace CertainDeathEngine.Models.World
             return newWorld;
         }
 
-        public Tile GenerateTile()
+        public Tile GenerateTile(int x, int y)
         {
-            Tile newTile = new Tile();
+            Tile newTile = new Tile(x, y);
 
             for (int row = 0; row < Tile.SQUARE_SIZE; row++)
             {

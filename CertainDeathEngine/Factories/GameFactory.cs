@@ -29,18 +29,19 @@ namespace CertainDeathEngine.Factories
 			// bottom (x, Tile.TOTAL_PIXELS)
 			// left (0, y)
 			// right (Tile.TOTAL_PIXELS, y)
+
 			int side = RandomGen.Random.Next() % 4;
-			int placement = RandomGen.Random.Next(Tile.TOTAL_PIXELS - 1);
+			int placement = RandomGen.Random.Next(Tile.TOTAL_PIXELS - 2);
 			Point Position;
 			if(side % 2 == 0) 
 			{
 				Position = new Point(placement,
-					side == 1 ? 0 : Tile.TOTAL_PIXELS - 1);
+					side == 1 ? 1 : Tile.TOTAL_PIXELS - 2);
 			}
 			else
 			{
 				Position = new Point(
-					side == 3 ? 0 : Tile.TOTAL_PIXELS,
+					side == 3 ? 1 : Tile.TOTAL_PIXELS - 2,
 					placement);
 			}
 

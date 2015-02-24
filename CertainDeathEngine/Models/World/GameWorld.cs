@@ -17,12 +17,16 @@ namespace CertainDeathEngine.Models
         [JsonProperty]
         public Tile CurrentTile { get; set; }
 
+		public Tile Center { get; private set; }
+
+		public List<Tile> Borders { get; private set; }
+
         public GameWorld()
         {
             // only for use with the json deserializer
         }
 
-        public GameWorld(int worldId) : this(new Tile(), worldId) { }
+        public GameWorld(int worldId) : this(new Tile(0, 0), worldId) { }
 
         public GameWorld(Tile t, int worldId)
         {

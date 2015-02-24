@@ -33,14 +33,14 @@ namespace EngineConsoleTester
             //}
             //Trace.WriteLine(total / 1000);
 
-            //while (true)
-            //{
-            //    GameWorldGenerator generator = new GameWorldGenerator();
-            //    GameWorld world = generator.GenerateWorld(3);
+			while (true)
+			{
+				GameWorldGenerator generator = new GameWorldGenerator();
+				GameWorld world = generator.GenerateWorld(3);
 
-            //    //    generator.GenerateTile().PrintTile();
-            //    Console.ReadLine();
-            //}
+				//    generator.GenerateTile().PrintTile();
+				Console.ReadLine();
+			}
         }
 
         private static void BlakeIsSOOOOOOSexy()
@@ -62,20 +62,19 @@ namespace EngineConsoleTester
 
         public static void ShayneTests()
         {
-            Init.InitAll();
-            GameWorldGenerator generator = new GameWorldGenerator();
-            Game g = new Game(generator.GenerateWorld(7));
-			Console.ReadLine();
-			for (int i = 0; i < 50; i++)
-			{
-				PrintGame(g);
-				foreach (Monster m in g.World.CurrentTile.Objects)
-				{
-					m.Move(500);
-				}
-				Thread.Sleep(500);
-				Console.WriteLine();
-			}
+			Init.InitAll();
+			//GameWorldGenerator generator = new GameWorldGenerator();
+			//Game g = new Game(generator.GenerateWorld(7));
+			//for (int i = 0; i < 50; i++)
+			//{
+			//	PrintGame(g);
+			//	foreach (Monster m in g.World.CurrentTile.Objects)
+			//	{
+			//		m.Move(500);
+			//	}
+			//	Thread.Sleep(500);
+			//	Console.WriteLine();
+			//}
 			//string json = g.ToJSON();
 			//Console.WriteLine(json);
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Configuration;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Windows;
 
 namespace CertainDeathEngine.Models
 {
@@ -82,9 +83,12 @@ namespace CertainDeathEngine.Models
         [JsonProperty]
         public List<GameObject> Objects { get; set; }
 
-        public Tile()
+		public Point TilePosition { get; private set; }
+
+        public Tile(int x, int y)
         {
             SetSquares();
+			TilePosition = new Point(x, y);
             this.Objects = new List<GameObject>();
         }
 
