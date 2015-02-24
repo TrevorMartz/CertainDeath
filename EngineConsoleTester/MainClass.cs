@@ -58,7 +58,14 @@ namespace EngineConsoleTester
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Game g = new Game(generator.GenerateWorld(3), new Player());
-			while(true)
+			
+			string json = g.ToJSON();
+			Console.WriteLine(json);
+        }
+
+		public static void IncrementTime(Game g)
+		{
+			while (true)
 			{
 				g.MonsterGenerator.Update(500);
 				PrintGame(g);
@@ -70,9 +77,7 @@ namespace EngineConsoleTester
 				}
 				Console.ReadLine();
 			}
-			//string json = g.ToJSON();
-			//Console.WriteLine(json);
-        }
+		}
 
 		public static void PrintGame(Game g)
 		{

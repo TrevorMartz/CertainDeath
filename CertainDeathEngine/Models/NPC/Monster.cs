@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,12 @@ using System.Windows;
 namespace CertainDeathEngine.Models.NPC
 {
     [Serializable]
+	[JsonObject(MemberSerialization.OptIn)]
     public class Monster : Killable, Temporal
     {
+		[JsonProperty]
+		public string Type { get { return "Monster"; } }
+
 		// Get the pixel location of the monster's goal
 		// This is always on tile 0, 0. We shouldn't let them move the fire.
 		public Point Goal { get; set; }

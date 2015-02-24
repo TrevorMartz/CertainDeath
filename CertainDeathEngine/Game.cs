@@ -27,7 +27,8 @@ namespace CertainDeathEngine
             World = world;
             buildingFactory = new GameFactory();
 			MonsterGenerator = new MonsterGenerator(buildingFactory, World.Tiles) 
-				{ InitialSpawnSize = 15, SpawnSize = 1, Delay = 500, Rate = 10000 };
+				{ InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
+			MonsterGenerator.Update(1);
         }
 
         public string ToJSON()
