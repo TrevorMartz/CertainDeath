@@ -23,8 +23,8 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
-            BlakeIsSOOOOOOUgly();
+            ShayneTests();
+            //BlakeIsSOOOOOOUgly();
             //TrevorTests();
 
             Console.ReadLine();

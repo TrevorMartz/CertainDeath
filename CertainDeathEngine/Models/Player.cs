@@ -39,8 +39,13 @@ namespace CertainDeathEngine.Models
             }
         }
 
+        public int GetResourceCount(ResourceType type)
+        {
+            return Resources[type];
+        }
+
         //this method is just to cap off resources if they overflow over max int. I doubt this will ever happen, but it is possible.
-        public int Add(int a, int b)
+        private int Add(int a, int b)
         {
             if(a + b < 0)
             {
