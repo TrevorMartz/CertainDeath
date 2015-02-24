@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
@@ -36,9 +37,9 @@ namespace CertainDeathEngine.DAL
                 int maxFileNumber = int.Parse(maxFile);
                 nextWorldId = maxFileNumber + 1;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                int poop = 5;
+                // TODO do we want to do something better for this exception?
             }
         }
 
@@ -56,10 +57,17 @@ namespace CertainDeathEngine.DAL
         {
             GameWorld world = LoadWorld(worldId);
             Game g = new Game(world);
+
+            // TODO: move the thread spawn to a better location
+            Updater u = new Updater(g);
+            Thread updater = new Thread(u.Run);
+            updater.Name = "Updater thread";
+            updater.Start();
+
             return g;
         }
 
-        public GameWorld LoadWorld(int worldId)
+        private GameWorld LoadWorld(int worldId)
         {
             try
             {
@@ -87,9 +95,9 @@ namespace CertainDeathEngine.DAL
                     return CreateWorld();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // error...
+                // TODO do we want to do something better for this exception?
                 return CreateWorld();
             }
         }

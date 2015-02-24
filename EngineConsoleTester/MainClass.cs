@@ -50,10 +50,9 @@ namespace EngineConsoleTester
                 GameWorld w1 = GameDAL.CreateWorld();
                 GameDAL.SaveWorld(w1);
             }
+            Game g = (Game)GameDAL.LoadGame(2);
+            //GameWorld loaded = GameDAL.LoadWorld(2);
 
-            GameWorld loaded = GameDAL.LoadWorld(2);
-
-            int asdf = 7;
 
         }
 

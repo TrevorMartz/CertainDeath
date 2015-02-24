@@ -86,10 +86,9 @@ namespace CertainDeathEngine.DAL
             {
                 Serialize(users, "users.bin");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // not much we can do....
-                int i = 7;
+                // TODO: do something about this exception
             }
         }
 
@@ -122,8 +121,9 @@ namespace CertainDeathEngine.DAL
                 fs.Dispose();
                 return list;
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // TODO do we want to do something better for this exception?
                 return new List<CertainDeathUser>();
             }
         }

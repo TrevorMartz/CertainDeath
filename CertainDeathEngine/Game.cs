@@ -14,7 +14,7 @@ namespace CertainDeathEngine
 {
 	public class Game : EngineInterface
 	{
-		GameWorld World;
+		public GameWorld World;
         GameFactory buildingFactory;
 
         public Game(GameWorld world)
@@ -26,7 +26,9 @@ namespace CertainDeathEngine
 
         public string ToJSON()
 		{
-			return JsonConvert.SerializeObject(World.CurrentTile);
+            // lock something...
+            string jsonString = JsonConvert.SerializeObject(World.CurrentTile);;
+            return jsonString;
 		}
 
         public string SquareClicked(int x, int y)
@@ -94,6 +96,13 @@ namespace CertainDeathEngine
             // persist the building
 
             return buildingInstance;
+        }
+
+        public void SaveWorld()
+        {
+            // TODO: make a save game work
+
+            // Move the world creation stuff into the game class
         }
 
     }
