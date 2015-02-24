@@ -139,7 +139,7 @@ namespace CertainDeathEngine.Models.World
 
                     if (col < worldSize - 1)
                     {
-                        baseWorld[row, col].Below = baseWorld[row, col + 1];
+                        baseWorld[row, col].Right = baseWorld[row, col + 1];
                     }
                 }
             }
