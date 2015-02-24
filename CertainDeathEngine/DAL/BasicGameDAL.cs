@@ -62,7 +62,7 @@ namespace CertainDeathEngine.DAL
             Updater u = new Updater(g);
             Thread updater = new Thread(u.Run);
             updater.Name = "Updater thread";
-            updater.Start();
+            UpdateManager.Instance.AddGameThread(world.Id, updater);
 
             return g;
         }

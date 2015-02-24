@@ -10,12 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using CertainDeathEngine.Factories;
 
 namespace CertainDeathEngine
 {
 	public class Game : EngineInterface
 	{
-        GameFactory buildingFactory;
         Player player;
 		public GameWorld World;
         public GameFactory buildingFactory;
