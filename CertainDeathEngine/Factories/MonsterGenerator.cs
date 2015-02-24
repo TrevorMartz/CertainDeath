@@ -13,7 +13,7 @@ namespace CertainDeathEngine.Factories
 	{
 		private GameFactory Factory;
 		private List<Tile> Tiles;
-		private long Age = 0;
+		private long Time = 0;
 		private bool Delaying = true;
 
 		// Delay in Millis before the monsters come
@@ -39,22 +39,26 @@ namespace CertainDeathEngine.Factories
 		// This will be used for sending back Delta JSON
 		public void Update(long millis)
 		{
-			long nextTime = Age + millis;
-			long timeLeft = millis;
-			if (Delaying && nextTime > Delay)
+			Time += millis;
+			if (Delaying && Time > Delay)
 			{
 				Delaying = false;
-				timeLeft = nextTime - Delay;
-				for (int i = 0; i < InitialSpawnSize; i++ )
-					BuildMonster(null);
+				SpawnMonsters(InitialSpawnSize);
+				Time -= Delay;
 			}
-			if(!Delaying && timeLeft > Rate) {
-				int monsters = (int)timeLeft / Rate;
+			if(!Delaying && Time > Rate) {
+				int monsters = (int)Time / Rate;
 				for (int i = 0; i < monsters; i++)
-					for (int j = 0; i < SpawnSize; i++ )
-						BuildMonster(null);
+					SpawnMonsters(SpawnSize);
+				Time -= monsters * Rate;
 			}
-			Age = nextTime;
+		}
+
+
+		public void SpawnMonsters(int num)
+		{
+			for (int i = 0; i < num; i++)
+				BuildMonster(null);
 		}
 		public Monster BuildMonster(string monsterType)
 		{
