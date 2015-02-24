@@ -58,7 +58,7 @@ namespace EngineConsoleTester
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Game g = new Game(generator.GenerateWorld(3), new Player());
-			//IncrementTime(g);
+			IncrementTime(g);
 			string json = g.ToJSON();
 			Console.WriteLine(json);
         }
