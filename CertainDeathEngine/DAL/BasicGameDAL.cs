@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
@@ -38,7 +39,7 @@ namespace CertainDeathEngine.DAL
             }
             catch (Exception)
             {
-                int poop = 5;
+                // TODO do we want to do something better for this exception?
             }
         }
 
@@ -56,10 +57,17 @@ namespace CertainDeathEngine.DAL
         {
             GameWorld world = LoadWorld(worldId);
             Game g = new Game(world, new Player());
+
+            // TODO: move the thread spawn to a better location
+            Updater u = new Updater(g);
+            Thread updater = new Thread(u.Run);
+            updater.Name = "Updater thread";
+            UpdateManager.Instance.AddGameThread(world.Id, updater);
+
             return g;
         }
 
-        public GameWorld LoadWorld(int worldId)
+        private GameWorld LoadWorld(int worldId)
         {
             try
             {
@@ -89,12 +97,12 @@ namespace CertainDeathEngine.DAL
             }
             catch (Exception)
             {
-                // error...
+                // TODO do we want to do something better for this exception?
                 return CreateWorld();
             }
         }
 
-        public GameWorld CreateWorld()
+        private GameWorld CreateWorld()
         {
             int worldId = nextWorldId++;
             GameWorld newWorld = gen.GenerateWorld(worldId);

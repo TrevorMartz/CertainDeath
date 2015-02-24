@@ -19,7 +19,7 @@ namespace CertainDeath.Controllers
         public HomeController()
         {
             GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
-            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"), GameDAL);
+            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"));
         }
 
         [FacebookAuthorize("email", "user_photos")]

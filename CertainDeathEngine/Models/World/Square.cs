@@ -28,5 +28,22 @@ namespace CertainDeathEngine.Models
 		{
 			return Resource != null;
 		}
+
+        public int GatherResource(int toTake = 1)
+        {
+            if(Resource != null)
+            {
+                int toReturn = Resource.Gather(toTake);
+                if(Resource.Quantity == 0)
+                {
+                    Resource = null;
+                }
+                return toReturn;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

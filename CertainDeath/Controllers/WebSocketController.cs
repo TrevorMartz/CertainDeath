@@ -35,7 +35,7 @@ namespace CertainDeath.Controllers
             {
                 this.GameWorldId = worldId;
                 GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
-                UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"), GameDAL);
+                UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"));
             }
 
             public override void OnMessage(string message)

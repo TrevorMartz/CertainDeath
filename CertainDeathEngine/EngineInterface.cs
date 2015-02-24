@@ -42,7 +42,7 @@ namespace CertainDeathEngine
 		 * Returns a JSON string representing changes. 
 		 * JSON described in IncrementTimeAndReturnDelta method
 		 */
-		string SquareClicked(int x, int y);
+		string SquareClicked(float x, float y);
 
 		/* Notify the game engine that a user has clicked on a monster. The monster wil take damage 
 		 * equal to the user's attack damage.
@@ -93,5 +93,7 @@ namespace CertainDeathEngine
         IEnumerable<string> GetBuildableBuildingsList();
 
         Building BuildBuildingAtSquare(int row, int column, string buildingType);
+
+        void SaveWorld();
 	}
 }
