@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC
 {
-    public class Building : NPC
+    [Serializable]
+    public class Building : Killable, Temporal
     {
         public float HarvestRate { get; set; }
-    }
+
+		public void Update(long millis)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

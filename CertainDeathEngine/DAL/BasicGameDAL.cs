@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,13 +44,12 @@ namespace CertainDeathEngine.DAL
 
         public void SaveWorld(GameWorld world)
         {
-            StreamWriter fs = new StreamWriter(String.Format("{0}\\{1}.world", FilePath, world.Id), true);
-
-            string worldJson = JsonConvert.SerializeObject(world);  
-            fs.WriteLine(worldJson);
-            fs.Flush();
-            fs.Close();
-            fs.Dispose();
+            System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", FilePath, world.Id));
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(ms, world); 
+            ms.Flush();
+            ms.Close();
+            ms.Dispose();
         }
 
         public EngineInterface LoadGame(int worldId)
@@ -68,20 +68,19 @@ namespace CertainDeathEngine.DAL
 
                 if (worldFiles.Where(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())).Count() != 0)
                 {
-                    StreamReader fs = new StreamReader(String.Format("{0}\\{1}.world", FilePath, worldId));
-                    //FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
-                    string worldJson = fs.ReadToEnd();
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
 
-                    var world = JsonConvert.DeserializeObject<GameWorld>(worldJson);
-
-                    //object obj = formatter.Deserialize(fs);
-                    //ProductList products = (ProductList)obj;
+                    object obj = formatter.Deserialize(fs);
+                    GameWorld world = (GameWorld)obj;
+                    fs.Flush();
                     fs.Close();
                     fs.Dispose();
-                    return world;
-
                     // return the world
+                    return world;
                 }
+
+                
                 else
                 {
                     // there is not a world with that id

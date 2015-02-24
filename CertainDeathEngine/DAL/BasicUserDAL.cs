@@ -44,7 +44,7 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
-            return (users.Where(x => x.FBUser.Email.Equals(fbUser.Email)).FirstOrDefault());
+            return (users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
             //// Everyone can add their email here until we get a real user db to test with.
             //// We can each test with our own world id 
 

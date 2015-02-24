@@ -87,10 +87,10 @@ View = (function () {
                                 var rand = Math.ceil(Math.random() * 3);
                                 objects += game.add.sprite(i * 32 + this.boardX, j * 32 + this.boardY,
                                     "objects", msg.Squares[i][j].TypeName + rand);
-                                if (msg.Squares.Resource != 'undefined') {
-                                    console.log(msg.Squares.Resource);
+                                if (msg.Squares[i][j].ResourceName !== undefined) {
+                                    console.log(msg.Squares[i][j].ResourceName);
                                     objects += game.add.sprite(i * 32 + this.boardX, j * 32 + this.boardY,
-                                        "objects", "CORN")
+                                        "objects", msg.Squares[i][j].ResourceName);
                                 }
                             }
                         }

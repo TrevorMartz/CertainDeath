@@ -92,9 +92,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuilingFactory.cs" />
     <Compile Include="DAL\BasicUserDAL.cs" />
+    <Compile Include="Factories\GameFactory.cs" />
+    <Compile Include="Factories\MonsterGenerator.cs" />
+    <Compile Include="Models\NPC\Temporal.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />
@@ -113,7 +118,7 @@
     <Compile Include="Models\World\GameWorld.cs" />
     <Compile Include="Models\NPC\Building.cs" />
     <Compile Include="Models\NPC\Monster.cs" />
-    <Compile Include="Models\NPC\NPC.cs" />
+    <Compile Include="Models\NPC\Killable.cs" />
     <Compile Include="Models\Resources\Resource.cs" />
     <Compile Include="Models\World\Square.cs" />
     <Compile Include="Models\World\SquareType.cs" />
