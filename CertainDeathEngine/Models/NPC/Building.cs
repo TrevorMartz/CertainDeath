@@ -18,7 +18,6 @@ namespace CertainDeathEngine.Models.NPC
 
 		public void Update(long millis)
 		{
-			throw new NotImplementedException();
 		}
 	}
 }

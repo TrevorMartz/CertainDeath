@@ -6,6 +6,7 @@ using System.Drawing;
 using CertainDeathEngine.Models.Resources;
 using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine.Models
 {
@@ -28,6 +29,10 @@ namespace CertainDeathEngine.Models
 		{
 			return Resource != null;
 		}
+
+		// Stores a reference to the building on this square 
+		// If there is one
+		public Building Building { get; set; }
 
         public int GatherResource(int toTake = 1)
         {

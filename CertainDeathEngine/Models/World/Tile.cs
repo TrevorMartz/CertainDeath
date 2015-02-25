@@ -116,13 +116,36 @@ namespace CertainDeathEngine.Models
             }
         }
 
+		public Building GetBuildingAtPoint(Point p)
+		{
+			foreach (Building b in Buildings)
+			{
+				if (b.ContainsPoint(p))
+				{
+					return b;
+				}
+			}
+			return null;
+		}
+
         public void AddObject(GameObject obj)
         {
             Objects.Add(obj);
 			if (obj is Monster)
 				Monsters.Add(obj as Monster);
-			if(obj is Building)
-				Buildings.Add(obj as Building);
+			if (obj is Building)
+			{
+				Building building = obj as Building;
+				Buildings.Add(building);
+				System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
+				for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
+				{
+					for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
+					{
+						Squares[row, col].Building = building;
+					}
+				}
+			}
         }
 
 		public void RemoveObject(GameObject obj)
@@ -131,7 +154,18 @@ namespace CertainDeathEngine.Models
 			if (obj is Monster)
 				Monsters.Remove(obj as Monster);
 			if (obj is Building)
-				Buildings.Remove(obj as Building);
+			{
+				Building building = obj as Building;
+				Buildings.Remove(building);
+				System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
+				for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
+				{
+					for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
+					{
+						Squares[row, col].Building = null;
+					}
+				}
+			}
 		}
 
         public static void InitSize()

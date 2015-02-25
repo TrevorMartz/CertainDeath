@@ -24,7 +24,7 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
+            ShayneTests();
             //BlakeIsSOOOOOOUgly();
             TrevorTests();
 
@@ -71,7 +71,7 @@ namespace EngineConsoleTester
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Game g = new Game(generator.GenerateWorld(3), new Player());
-            //IncrementTime(g);
+            IncrementTime(g);
 			string json = g.ToJSON();
 			Console.WriteLine(json);
         }
@@ -94,8 +94,8 @@ namespace EngineConsoleTester
 
 		public static void PrintGame(Game g)
 		{
-			List<Point> MonsterSquares = new List<Point>();
-			foreach (Monster m in g.World.CurrentTile.Objects)
+			List<System.Drawing.Point> MonsterSquares = new List<System.Drawing.Point>();
+			foreach (Monster m in g.World.CurrentTile.Monsters)
 			{
 				MonsterSquares.Add(m.ApproxSquare());
 			}
@@ -104,8 +104,13 @@ namespace EngineConsoleTester
 			{
 				for (int x = 0; x < Tile.SQUARE_SIZE; x++)
 				{
-					Point square = new Point(x, y);
-					if (MonsterSquares.Contains(square))
+					System.Drawing.Point squarePoint = new System.Drawing.Point(x, y);
+					Square square = g.World.CurrentTile.Squares[y,x];
+					if (square.Building != null)
+					{
+						Console.Write("B");
+					}
+					else if (MonsterSquares.Contains(squarePoint))
 					{
 						Console.Write("M");
 					}
