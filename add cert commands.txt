@@ -1,0 +1,5 @@
+netsh firewall add portopening TCP 80 IISExpressWeb enable ALL
+netsh firewall add portopening TCP 44300 IISExpressWeb enable ALL
+netsh http delete sslcert ipport=0.0.0.0:44300
+netsh http add sslcert ipport=0.0.0.0:44300 appid={314124ce-d05c-4309-9af9-9caa44b2b74b} certhash=60ef7d7deded399767d4f539661b8b6312e39284
+
