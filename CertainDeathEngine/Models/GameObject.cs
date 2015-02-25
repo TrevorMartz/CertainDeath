@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Models
 
 		// The 4 corners of the game object's rectangle:
 		// 0 top left, 1 top right, 2 bottom left, 3 bottom right
-		protected Point[] Corners = new Point[4];
+		public Point[] Corners = new Point[4];
 		protected Point _Position;
 		protected int _Height;
 		protected int _Width;
@@ -69,12 +69,11 @@ namespace CertainDeathEngine.Models
 		// around the corners, but takes only 1 distance comparison
 		public double GetFastDistance(GameObject obj)
 		{
-			return Distance(
-				this.Position.X + psuedoRadius,
-				obj.Position.X + psuedoRadius,
-				this.Position.Y + psuedoRadius,
-				obj.Position.Y + psuedoRadius
+			double centerDist = Distance(
+				this.Position.X, obj.Position.X,
+				this.Position.Y, obj.Position.Y
 				);
+			return centerDist - 50;
 		}
 
 		// Gets the distance between two objects based on the distance between each of its corners
@@ -82,7 +81,6 @@ namespace CertainDeathEngine.Models
 		// This will be a total of 16 distance comparisons, but should be ery accurate.
 		public double GetAccurateDistance(GameObject obj)
 		{
-
 			return 0;
 		}
 
@@ -97,5 +95,41 @@ namespace CertainDeathEngine.Models
 		{
 			return Math.Sqrt(xDist * xDist + yDist * yDist);
 		}
+
+		public double Distance(Point p1, Point p2)
+		{
+			return Distance(p1.X, p2.X, p1.Y, p2.Y);
+		}
+
+		/* GameObjects are not bound to a square, but this gives their approximate square
+		 * Used for drawing game in the console and determining which squares a building takes up
+		 * 
+		Uses System.Drawing.Point instead of Windows.Point because drawing point 
+		uses ints and drawing uses doubles*/
+		public System.Drawing.Point ApproxSquare()
+		{
+			return GameObject.ApproxSquare(Position);
+		}
+
+		// Converts the Corner array's pixel coordinates into square coordinates
+		
+		public System.Drawing.Point[] CornerApproxSquares()
+		{
+			System.Drawing.Point[] CornersAsSquareGrid = new System.Drawing.Point[4];
+			for (int i = 0; i < 4; i++)
+			{
+				CornersAsSquareGrid[i] = GameObject.ApproxSquare(Corners[i]);
+			}
+			return CornersAsSquareGrid;
+		}
+
+		static public System.Drawing.Point ApproxSquare(Point p)
+		{
+			int col = (int)p.X / Square.PIXEL_SIZE;
+			int row = (int)p.Y / Square.PIXEL_SIZE;
+			return new System.Drawing.Point(col, row);
+		}
+
+
     }
 }

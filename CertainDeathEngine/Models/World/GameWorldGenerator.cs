@@ -105,7 +105,7 @@ namespace CertainDeathEngine.Models.World
             return f;
         }
 
-        public GameWorld GenerateWorld(int worldId, int worldSize = 3)
+        public GameWorld GenerateWorld(int worldId, int worldSize = 3, bool print = false)
         {
             Tile[,] baseWorld = new Tile[worldSize, worldSize];
 			int middle = worldSize / 2;
@@ -145,16 +145,18 @@ namespace CertainDeathEngine.Models.World
             }
             //Trace.WriteLine("Middle: " + middle);
 			GameWorld newWorld = new GameWorld(baseWorld, baseWorld[middle, middle], worldId);
-
-            for (int row = 0; row < worldSize; row++)
+            if (print)
             {
-                Tile[] tiles = new Tile[worldSize];
-                for (int col = 0; col < worldSize; col++)
+                for (int row = 0; row < worldSize; row++)
                 {
-                    tiles[col] = baseWorld[row, col];
+                    Tile[] tiles = new Tile[worldSize];
+                    for (int col = 0; col < worldSize; col++)
+                    {
+                        tiles[col] = baseWorld[row, col];
+                    }
+                    PrintTilesResourceSideBySide(tiles);
+                    Trace.WriteLine("");
                 }
-                PrintTilesResourceSideBySide(tiles);
-                Trace.WriteLine("");
             }
             return newWorld;
         }
@@ -270,7 +272,7 @@ namespace CertainDeathEngine.Models.World
                             Trace.Write("-");
                         }
                         else
-                        {
+                        {//"(" + row + "," + col + ")" +     print the coords with each item
                             Trace.Write((int)t.Squares[row, col].Resource.Type);
                         }
                     }

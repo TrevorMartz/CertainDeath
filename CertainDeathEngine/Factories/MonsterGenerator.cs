@@ -77,7 +77,8 @@ namespace CertainDeathEngine.Factories
 
 			Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
 			int Speed = 25;
-			Monster m = new Monster(randTile, Position, Goal, Speed) { Id = Factory.GetNextId()};
+			Monster m = new Monster(randTile, Position, Goal, Speed) { 
+				Id = Factory.GetNextId(), Damage = 1};
 			randTile.AddObject(m);
 			return m;
 		}

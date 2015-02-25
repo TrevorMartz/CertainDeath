@@ -37,6 +37,7 @@ namespace CertainDeathEngine.Models
 		public GameWorld(Tile[,] tiles, Tile t, int worldId)
 		{
 			this.CurrentTile = t;
+			t.AddObject(new FireOfLife());
 			this.Id = worldId;
 
 			Tiles = tiles.Cast<Tile>().ToList();
