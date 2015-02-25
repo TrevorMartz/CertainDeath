@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Web.Hosting;
 using CertainDeathEngine.Models;
 using CertainDeathEngine;
+using System.Threading;
 
 namespace CertainDeath.Controllers
 {
@@ -51,7 +52,9 @@ namespace CertainDeath.Controllers
             {
                 // we already know the world id so I dont think we need to ask again
                 //CertainDeathUser user = UserDAL.GetGameUser(null);// need to pass in some fb context
+
                 Send(gameInstance.ToJSON());
+                
             }
 
             public override void OnClose()
