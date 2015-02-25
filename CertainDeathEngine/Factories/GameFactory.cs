@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;

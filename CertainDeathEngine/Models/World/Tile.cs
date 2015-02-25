@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine.Models
 {
@@ -116,13 +117,36 @@ namespace CertainDeathEngine.Models
             }
         }
 
+		public Building GetBuildingAtPoint(Point p)
+		{
+			foreach (Building b in Buildings)
+			{
+				if (b.ContainsPoint(p))
+				{
+					return b;
+				}
+			}
+			return null;
+		}
+
         public void AddObject(GameObject obj)
         {
             Objects.Add(obj);
 			if (obj is Monster)
 				Monsters.Add(obj as Monster);
-			if(obj is Building)
-				Buildings.Add(obj as Building);
+			if (obj is Building)
+			{
+				Building building = obj as Building;
+				Buildings.Add(building);
+				System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
+				for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
+				{
+					for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
+					{
+						Squares[row, col].Building = building;
+					}
+				}
+			}
         }
 
 		public void RemoveObject(GameObject obj)
@@ -131,7 +155,18 @@ namespace CertainDeathEngine.Models
 			if (obj is Monster)
 				Monsters.Remove(obj as Monster);
 			if (obj is Building)
-				Buildings.Remove(obj as Building);
+			{
+				Building building = obj as Building;
+				Buildings.Remove(building);
+				System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
+				for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
+				{
+					for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
+					{
+						Squares[row, col].Building = null;
+					}
+				}
+			}
 		}
 
         public static void InitSize()
@@ -159,6 +194,25 @@ namespace CertainDeathEngine.Models
                 for (int col = 0; col < SQUARE_SIZE; col++)
                 {
                     Trace.Write((int)Squares[row, col].Type);
+                }
+                Trace.WriteLine("");
+            }
+        }
+
+        public void PrintTileResources()
+        {
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    if (Squares[row, col].Resource == null)
+                    {
+                        Trace.Write("-");
+                    }
+                    else
+                    {//"(" + row + "," + col + ")" +     print the coords with each item
+                        Trace.Write("(" + row + "," + col + ")" + (int)Squares[row, col].Resource.Type);
+                    }
                 }
                 Trace.WriteLine("");
             }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CertainDeathEngine.Models.NPC.Buildings;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -92,10 +93,10 @@ namespace CertainDeathEngine.Models.NPC
 		public void Update(long millis)
 		{
             //millis = millis * 1000;
-            Trace.WriteLine("Monster " + Id + " is updating");
+            //Trace.WriteLine("Monster " + Id + " is updating");
 			if (State == MonsterState.ATTACKING)
 			{
-				if (Attacking.HealthPoints >= 0)
+				if (Attacking.HealthPoints <= 0)
 				{
 					// someone else killed it, do nothing this step, then start walking
 					// If we can sell buildings there could be a problem here
@@ -120,46 +121,47 @@ namespace CertainDeathEngine.Models.NPC
 
 		private Building WalkUntilYouHitSomethingOrRunOutOfTimeThenReturnWhatYouRanInto(long millis)
 		{
-			//for now will will assume that monsters slide toward their target and don't turn.
-			//int locationsToCheck = (int)millis / MillisPerHalfSquare;
-			//for (int i = 0; i < locationsToCheck - 1; i++)
-			//{
-			//	int pixDist = (i + 1) * HALF_SQUARE;
-			//	Point distance = new Point(
-			//		pixDist * Direction.X,
-			//		pixDist * Direction.Y
-			//		);
-			//	Building b = null;
-			//	for(int corn = 0; corn < LeadingCorners.Length && b == null; corn++)// (Point corner in LeadingCorners)
-			//	{
-			//		b = GetBuildingAtPoint(
-			//			new Point(
-			//				LeadingCorners[corn].X + distance.X,
-			//				LeadingCorners[corn].Y + distance.Y));
-			//		if (b == null)
-			//		{
-						
-			//		}
-			//		else 
-			//		{
-			//			return b;
-			//		}
-			//	}
-			//}
-
 			Point XYdist = GetDistanceOverTime(millis);
 			double distanceCanGo = Distance(XYdist.X, XYdist.Y);
 			bool somethingIsClose = false;
 			for (int i = 0; i < Tile.Buildings.Count && ! somethingIsClose; i++)
 			{
 				double dist = GetFastDistance(Tile.Buildings[i]);
+				if (dist < 50)
+				{
+					bool breaki = true;
+				}
 				somethingIsClose = dist <= distanceCanGo;
 			}
 
 			if (somethingIsClose)
 			{
-				// more accurate cals
-				int blakeisdumb = 0;
+				// shoot a ray out of each significant corner and find the closest building
+				// move to it and attack
+				Collision[] collis = new Collision[LeadingCorners.Length];
+				for (int i = 0; i < collis.Length; i++)
+				{
+					collis[i] = ShootRay(LeadingCorners[i], XYdist, millis);
+				}
+				
+				Collision closestCollision = null;
+				foreach (Collision c in collis)
+				{
+					if (closestCollision == null || c.Distance < closestCollision.Distance )
+					{
+						closestCollision = c;
+					}
+				}
+				if (closestCollision.Hit == null)
+				{
+					Move(XYdist);
+				}
+				else
+				{
+					double ratioTraveled = closestCollision.Distance / distanceCanGo;
+					Move(new Point(XYdist.X * ratioTraveled, XYdist.Y * ratioTraveled));
+					return closestCollision.Hit;
+				}
 			}
 			else
 			{
@@ -168,22 +170,60 @@ namespace CertainDeathEngine.Models.NPC
 			return null;
 		}
 
-		private Building GetBuildingAtPoint(Point p)
+		private Collision ShootRay(Point startingPoint, Point maxDist, long millis)
 		{
-			foreach (Building b in Tile.Buildings)
+			Point dist = new Point(Math.Abs(maxDist.X), Math.Abs(maxDist.Y));
+			double xSpeed = Math.Abs(Direction.X);
+			double ySpeed = Math.Abs(Direction.Y);
+			Building hit = null;
+			Point pos = startingPoint;
+			System.Drawing.Point squarePos = ApproxSquare();
+			while (hit == null &&
+				Math.Abs(startingPoint.X - pos.X) < dist.X &&
+				Math.Abs(startingPoint.Y - pos.Y) < dist.Y)
 			{
-				if (b.ContainsPoint(p))
+				double xDistToNextSquare = Square.PIXEL_SIZE * (Direction.X < 0 ? -1 : 0) + squarePos.X * Square.PIXEL_SIZE - pos.X; //(squarePos.X + (Direction.X < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.X;
+				double yDistToNextSquare = Square.PIXEL_SIZE * (Direction.Y < 0 ? -1 : 1) + squarePos.Y * Square.PIXEL_SIZE - pos.Y; //(squarePos.Y + (Direction.Y < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.Y;
+				double xTime = Math.Abs(xDistToNextSquare) / xSpeed;
+				double yTime = Math.Abs(yDistToNextSquare) / ySpeed;
+				if (xTime < yTime && xTime < millis)
 				{
-					return b;
+					pos = new Point(
+						pos.X + xDistToNextSquare,
+						pos.Y + Direction.Y * xTime);
+					squarePos.X = squarePos.X + (Direction.X > 0 ? 1 : -1);
 				}
+				else if (yTime < xTime && yTime < millis)
+				{
+					pos = new Point(
+						pos.X + Direction.X * yTime,
+						pos.Y + yDistToNextSquare);
+					squarePos.Y = squarePos.Y + (Direction.Y > 0 ? 1 : -1);
+				}
+				else if(yTime == xTime)
+				{
+					if (yTime < millis && xTime < millis)
+					{
+						pos = new Point(
+							pos.X + xDistToNextSquare,
+							pos.Y + yDistToNextSquare);
+						squarePos.X = squarePos.X + (Direction.X > 0 ? 1 : -1);
+						squarePos.Y = squarePos.Y + (Direction.Y > 0 ? 1 : -1);
+					}
+				}
+				hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
 			}
-			return null;
+			return new Collision() {Hit = hit, Distance = Distance(startingPoint, pos) };
 		}
 
 		private void Attack(long millis)
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
+			if (Attacking.HealthPoints <= 0)
+			{
+				Tile.RemoveObject(Attacking);
+			}
 		}
 
 		// Moves the monster the distance they would go after millisecond have elapsed
@@ -302,14 +342,10 @@ namespace CertainDeathEngine.Models.NPC
 			}
 		}
 
-		/* monsters are not bound to a square, but this gives their approximate square
-		 * Used for drawing game in the console */
-		public Point ApproxSquare()
+		private class Collision
 		{
-			int col = (int)Position.X / Square.PIXEL_SIZE;
-			int row = (int)Position.Y / Square.PIXEL_SIZE;
-			return new Point(col, row);
+			public Building Hit { get; set; }
+			public double Distance { get; set; }
 		}
-
 	}
 }

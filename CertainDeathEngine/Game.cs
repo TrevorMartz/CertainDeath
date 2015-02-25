@@ -12,12 +12,13 @@ using System.Web.Script.Serialization;
 using CertainDeathEngine.Models.Resources;
 using System.Diagnostics;
 using CertainDeathEngine.Factories;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine
 {
 	public class Game : EngineInterface
 	{
-        Player player;
+        public Player Player {get; set; }
 		public GameWorld World;
         public GameFactory buildingFactory;
 		public MonsterGenerator MonsterGenerator;
@@ -30,6 +31,7 @@ namespace CertainDeathEngine
 			MonsterGenerator = new MonsterGenerator(buildingFactory, World) 
 				{ InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
 			MonsterGenerator.Update(1);
+            Player = player;
         }
 
         public string ToJSON()
@@ -46,8 +48,8 @@ namespace CertainDeathEngine
             {
                 ResourceType type = res.Type;
                 int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-                player.AddResource(type, gathered);
-                Trace.WriteLine("Resource: " + type + " player count: " + player.GetResourceCount(type));
+                Player.AddResource(type, gathered);
+                Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
             }
             return ToJSON();
 		}

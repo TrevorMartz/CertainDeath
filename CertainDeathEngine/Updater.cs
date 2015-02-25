@@ -56,7 +56,7 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
-            Trace.WriteLine(string.Format("Processing game {0} delta {1} on {2}", World.Id ,delta, Thread.CurrentThread.ManagedThreadId));
+            //Trace.WriteLine(string.Format("Processing game {0} delta {1} on {2}", World.Id ,delta, Thread.CurrentThread.ManagedThreadId));
             // Now update everything
 
             lock (World.CurrentTile.Objects)

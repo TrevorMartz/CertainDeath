@@ -98,9 +98,11 @@
     <Compile Include="DAL\BasicUserDAL.cs" />
     <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Factories\MonsterGenerator.cs" />
-    <Compile Include="Models\NPC\FireOfLife.cs" />
+    <Compile Include="Models\NPC\Buildings\FireOfLife.cs" />
     <Compile Include="Models\NPC\MonsterState.cs" />
     <Compile Include="Models\NPC\Temporal.cs" />
+    <Compile Include="Models\NPC\Buildings\Turret.cs" />
+    <Compile Include="Models\NPC\Buildings\TurretState.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />
@@ -117,7 +119,7 @@
     <Compile Include="Models\User\FacebookPicture.cs" />
     <Compile Include="Models\User\MyAppUserFriend.cs" />
     <Compile Include="Models\World\GameWorld.cs" />
-    <Compile Include="Models\NPC\Building.cs" />
+    <Compile Include="Models\NPC\Buildings\Building.cs" />
     <Compile Include="Models\NPC\Monster.cs" />
     <Compile Include="Models\NPC\Killable.cs" />
     <Compile Include="Models\Resources\Resource.cs" />
@@ -130,6 +132,8 @@
     <Compile Include="RandomGen.cs" />
     <Compile Include="Updater.cs" />
     <Compile Include="UpdateManager.cs" />
+    <Compile Include="WorldManager\GameWorldWrapper.cs" />
+    <Compile Include="WorldManager\WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

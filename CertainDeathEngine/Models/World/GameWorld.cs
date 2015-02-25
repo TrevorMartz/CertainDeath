@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ namespace CertainDeathEngine.Models
 		public GameWorld(Tile[,] tiles, Tile t, int worldId)
 		{
 			this.CurrentTile = t;
+			t.AddObject(new FireOfLife());
 			this.Id = worldId;
 
 			Tiles = tiles.Cast<Tile>().ToList();
