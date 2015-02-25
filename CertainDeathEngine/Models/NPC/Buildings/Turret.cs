@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace CertainDeathEngine.Models.NPC
+namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]

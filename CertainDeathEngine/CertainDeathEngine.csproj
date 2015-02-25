@@ -101,8 +101,8 @@
     <Compile Include="Models\NPC\Buildings\FireOfLife.cs" />
     <Compile Include="Models\NPC\MonsterState.cs" />
     <Compile Include="Models\NPC\Temporal.cs" />
-    <Compile Include="Models\NPC\Turret.cs" />
-    <Compile Include="Models\NPC\TurretState.cs" />
+    <Compile Include="Models\NPC\Buildings\Turret.cs" />
+    <Compile Include="Models\NPC\Buildings\TurretState.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />
