@@ -30,6 +30,14 @@ namespace CertainDeathEngine.WorldManager
             }
         }
 
+        public bool HasWorld(int worldId)
+        {
+            lock (worlds)
+            {
+                return (worlds.ContainsKey(worldId));
+            }
+        }
+
         public GameWorld GetWorld(int worldId)
         {
             lock (worlds)

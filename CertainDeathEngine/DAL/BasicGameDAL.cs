@@ -18,6 +18,7 @@ namespace CertainDeathEngine.DAL
         private string FilePath;
         static int nextWorldId = 1;
         private GameWorldGenerator gen;
+        WorldManager.WorldManager worldManager = WorldManager.WorldManager.Instance;
 
         public BasicGameDAL(string path)
         {
@@ -43,14 +44,29 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        public void SaveWorld(GameWorld world)
+        public bool SaveWorld(GameWorld world)
         {
-            System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", FilePath, world.Id));
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(ms, world); 
-            ms.Flush();
-            ms.Close();
-            ms.Dispose();
+            if (worldManager.HasWorld(world.Id))
+            {
+                try
+                {
+                    System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", FilePath, world.Id));
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    formatter.Serialize(ms, world);
+                    ms.Flush();
+                    ms.Close();
+                    ms.Dispose();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Failed to save the world!!  OOOHHHH NNNOOOOOO");
+                }
+            }
+            else
+            {
+                throw new Exception("The world doesnt exist in the world manager.  you shouldnt have it!!!!!");
+            }
         }
 
         public EngineInterface LoadGame(int worldId)
@@ -69,6 +85,16 @@ namespace CertainDeathEngine.DAL
 
         private GameWorld LoadWorld(int worldId)
         {
+            GameWorld world = null;
+
+            world = worldManager.GetWorld(worldId);
+
+            if (world != null)
+            {
+                return world;
+            }
+
+
             try
             {
                 DirectoryInfo di = new DirectoryInfo(FilePath);
@@ -80,26 +106,30 @@ namespace CertainDeathEngine.DAL
                     FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
 
                     object obj = formatter.Deserialize(fs);
-                    GameWorld world = (GameWorld)obj;
+                    world = (GameWorld)obj;
                     fs.Flush();
                     fs.Close();
                     fs.Dispose();
-                    // return the world
-                    return world;
                 }
 
-                
+
                 else
                 {
                     // there is not a world with that id
-                    return CreateWorld();
+                    world = CreateWorld();
                 }
             }
             catch (Exception)
             {
                 // TODO do we want to do something better for this exception?
-                return CreateWorld();
+                world = CreateWorld();
             }
+
+            // World wasnt stored before, so do it now
+            worldManager.StoreWorld(world);            
+
+            // return the world
+            return world;
         }
 
         private GameWorld CreateWorld()

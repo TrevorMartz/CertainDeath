@@ -13,7 +13,7 @@ namespace CertainDeathEngine.DAL
     // http://www.reddnet.net/entity-framework-json-column/
     public interface IGameDAL
     {
-        void SaveWorld(GameWorld world);
+        bool SaveWorld(GameWorld world);
 
         EngineInterface LoadGame(int worldId);
 

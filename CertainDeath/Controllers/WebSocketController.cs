@@ -11,6 +11,8 @@ using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models.User;
 using System.Diagnostics;
 using System.Web.Hosting;
+using CertainDeathEngine.Models;
+using CertainDeathEngine;
 
 namespace CertainDeath.Controllers
 {
@@ -27,15 +29,17 @@ namespace CertainDeath.Controllers
         public class GameWebSocketHandler : WebSocketHandler
         {
 
-            protected int GameWorldId;
             protected IGameDAL GameDAL;
             protected IUserDAL UserDAL;
+            protected int gameWorldId;
+            protected EngineInterface gameInstance;
 
             public GameWebSocketHandler(int worldId)
             {
-                this.GameWorldId = worldId;
                 GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
                 UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"));
+                this.gameWorldId = worldId;
+                this.gameInstance = GameDAL.LoadGame(gameWorldId);
             }
 
             public override void OnMessage(string message)
@@ -47,7 +51,7 @@ namespace CertainDeath.Controllers
             {
                 // we already know the world id so I dont think we need to ask again
                 //CertainDeathUser user = UserDAL.GetGameUser(null);// need to pass in some fb context
-                Send(GameDAL.LoadGame(GameWorldId).ToJSON());
+                Send(gameInstance.ToJSON());
             }
 
             public override void OnClose()

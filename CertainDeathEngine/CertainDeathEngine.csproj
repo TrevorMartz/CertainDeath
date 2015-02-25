@@ -130,6 +130,8 @@
     <Compile Include="RandomGen.cs" />
     <Compile Include="Updater.cs" />
     <Compile Include="UpdateManager.cs" />
+    <Compile Include="WorldManager\GameWorldWrapper.cs" />
+    <Compile Include="WorldManager\WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
