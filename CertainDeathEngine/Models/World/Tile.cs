@@ -197,5 +197,24 @@ namespace CertainDeathEngine.Models
                 Trace.WriteLine("");
             }
         }
+
+        public void PrintTileResources()
+        {
+            for (int row = 0; row < SQUARE_SIZE; row++)
+            {
+                for (int col = 0; col < SQUARE_SIZE; col++)
+                {
+                    if (Squares[row, col].Resource == null)
+                    {
+                        Trace.Write("-");
+                    }
+                    else
+                    {//"(" + row + "," + col + ")" +     print the coords with each item
+                        Trace.Write("(" + row + "," + col + ")" + (int)Squares[row, col].Resource.Type);
+                    }
+                }
+                Trace.WriteLine("");
+            }
+        }
     }
 }
