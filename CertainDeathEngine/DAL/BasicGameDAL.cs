@@ -46,6 +46,7 @@ namespace CertainDeathEngine.DAL
 
         public bool SaveWorld(GameWorld world)
         {
+            return true;
             if (worldManager.HasWorld(world.Id))
             {
                 try
