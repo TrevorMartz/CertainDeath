@@ -273,7 +273,7 @@ namespace CertainDeathEngine.Models.World
                         }
                         else
                         {//"(" + row + "," + col + ")" +     print the coords with each item
-                            Trace.Write((int)t.Squares[row, col].Resource.Type);
+                            Trace.Write("(" + row + "," + col + ")" + (int)t.Squares[row, col].Resource.Type);
                         }
                     }
                     Trace.Write(" ");

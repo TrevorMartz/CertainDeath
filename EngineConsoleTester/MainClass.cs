@@ -36,12 +36,14 @@ namespace EngineConsoleTester
 
             GameWorldGenerator gen = new GameWorldGenerator();
             //gen.GenerateWorld(12);
-            Game game = new Game(gen.GenerateWorld(3, 3, true), new Player());
+            Game game = new Game(gen.GenerateWorld(3, 3, false), new Player());
             while (true)
             {
+                game.World.CurrentTile.PrintTileResources();
                 string row = Console.ReadLine();
                 string col = Console.ReadLine();
                 game.SquareClicked(float.Parse(row, CultureInfo.InvariantCulture), float.Parse(col, CultureInfo.InvariantCulture));
+                game.World.CurrentTile.PrintTileResources();
             }
             //Console.ReadLine();
         }
