@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using CertainDeathEngine.Models.Resources;
 using System.Diagnostics;
 using CertainDeathEngine.Factories;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine
 {

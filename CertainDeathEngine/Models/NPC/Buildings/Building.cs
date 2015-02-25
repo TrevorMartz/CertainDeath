@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using CertainDeathEngine.Models.NPC;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CertainDeathEngine.Models.NPC
+namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
 	[JsonObject(MemberSerialization.OptIn)]

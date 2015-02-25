@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine
 {

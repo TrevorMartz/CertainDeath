@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine.Models
 {

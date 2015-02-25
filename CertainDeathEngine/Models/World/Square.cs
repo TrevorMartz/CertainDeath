@@ -7,6 +7,7 @@ using CertainDeathEngine.Models.Resources;
 using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine.Models
 {

@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
