@@ -1,0 +1,15 @@
+﻿@using CertainDeathEngine.Models.User
+@model IEnumerable<CertainDeathUser>
+
+@{
+    ViewBag.Title = "LeaderBoard";
+}
+
+<h2>LeaderBoard</h2>
+
+<ol class="leaders">
+    @foreach (var user in Model)
+    {
+        <li>@user.FBUser.ProfilePicture @user.FBUser.Name @user.Score.Survived</li>
+    }
+</ol>
