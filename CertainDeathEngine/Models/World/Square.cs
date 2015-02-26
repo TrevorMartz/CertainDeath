@@ -8,6 +8,7 @@ using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
+using System.Threading;
 
 namespace CertainDeathEngine.Models
 {
@@ -21,7 +22,10 @@ namespace CertainDeathEngine.Models
 		[JsonProperty]
 		public string TypeName { get { return Type.ToString(); } }
 
+        //using a baton because it is possible to set the resource to null in the lock.
 		public Resource Resource { get; set; }
+
+        private object ResourceBaton = new object();
 
 		[JsonProperty]
 		public string ResourceName { get { return Resource.Type.ToString(); } }
@@ -39,10 +43,14 @@ namespace CertainDeathEngine.Models
         {
             if(Resource != null)
             {
-                int toReturn = Resource.Gather(toTake);
-                if(Resource.Quantity == 0)
+                int toReturn;
+                lock(ResourceBaton)
                 {
-                    Resource = null;
+                    toReturn = Resource.Gather(toTake);
+                    if (Resource.Quantity == 0)
+                    {
+                        Resource = null;
+                    }
                 }
                 return toReturn;
             }

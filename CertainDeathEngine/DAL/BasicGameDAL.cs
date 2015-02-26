@@ -59,7 +59,7 @@ namespace CertainDeathEngine.DAL
                     ms.Dispose();
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new Exception("Failed to save the world!!  OOOHHHH NNNOOOOOO");
                 }

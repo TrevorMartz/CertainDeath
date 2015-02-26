@@ -127,10 +127,6 @@ namespace CertainDeathEngine.Models.NPC
 			for (int i = 0; i < Tile.Buildings.Count && ! somethingIsClose; i++)
 			{
 				double dist = GetFastDistance(Tile.Buildings[i]);
-				if (dist < 50)
-				{
-					bool breaki = true;
-				}
 				somethingIsClose = dist <= distanceCanGo;
 			}
 
