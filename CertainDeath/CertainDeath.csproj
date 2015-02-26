@@ -203,6 +203,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_FriendView.cshtml" />
     <Content Include="Views\Home\GameRegistration.cshtml" />
+    <Content Include="Views\Home\LeaderBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
