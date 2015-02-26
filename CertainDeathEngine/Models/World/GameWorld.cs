@@ -12,6 +12,8 @@ namespace CertainDeathEngine.Models
     [Serializable]
     public class GameWorld
     {
+        public Player Player { get; set; }
+
         [JsonProperty]
         public int Id { get; set; }
 
@@ -28,7 +30,8 @@ namespace CertainDeathEngine.Models
         public GameWorld(int worldId) : this(new Tile(0, 0), worldId) { }
 
 		public GameWorld(Tile t, int worldId)
-		{
+        {
+            Player = new Player();
 			this.CurrentTile = t;
 			this.Id = worldId;
 			Tiles = new List<Tile>();
@@ -36,7 +39,8 @@ namespace CertainDeathEngine.Models
 		}
 
 		public GameWorld(Tile[,] tiles, Tile t, int worldId)
-		{
+        {
+            Player = new Player();
 			this.CurrentTile = t;
 			t.AddObject(new FireOfLife());
 			this.Id = worldId;

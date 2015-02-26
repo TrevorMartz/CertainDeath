@@ -73,7 +73,7 @@ namespace CertainDeathEngine.DAL
         {
             GameWorld world = LoadWorld(worldId);
             SaveWorld(world);
-            Game g = new Game(world, new Player());
+            Game g = new Game(world);
 
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
