@@ -100,6 +100,7 @@
     <Compile Include="Factories\MonsterGenerator.cs" />
     <Compile Include="Models\NPC\Buildings\BuildingType.cs" />
     <Compile Include="Models\NPC\Buildings\FireOfLife.cs" />
+    <Compile Include="Models\NPC\Buildings\Wall.cs" />
     <Compile Include="Models\NPC\MonsterState.cs" />
     <Compile Include="Models\NPC\Temporal.cs" />
     <Compile Include="Models\NPC\Buildings\Turret.cs" />

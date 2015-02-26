@@ -85,15 +85,15 @@ namespace CertainDeathEngine.Models
         #endregion
 
         // Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
-        public List<GameObject> Objects { get; set; }
+        public List<GameObject> Objects { get; private set; }
 
         [JsonProperty]
         // Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
-        public List<Monster> Monsters { get; set; }
+        public List<Monster> Monsters { get; private set; }
 
         [JsonProperty]
         // Do not add or remove to this directly. Use AddObject and RemoveObject methods below.
-        public List<Building> Buildings { get; set; }
+        public List<Building> Buildings { get; private set; }
 
         public Point Position { get; private set; }
 
@@ -108,12 +108,15 @@ namespace CertainDeathEngine.Models
 
         public void InitSquares()
         {
-            this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
-            for (int row = 0; row < SQUARE_SIZE; row++)
+            lock (this)
             {
-                for (int col = 0; col < SQUARE_SIZE; col++)
+                this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
+                for (int row = 0; row < SQUARE_SIZE; row++)
                 {
-                    Squares[row, col] = new Square();
+                    for (int col = 0; col < SQUARE_SIZE; col++)
+                    {
+                        Squares[row, col] = new Square();
+                    }
                 }
             }
         }
@@ -121,7 +124,7 @@ namespace CertainDeathEngine.Models
         public Building GetBuildingAtPoint(Point p)
         {
             Building building = null;
-            lock (Buildings)
+            lock (this)
             {
                 foreach (Building b in Buildings)
                 {
@@ -140,7 +143,7 @@ namespace CertainDeathEngine.Models
             Objects.Add(obj);
             if (obj is Monster)
             {
-                lock (Monsters)
+                lock (this)
                 {
                     Monsters.Add(obj as Monster);
                 }
@@ -148,13 +151,10 @@ namespace CertainDeathEngine.Models
             else if (obj is Building)
             {
                 Building building = obj as Building;
-                lock (Buildings)
+                lock (this)
                 {
                     Buildings.Add(building);
-                }
-                System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
-                lock (Squares)
-                {
+                    System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
                     for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
                     {
                         for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
@@ -171,7 +171,7 @@ namespace CertainDeathEngine.Models
             Objects.Remove(obj);
             if (obj is Monster)
             {
-                lock (Monsters)
+                lock (this)
                 {
                     Monsters.Remove(obj as Monster);
                 }
@@ -179,13 +179,10 @@ namespace CertainDeathEngine.Models
             else if (obj is Building)
             {
                 Building building = obj as Building;
-                lock (Buildings)
+                lock (this)
                 {
                     Buildings.Remove(building);
-                }
-                System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
-                lock (Squares)
-                {
+                    System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
                     for (int row = CornersAsSquareGrid[0].Y; row <= CornersAsSquareGrid[2].Y; row++)
                     {
                         for (int col = CornersAsSquareGrid[0].X; col <= CornersAsSquareGrid[1].X; col++)
@@ -217,7 +214,7 @@ namespace CertainDeathEngine.Models
 
         public void PrintTile()
         {
-            lock (Squares)
+            lock (this)
             {
                 for (int row = 0; row < SQUARE_SIZE; row++)
                 {
@@ -232,7 +229,7 @@ namespace CertainDeathEngine.Models
 
         public void PrintTileResources()
         {
-            lock (Squares)
+            lock (this)
             {
                 for (int row = 0; row < SQUARE_SIZE; row++)
                 {

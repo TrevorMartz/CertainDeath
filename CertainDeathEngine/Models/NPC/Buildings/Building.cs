@@ -15,8 +15,15 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 		[JsonProperty]
 		public string Typename { get { return Type.ToString(); } }
 
-        public BuildingType Type { get; set; }
+        public BuildingType Type { get; protected set; }
+
+        public Tile Tile { get; protected set; }
 
         public abstract void Update(long millis);
+
+        public void RemoveBuilding()
+        {
+            Tile.RemoveObject(this);
+        }
 	}
 }

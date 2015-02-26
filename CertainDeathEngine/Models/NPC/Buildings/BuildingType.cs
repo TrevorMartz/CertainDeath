@@ -8,7 +8,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 {
     public enum BuildingType
     {
-        Turret,
-        FireOfLife
+        TURRET,
+        FIREOFLIFE,
+        WALL
     }
 }

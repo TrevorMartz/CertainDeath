@@ -11,7 +11,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 	{
 		public FireOfLife()
 		{
-            Type = BuildingType.FireOfLife;
+            Type = BuildingType.FIREOFLIFE;
 			// I think its okay if this building doesn't have to snap to the
 			// square grid. It's special and should be in the very center.
 			// (If it isn't in the center, and it's small, the monsters might

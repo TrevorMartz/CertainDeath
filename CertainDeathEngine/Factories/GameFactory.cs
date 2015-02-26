@@ -12,7 +12,7 @@ namespace CertainDeathEngine.Factories
     public class GameFactory
     {
         static int nextObjectId = 1;
-
+        public GameWorld World { get; protected set; }
         public GameFactory()
         {
 
@@ -23,7 +23,7 @@ namespace CertainDeathEngine.Factories
             Building building = null;
             switch(buildingType)
             {
-                case BuildingType.Turret:
+                case BuildingType.TURRET:
                     //building = new Turret()
                     break;
             }
