@@ -46,7 +46,6 @@ namespace CertainDeathEngine.DAL
 
         public bool SaveWorld(GameWorld world)
         {
-            return true;
             if (worldManager.HasWorld(world.Id))
             {
                 try
@@ -59,9 +58,9 @@ namespace CertainDeathEngine.DAL
                     ms.Dispose();
                     return true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw new Exception("Failed to save the world!!  OOOHHHH NNNOOOOOO");
+                    throw new Exception(string.Format("Failed to save the world!!  OOOHHHH NNNOOOOOO {0}", e.Message));
                 }
             }
             else
@@ -73,6 +72,7 @@ namespace CertainDeathEngine.DAL
         public EngineInterface LoadGame(int worldId)
         {
             GameWorld world = LoadWorld(worldId);
+            SaveWorld(world);
             Game g = new Game(world, new Player());
 
             // TODO: move the thread spawn to a better location
@@ -94,7 +94,6 @@ namespace CertainDeathEngine.DAL
             {
                 return world;
             }
-
 
             try
             {
@@ -137,7 +136,6 @@ namespace CertainDeathEngine.DAL
         {
             int worldId = nextWorldId++;
             GameWorld newWorld = gen.GenerateWorld(worldId);
-            SaveWorld(newWorld);
             return newWorld;
         }
     }

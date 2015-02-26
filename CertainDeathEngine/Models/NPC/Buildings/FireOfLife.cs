@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
+    [Serializable]
 	class FireOfLife : Building
 	{
 		public FireOfLife()
@@ -63,6 +64,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public override void Update(long millis)
         {
+            return;
             throw new NotImplementedException();
         }
     }
