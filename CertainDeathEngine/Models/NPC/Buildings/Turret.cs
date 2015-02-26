@@ -19,44 +19,44 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         // Turret's damage per second
         public float Damage { get; set; }
 
-        public override Point Position
-        {
-            get { return _Position; }
-            set
-            {
-                _Position = value;
-            }
-        }
-        public override int Width
-        {
-            get { return _Width; }
-            set
-            {
-                _Width = value;
-            }
-        }
-        public override int Height
-        {
-            get { return _Height; }
-            set
-            {
-                _Height = value;
-            }
-        }
+        //public override Point Position
+        //{
+        //    get { return _Position; }
+        //    set
+        //    {
+        //        _Position = value;
+        //    }
+        //}
+        //public override int Width
+        //{
+        //    get { return _Width; }
+        //    set
+        //    {
+        //        _Width = value;
+        //    }
+        //}
+        //public override int Height
+        //{
+        //    get { return _Height; }
+        //    set
+        //    {
+        //        _Height = value;
+        //    }
+        //}
 
         // building's current state {WAITING, ATTAKING}
         private TurretState State { get; set; }
 
-        // The monster the building is attacking
+        // The monster the turret is attacking
         private Monster Attacking { get; set; }
+
         public Tile Tile { get; private set; }
 
-        // 
         public float AttackSpeed { get; set; }
         
-
 		public Turret(Tile t, Point pos, int attackSpeed)
 		{
+            Type = BuildingType.Turret;
 			Tile = t;
 			Position = pos;
             AttackSpeed = attackSpeed;
@@ -64,14 +64,14 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			_Height = Square.PIXEL_SIZE;
 			_Width = Square.PIXEL_SIZE;
 		}
-		public void Update(long millis)
+
+		public override void Update(long millis)
 		{
-            //Trace.WriteLine("Turret " + Id + " is updating");
 			if (State == TurretState.ATTACKING)
 			{
 				if (Attacking.HealthPoints <= 0)
 				{
-					// someone else killed it, do nothing this step, then start walking
+					// someone else killed it, do nothing this step
 					// If we can sell buildings there could be a problem here
                     State = TurretState.WAITING;
 					Attacking = null;

@@ -101,19 +101,24 @@ namespace CertainDeathEngine
 		}
 
 
-        public IEnumerable<string> GetBuildableBuildingsList()
+        public IEnumerable<BuildingType> GetBuildableBuildingsList()
         {
-            return new List<string>() { "Wall", "Turret", "Lumber Mill" };
+            List<BuildingType> list = new List<BuildingType>();
+            foreach(BuildingType t in Enum.GetValues(typeof(BuildingType)))
+            {
+                list.Add(t);
+            }
+            return list;
         }
 
-        public Building BuildBuildingAtSquare(int row, int column, string buildingType)
+        public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-            Building buildingInstance = buildingFactory.BuildBuilding(buildingType);
+            //Building buildingInstance = buildingFactory.BuildBuilding(buildingType);
             // check if it is a good location
 
             // persist the building
 
-            return buildingInstance;
+            return null;
         }
 
         public void SaveWorld()
@@ -122,6 +127,5 @@ namespace CertainDeathEngine
 
             // Move the world creation stuff into the game class
         }
-
     }
 }

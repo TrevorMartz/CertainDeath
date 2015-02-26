@@ -11,6 +11,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 	{
 		public FireOfLife()
 		{
+            Type = BuildingType.FireOfLife;
 			// I think its okay if this building doesn't have to snap to the
 			// square grid. It's special and should be in the very center.
 			// (If it isn't in the center, and it's small, the monsters might
@@ -59,5 +60,10 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			MaxHealthPoints = 1000000;
 			HealthPoints = 1000000;
 		}
-	}
+
+        public override void Update(long millis)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

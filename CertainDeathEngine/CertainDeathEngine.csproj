@@ -98,6 +98,7 @@
     <Compile Include="DAL\BasicUserDAL.cs" />
     <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Factories\MonsterGenerator.cs" />
+    <Compile Include="Models\NPC\Buildings\BuildingType.cs" />
     <Compile Include="Models\NPC\Buildings\FireOfLife.cs" />
     <Compile Include="Models\NPC\MonsterState.cs" />
     <Compile Include="Models\NPC\Temporal.cs" />

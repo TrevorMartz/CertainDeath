@@ -18,9 +18,16 @@ namespace CertainDeathEngine.Factories
 
         }
 
-        public Building BuildBuilding(string buildingType)
+        public Building BuildBuilding(BuildingType buildingType, int x, int y)
         {
-			return new Building() { Id = GetNextId()};
+            Building building = null;
+            switch(buildingType)
+            {
+                case BuildingType.Turret:
+                    //building = new Turret()
+                    break;
+            }
+            return building;
         }
 
 		public int GetNextId()

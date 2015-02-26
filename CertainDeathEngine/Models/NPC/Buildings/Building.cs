@@ -10,15 +10,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
 	[JsonObject(MemberSerialization.OptIn)]
-	public class Building : Killable, Temporal
+	public abstract class Building : Killable, Temporal
     {
 		[JsonProperty]
-		public string Type { get { return "Building"; } }
+		public string Typename { get { return Type.ToString(); } }
 
-        public float HarvestRate { get; set; }
+        public BuildingType Type { get; set; }
 
-		public void Update(long millis)
-		{
-		}
+        public abstract void Update(long millis);
 	}
 }
