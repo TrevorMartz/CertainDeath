@@ -13,37 +13,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     [JsonObject(MemberSerialization.OptIn)]
     public class Turret : Building
     {
-
+        
         // The Radius of the turrets's attack circle
-        public int Radius { get; set; }
+        public double Range { get; set; }
 
         // Turret's damage per second
         public float Damage { get; set; }
-
-        //public override Point Position
-        //{
-        //    get { return _Position; }
-        //    set
-        //    {
-        //        _Position = value;
-        //    }
-        //}
-        //public override int Width
-        //{
-        //    get { return _Width; }
-        //    set
-        //    {
-        //        _Width = value;
-        //    }
-        //}
-        //public override int Height
-        //{
-        //    get { return _Height; }
-        //    set
-        //    {
-        //        _Height = value;
-        //    }
-        //}
 
         // building's current state {WAITING, ATTAKING}
         private TurretState State { get; set; }
@@ -51,19 +26,15 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         // The monster the turret is attacking
         private Monster Attacking { get; set; }
 
-        public Tile Tile { get; private set; }
-
         public float AttackSpeed { get; set; }
         
-		public Turret(Tile t, Point pos, int attackSpeed)
+		public Turret(Tile tile, Point pos) : base(tile, pos)
 		{
-            Type = BuildingType.Turret;
-			Tile = t;
-			Position = pos;
-            AttackSpeed = attackSpeed;
+            Type = BuildingType.TURRET;
             State = TurretState.WAITING;
-			_Height = Square.PIXEL_SIZE;
-			_Width = Square.PIXEL_SIZE;
+            MaxLevel = 5;
+            Level = 0;
+            Upgrade();   
 		}
 
 		public override void Update(long millis)
@@ -84,7 +55,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			}
 			else if (State == TurretState.WAITING)
 			{
-				Monster monsterToAttack = FindTheFirstMonsterThatIsCloseEnoughToAttackAndReturnThatMonsterSoWeCanStoreTheThingWeWantToShootAt(millis);
+				Monster monsterToAttack = FindClosestAttackableMonster(millis);
                 if (monsterToAttack != null)
 				{
 					Attacking = monsterToAttack;
@@ -93,16 +64,19 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			}
         }
 
-        private Monster FindTheFirstMonsterThatIsCloseEnoughToAttackAndReturnThatMonsterSoWeCanStoreTheThingWeWantToShootAt(long millis)
+        private Monster FindClosestAttackableMonster(long millis)
         {
             Monster monsterToReturn = null;
-            double distanceFromTurret = double.MaxValue;
-            foreach (Monster m in Tile.Monsters)
+            double distanceFromTurret = Range;
+            lock (Tile.Monsters)
             {
-                double d = GetFastDistance(m);
-                if (d < distanceFromTurret && d > Radius)
+                foreach (Monster m in Tile.Monsters)
                 {
-                    monsterToReturn = m;
+                    double d = GetFastDistance(m);
+                    if (d < distanceFromTurret)
+                    {
+                        monsterToReturn = m;
+                    }
                 }
             }
             return monsterToReturn;
@@ -115,7 +89,26 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Attacking.HealthPoints <= 0)
             {
                 Tile.RemoveObject(Attacking);
+                State = TurretState.WAITING;
+                Attacking = null;
             }
         }
+
+        public override void Upgrade()
+        {
+            if (Level < MaxLevel)
+            {
+                Level++;
+                MaxHealthPoints = Level * 3;
+                HealthPoints = MaxHealthPoints;
+                Range = 3 * Level;
+                AttackSpeed = Level * .03f;//idk, just pikced a number.
+            }
+        }
+    }
+
+    public enum TurretState
+    {
+        WAITING, ATTACKING
     }
 }

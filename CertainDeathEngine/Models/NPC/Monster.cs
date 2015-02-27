@@ -110,7 +110,7 @@ namespace CertainDeathEngine.Models.NPC
 			}
 			else if (State == MonsterState.WALKING)
 			{
-				Building colide = WalkUntilYouHitSomethingOrRunOutOfTimeThenReturnWhatYouRanInto(millis);
+				Building colide = FindAttackableBuilding(millis);
 				if (colide != null)
 				{
 					Attacking = colide;
@@ -119,16 +119,19 @@ namespace CertainDeathEngine.Models.NPC
 			}
 		}
 
-		private Building WalkUntilYouHitSomethingOrRunOutOfTimeThenReturnWhatYouRanInto(long millis)
+		private Building FindAttackableBuilding(long millis)
 		{
 			Point XYdist = GetDistanceOverTime(millis);
 			double distanceCanGo = Distance(XYdist.X, XYdist.Y);
 			bool somethingIsClose = false;
-			for (int i = 0; i < Tile.Buildings.Count && ! somethingIsClose; i++)
-			{
-				double dist = GetFastDistance(Tile.Buildings[i]);
-				somethingIsClose = dist <= distanceCanGo;
-			}
+            lock (Tile.Buildings)
+            {
+                for (int i = 0; i < Tile.Buildings.Count && !somethingIsClose; i++)
+                {
+                    double dist = GetFastDistance(Tile.Buildings[i]);
+                    somethingIsClose = dist <= distanceCanGo;
+                }
+            }
 
 			if (somethingIsClose)
 			{
@@ -207,7 +210,10 @@ namespace CertainDeathEngine.Models.NPC
 						squarePos.Y = squarePos.Y + (Direction.Y > 0 ? 1 : -1);
 					}
 				}
-				hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
+                lock (Tile.Squares)
+                {
+                    hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
+                }
 			}
 			return new Collision() {Hit = hit, Distance = Distance(startingPoint, pos) };
 		}
@@ -218,7 +224,9 @@ namespace CertainDeathEngine.Models.NPC
 			Attacking.HealthPoints -= damage;
 			if (Attacking.HealthPoints <= 0)
 			{
-				Tile.RemoveObject(Attacking);
+                Attacking.RemoveBuilding();
+                State = MonsterState.WALKING;
+                Attacking = null;
 			}
 		}
 
@@ -344,4 +352,9 @@ namespace CertainDeathEngine.Models.NPC
 			public double Distance { get; set; }
 		}
 	}
+
+    public enum MonsterState
+    {
+        WALKING, ATTACKING, DYING
+    }
 }

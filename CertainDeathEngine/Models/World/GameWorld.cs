@@ -30,7 +30,7 @@ namespace CertainDeathEngine.Models
         public GameWorld(int worldId) : this(new Tile(0, 0), worldId) { }
 
 		public GameWorld(Tile t, int worldId)
-        {
+		{
             Player = new Player();
 			this.CurrentTile = t;
 			this.Id = worldId;
@@ -38,13 +38,12 @@ namespace CertainDeathEngine.Models
 			Tiles.Add(t);
 		}
 
-		public GameWorld(Tile[,] tiles, Tile t, int worldId)
+		public GameWorld(Tile[,] tiles, Tile tile, int worldId)
         {
             Player = new Player();
-			this.CurrentTile = t;
-			t.AddObject(new FireOfLife());
+			this.CurrentTile = tile;
+			tile.AddObject(new FireOfLife(tile));
 			this.Id = worldId;
-
 			Tiles = tiles.Cast<Tile>().ToList();
 		}
 

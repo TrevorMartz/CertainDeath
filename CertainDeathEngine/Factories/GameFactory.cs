@@ -6,25 +6,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CertainDeathEngine.Factories
 {
     public class GameFactory
     {
         static int nextObjectId = 1;
-
-        public GameFactory()
+        public GameWorld World { get; protected set; }
+        public GameFactory(GameWorld world)
         {
-
+            World = world;
         }
 
-        public Building BuildBuilding(BuildingType buildingType, int x, int y)
+        public Building BuildBuilding(BuildingType buildingType, Point position)
         {
             Building building = null;
-            switch(buildingType)
+            switch(buildingType)//fire of life does not have a case because it is only built once, in the constructor of the gameworld.
             {
-                case BuildingType.Turret:
-                    //building = new Turret()
+                case BuildingType.TURRET:
+                    building = new Turret(World.CurrentTile, position);
+                    break;
+                case BuildingType.WALL:
+                    building = new Wall(World.CurrentTile, position);
                     break;
             }
             return building;

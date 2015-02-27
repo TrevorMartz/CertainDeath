@@ -7,7 +7,9 @@
 
 <h2>LeaderBoard</h2>
 
-@foreach (var user in Model)
-{
-    @user.FBUser.ProfilePicture
-}
+<ol class="leaders">
+    @foreach (var user in Model)
+    {
+        <li>@user.FBUser.ProfilePicture @user.FBUser.Name @user.Score.Survived</li>
+    }
+</ol>
