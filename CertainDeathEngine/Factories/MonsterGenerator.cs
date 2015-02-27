@@ -27,7 +27,7 @@ namespace CertainDeathEngine.Factories
 		// How many monsters spawn after the initial spawn
 		public int SpawnSize { get; set; }
 
-		public MonsterGenerator(GameWorld world)
+		public MonsterGenerator(GameWorld world) : base(world)
 		{
 			World = world;
 		}

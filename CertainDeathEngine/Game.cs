@@ -13,6 +13,7 @@ using CertainDeathEngine.Models.Resources;
 using System.Diagnostics;
 using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models.NPC.Buildings;
+using System.Windows;
 
 namespace CertainDeathEngine
 {
@@ -27,7 +28,7 @@ namespace CertainDeathEngine
         {
             Init.InitAll();
             World = world;
-            buildingFactory = new GameFactory();
+            buildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
             MonsterGenerator.Update(1);
             Player = player;
@@ -46,13 +47,17 @@ namespace CertainDeathEngine
 
         public string SquareClicked(float row, float col)
         {
-            Resource res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
-            if (res != null)
+            Resource res;
+            lock (World.CurrentTile)
             {
-                ResourceType type = res.Type;
-                int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-                Player.AddResource(type, gathered);
-                Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
+                res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
+                if (res != null)
+                {
+                    ResourceType type = res.Type;
+                    int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
+                    Player.AddResource(type, gathered);
+                    //Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
+                }
             }
             return ToJSON();
         }
@@ -116,7 +121,10 @@ namespace CertainDeathEngine
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-            //Building buildingInstance = buildingFactory.BuildBuilding(buildingType);
+            lock (World.CurrentTile)
+            {
+                Building buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
+            }
             // check if it is a good location
 
             // persist the building

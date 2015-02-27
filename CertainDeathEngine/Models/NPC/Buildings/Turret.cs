@@ -28,16 +28,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public float AttackSpeed { get; set; }
         
-		public Turret(Tile tile, Point pos, int attackSpeed, double range)
+		public Turret(Tile tile, Point pos) : base(tile, pos)
 		{
             Type = BuildingType.TURRET;
-			Tile = tile;
-			Position = pos;
-            Range = range;
-            AttackSpeed = attackSpeed;
             State = TurretState.WAITING;
-			_Height = Square.PIXEL_SIZE;
-			_Width = Square.PIXEL_SIZE;
+            MaxLevel = 5;
+            Level = 0;
+            Upgrade();   
 		}
 
 		public override void Update(long millis)
@@ -94,6 +91,18 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 Tile.RemoveObject(Attacking);
                 State = TurretState.WAITING;
                 Attacking = null;
+            }
+        }
+
+        public override void Upgrade()
+        {
+            if (Level < MaxLevel)
+            {
+                Level++;
+                MaxHealthPoints = Level * 3;
+                HealthPoints = MaxHealthPoints;
+                Range = 3 * Level;
+                AttackSpeed = Level * .03f;//idk, just pikced a number.
             }
         }
     }

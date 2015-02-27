@@ -35,12 +35,11 @@ namespace CertainDeathEngine.Models
 			Tiles.Add(t);
 		}
 
-		public GameWorld(Tile[,] tiles, Tile t, int worldId)
+		public GameWorld(Tile[,] tiles, Tile tile, int worldId)
 		{
-			this.CurrentTile = t;
-			t.AddObject(new FireOfLife());
+			this.CurrentTile = tile;
+			tile.AddObject(new FireOfLife(tile));
 			this.Id = worldId;
-
 			Tiles = tiles.Cast<Tile>().ToList();
 		}
 
