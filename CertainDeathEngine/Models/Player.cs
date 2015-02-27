@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models
 {
+    [Serializable]
     public class Player : GameObject
     {
         private Dictionary<ResourceType, int> Resources { get; set; }

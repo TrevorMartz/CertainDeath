@@ -19,19 +19,17 @@ namespace CertainDeathEngine
 {
     public class Game : EngineInterface
     {
-        public Player Player { get; set; }
         public GameWorld World;
         public GameFactory buildingFactory;
         public MonsterGenerator MonsterGenerator;
 
-        public Game(GameWorld world, Player player)
+        public Game(GameWorld world)
         {
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
             MonsterGenerator.Update(1);
-            Player = player;
         }
 
         public string ToJSON()
@@ -55,7 +53,7 @@ namespace CertainDeathEngine
                 {
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-                    Player.AddResource(type, gathered);
+                    World.Player.AddResource(type, gathered);
                     //Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
                 }
             }

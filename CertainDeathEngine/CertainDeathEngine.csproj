@@ -120,6 +120,7 @@
     <Compile Include="Models\User\FacebookPhoto.cs" />
     <Compile Include="Models\User\FacebookPicture.cs" />
     <Compile Include="Models\User\MyAppUserFriend.cs" />
+    <Compile Include="Models\User\Score.cs" />
     <Compile Include="Models\World\GameWorld.cs" />
     <Compile Include="Models\NPC\Buildings\Building.cs" />
     <Compile Include="Models\NPC\Monster.cs" />
