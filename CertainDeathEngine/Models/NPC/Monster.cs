@@ -224,7 +224,7 @@ namespace CertainDeathEngine.Models.NPC
 			Attacking.HealthPoints -= damage;
 			if (Attacking.HealthPoints <= 0)
 			{
-				Tile.RemoveObject(Attacking);
+                Attacking.RemoveBuilding();
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}
@@ -352,4 +352,9 @@ namespace CertainDeathEngine.Models.NPC
 			public double Distance { get; set; }
 		}
 	}
+
+    public enum MonsterState
+    {
+        WALKING, ATTACKING, DYING
+    }
 }

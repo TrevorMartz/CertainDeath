@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Factories
         public Building BuildBuilding(BuildingType buildingType, Point position)
         {
             Building building = null;
-            switch(buildingType)//fire of life is not a case because it is only built once, in the constructor of the gameworld.
+            switch(buildingType)//fire of life does not have a case because it is only built once, in the constructor of the gameworld.
             {
                 case BuildingType.TURRET:
                     building = new Turret(World.CurrentTile, position);

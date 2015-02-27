@@ -106,4 +106,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             }
         }
     }
+
+    public enum TurretState
+    {
+        WAITING, ATTACKING
+    }
 }
