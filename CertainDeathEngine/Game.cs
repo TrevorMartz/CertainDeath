@@ -14,22 +14,29 @@ using System.Diagnostics;
 using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System.Windows;
+using CertainDeathEngine.DAL;
 
 namespace CertainDeathEngine
 {
     public class Game : EngineInterface
     {
+        WorldManager.WorldManager worldManager;
+        UpdateManager updateManager;
         public GameWorld World;
         public GameFactory buildingFactory;
         public MonsterGenerator MonsterGenerator;
+        private IStatisticsDAL statisticsDAL;
 
         public Game(GameWorld world)
         {
+            worldManager = WorldManager.WorldManager.Instance;
+            updateManager = UpdateManager.Instance;
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
             MonsterGenerator.Update(1);
+            statisticsDAL = new EFStatisticsDAL();
         }
 
         public string ToJSON()
@@ -132,9 +139,24 @@ namespace CertainDeathEngine
 
         public void SaveWorld()
         {
-            // TODO: make a save game work
 
-            // Move the world creation stuff into the game class
+            if (worldManager.HasWorld(World.Id)) {
+                worldManager.StoreWorld(World);
+            } else {
+                throw new Exception("The world manager is missing the world");
+            }
+        }
+
+        public void GameOver()
+        {
+            SaveScore();
+            World.HasEnded = true;
+            updateManager.RemoveGameThread(World.Id);
+        }
+
+        public void SaveScore()
+        {
+
         }
     }
 }

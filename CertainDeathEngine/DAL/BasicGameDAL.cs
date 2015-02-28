@@ -72,6 +72,10 @@ namespace CertainDeathEngine.DAL
         public EngineInterface LoadGame(int worldId)
         {
             GameWorld world = LoadWorld(worldId);
+            if (world.HasEnded)
+            {
+                throw new Exception("The game has already ended");
+            }
             SaveWorld(world);
             Game g = new Game(world);
 

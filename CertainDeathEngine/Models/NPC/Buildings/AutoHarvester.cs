@@ -8,6 +8,7 @@ using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
+    [Serializable]
     public class AutoHarvester : Building
     {
         //resources collected per second.

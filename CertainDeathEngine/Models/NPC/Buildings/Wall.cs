@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
+    [Serializable]
     public class Wall : Building
     {
         public Wall(Tile tile, Point pos) : base(tile, pos)

@@ -96,5 +96,9 @@ namespace CertainDeathEngine
         Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType);
 
         void SaveWorld();
+
+        void GameOver();
+
+        void SaveScore();
 	}
 }

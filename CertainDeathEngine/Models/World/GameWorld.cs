@@ -3,7 +3,9 @@ using CertainDeathEngine.Models.NPC.Buildings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +24,8 @@ namespace CertainDeathEngine.Models
 
 		public  List<Tile> Tiles { get; private set; }
 
+        public bool HasEnded { get; set; }
+
         public GameWorld()
         {
             // only for use with the json deserializer
@@ -31,6 +35,7 @@ namespace CertainDeathEngine.Models
 
 		public GameWorld(Tile t, int worldId)
 		{
+            HasEnded = false;
             Player = new Player();
 			this.CurrentTile = t;
 			this.Id = worldId;
@@ -40,16 +45,12 @@ namespace CertainDeathEngine.Models
 
 		public GameWorld(Tile[,] tiles, Tile tile, int worldId)
         {
+            HasEnded = false;
             Player = new Player();
 			this.CurrentTile = tile;
 			tile.AddObject(new FireOfLife(tile));
 			this.Id = worldId;
 			Tiles = tiles.Cast<Tile>().ToList();
 		}
-
-        //public void AddObject(GameObject obj)
-        //{
-        //    this.CurrentTile.AddObject(obj);
-        //}
     }
 }

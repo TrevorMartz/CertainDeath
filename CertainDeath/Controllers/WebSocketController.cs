@@ -19,26 +19,39 @@ namespace CertainDeath.Controllers
 {
     public class WebSocketController : ApiController
     {
+        private IGameDAL GameDAL;
+        private IUserDAL UserDAL;
+        private IStatisticsDAL StatisticsDAL;
+
+        public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
+        {
+            GameDAL = gameDal;
+            UserDAL = userDal;
+            StatisticsDAL = statisticsDal;
+        }
+
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
         {
             // pass in the world id
-            HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(id));
+            HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(GameDAL, UserDAL, StatisticsDAL, id));
             return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
         }
 
+
         public class GameWebSocketHandler : WebSocketHandler
         {
-
-            protected IGameDAL GameDAL;
-            protected IUserDAL UserDAL;
+            private IGameDAL GameDAL;
+            private IUserDAL UserDAL;
+            private IStatisticsDAL StatisticsDAL;
             protected int gameWorldId;
             protected EngineInterface gameInstance;
 
-            public GameWebSocketHandler(int worldId)
+            public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
-                GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
-                UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"));
+                GameDAL = gameDal;
+                UserDAL = userDal;
+                StatisticsDAL = statisticsDal;
                 this.gameWorldId = worldId;
                 this.gameInstance = GameDAL.LoadGame(gameWorldId);
             }

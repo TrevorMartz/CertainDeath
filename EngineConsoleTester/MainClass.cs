@@ -51,7 +51,7 @@ namespace EngineConsoleTester
         private static void BlakeIsSOOOOOOUgly()
         {
             IGameDAL GameDAL = new BasicGameDAL("c:\\_\\test\\");
-            IUserDAL UserDAL = new BasicUserDAL("c:\\_\\test\\");
+            IUserDAL UserDAL = new EFUserDAL();// BasicUserDAL("c:\\_\\test\\");
 
             Game g = null;
             g = (Game)GameDAL.LoadGame(10);

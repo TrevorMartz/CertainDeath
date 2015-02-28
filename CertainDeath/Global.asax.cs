@@ -8,6 +8,9 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.AspNet.Facebook;
 using CertainDeathEngine;
+using System.Data.Entity;
+using CertainDeathEngine.DB;
+using CertainDeath.Infrastructure;
 
 namespace CertainDeath
 {
@@ -22,6 +25,13 @@ namespace CertainDeath
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            // Build the database
+            //Database.SetInitializer<CDDBModel>(null);
+
+            // Set up the Ninject stuff
+            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+
+            // Init the static game stuff
             CertainDeathEngine.Init.InitAll();
         }
     }

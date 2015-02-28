@@ -13,13 +13,15 @@ namespace CertainDeath.Controllers
 {
     public class HomeController : Controller
     {
-        protected IGameDAL GameDAL;
-        protected IUserDAL UserDAL;
+        private IGameDAL GameDAL;
+        private IUserDAL UserDAL;
+        private IStatisticsDAL StatisticsDAL;
 
-        public HomeController()
+        public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
-            GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~\\Data"));
-            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~\\Data"));
+            GameDAL = gameDal;
+            UserDAL = userDal;
+            StatisticsDAL = statisticsDal;
         }
 
         [FacebookAuthorize("email", "user_photos")]
