@@ -10,7 +10,7 @@ using Microsoft.AspNet.Facebook;
 using CertainDeathEngine;
 using System.Data.Entity;
 using CertainDeathEngine.DB;
-using CertainDeath.Infrastructure;
+//using CertainDeath.Infrastructure;
 
 namespace CertainDeath
 {

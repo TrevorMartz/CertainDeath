@@ -1,15 +1,10 @@
 ﻿using CertainDeathEngine.Models;
-using CertainDeathEngine.Models.User;
 using CertainDeathEngine.Models.World;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
@@ -130,7 +125,7 @@ namespace CertainDeathEngine.DAL
             }
 
             // World wasnt stored before, so do it now
-            worldManager.KeepWorld(world);            
+            worldManager.KeepWorld(world);
 
             // return the world
             return world;

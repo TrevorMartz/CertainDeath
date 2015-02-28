@@ -1,12 +1,9 @@
-﻿using CertainDeathEngine.Models;
-using CertainDeathEngine.Models.User;
+﻿using CertainDeathEngine.Models.User;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.DAL
 {
@@ -42,39 +39,6 @@ namespace CertainDeathEngine.DAL
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
             return (users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
-            //// Everyone can add their email here until we get a real user db to test with.
-            //// We can each test with our own world id 
-
-            //// Blake
-            //if (fbUser.Id.Equals("812423582127592") && fbUser.Email.Equals("brollins90@gmail.com"))
-            //{
-            //    return new CertainDeathUser() { FBUser = fbUser, WorldId = 7 };
-            //}
-            //// Josh
-            //else if (fbUser.Email.Equals("whoduexpect@gmail.com"))
-            //{
-            //    return new CertainDeathUser() { FBUser = fbUser, WorldId = 8 };
-            //}
-            //// Shayne
-            //else if (fbUser.Email.Equals("shayne@email.com"))
-            //{
-            //    return new CertainDeathUser() { FBUser = fbUser, WorldId = 9 };
-            //}
-            //// Taylor
-            //else if (fbUser.Email.Equals("taylor@email.com"))
-            //{
-            //    return new CertainDeathUser() { FBUser = fbUser, WorldId = 10 };
-            //}
-            //// Trevor
-            //else if (fbUser.Email.Equals("trevor@email.com"))
-            //{
-            //    return new CertainDeathUser() { FBUser = fbUser, WorldId = 11 };
-            //}
-            ////return null;
-            //return new CertainDeathUser() { WorldId = 7 };
-
-
-
         }
 
         private void Save()

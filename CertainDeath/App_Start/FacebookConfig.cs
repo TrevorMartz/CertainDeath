@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Microsoft.AspNet.Facebook;
 using Microsoft.AspNet.Facebook.Authorization;
 

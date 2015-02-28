@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using CertainDeathEngine.DAL;
+using CertainDeathEngine.Models.User;
 using Microsoft.AspNet.Facebook;
 using Microsoft.AspNet.Facebook.Client;
-using CertainDeathEngine.Models.User;
-using CertainDeathEngine.DAL;
-using System.Web.Hosting;
-//using CertainDeath.Models;
+using System.Threading.Tasks;
+//using System.Web.Hosting;
+using System.Web.Mvc;
 
 namespace CertainDeath.Controllers
 {
@@ -53,10 +50,10 @@ namespace CertainDeath.Controllers
                     //return View("GameRegistration", facebookUser);
                     certainDeathUser = UserDAL.CreateGameUser(facebookUser);
                 }
-                
+
                 // We have a user, play the game
                 return View("Game", certainDeathUser);
-                
+
             }
 
             // something was wrong

@@ -126,8 +126,6 @@
     <Compile Include="EngineInterface.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Init.cs" />
-    <Compile Include="Models\AI\AbstractAI.cs" />
-    <Compile Include="Models\AI\PatrolAI.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\User\MyAppUser.cs" />
     <Compile Include="Models\User\FacebookPhoto.cs" />

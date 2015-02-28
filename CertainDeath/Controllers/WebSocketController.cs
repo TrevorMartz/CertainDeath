@@ -1,19 +1,12 @@
-﻿using Microsoft.Web.WebSockets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CertainDeathEngine;
+using CertainDeathEngine.DAL;
+using Microsoft.Web.WebSockets;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+//using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Mvc;
-using CertainDeathEngine.DAL;
-using CertainDeathEngine.Models.User;
-using System.Diagnostics;
-using System.Web.Hosting;
-using CertainDeathEngine.Models;
-using CertainDeathEngine;
-using System.Threading;
 
 namespace CertainDeath.Controllers
 {
@@ -76,7 +69,7 @@ namespace CertainDeath.Controllers
                 //CertainDeathUser user = UserDAL.GetGameUser(null);// need to pass in some fb context
 
                 Send(gameInstance.ToJSON());
-                
+
             }
 
             public override void OnClose()
