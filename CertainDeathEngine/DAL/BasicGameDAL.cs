@@ -10,28 +10,55 @@ namespace CertainDeathEngine.DAL
 {
     public class BasicGameDAL : IGameDAL
     {
-        private string FilePath;
-        static int nextWorldId = 1;
-        private GameWorldGenerator gen;
-        WorldManager.WorldManager worldManager = WorldManager.WorldManager.Instance;
+        private static int _nextWorldId = 1;
+        private readonly string _filePath;
+        private readonly GameWorldGenerator _worldGenerator;
+        private readonly WorldManager.WorldManager _worldManager = WorldManager.WorldManager.Instance;
 
         public BasicGameDAL(string path)
         {
-            FilePath = String.Format("{0}\\World", path);
-            gen = new GameWorldGenerator();
+            _filePath = String.Format("{0}\\World", path);
+            _worldGenerator = new GameWorldGenerator();
             SetNextWorldId();
+        }
+
+        private static int GetNextId()
+        {
+            return Interlocked.Increment(ref _nextWorldId);
+        }
+
+        public EngineInterface CreateGame()
+        {
+            GameWorld world = CreateWorld();
+            return GetGameAndStartUpdateThread(world);
+        }
+
+        public EngineInterface CreateGame(int worldId)
+        {
+            GameWorld world = LoadWorld(worldId);
+            if (world.HasEnded)
+            {
+                throw new Exception("The game has already ended");
+            }
+
+            return GetGameAndStartUpdateThread(world);
+        }
+
+        public bool SaveGame(Game game)
+        {
+            return SaveWorld(game.World);
         }
 
         private void SetNextWorldId()
         {
             try
             {
-                DirectoryInfo di = new DirectoryInfo(FilePath);
+                DirectoryInfo di = new DirectoryInfo(_filePath);
                 FileInfo[] worldFiles = di.GetFiles();
 
                 string maxFile = worldFiles.Max(x => x.Name.Substring(0, x.Name.Length - 6));
                 int maxFileNumber = int.Parse(maxFile);
-                nextWorldId = maxFileNumber + 1;
+                _nextWorldId = maxFileNumber + 1;
             }
             catch (Exception)
             {
@@ -39,13 +66,26 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        public bool SaveWorld(GameWorld world)
+        private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
         {
-            if (worldManager.HasWorld(world.Id))
+            Game g = new Game(world);
+
+            // TODO: move the thread spawn to a better location
+            Updater u = new Updater(g);
+            Thread updater = new Thread(u.Run);
+            updater.Name = "Updater thread";
+            UpdateManager.Instance.AddGameThread(world.Id, updater);
+
+            return g;
+        }
+
+        private bool SaveWorld(GameWorld world)
+        {
+            if (_worldManager.HasWorld(world.Id))
             {
                 try
                 {
-                    System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", FilePath, world.Id));
+                    System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", _filePath, world.Id));
                     BinaryFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(ms, world);
                     ms.Flush();
@@ -64,30 +104,11 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        public EngineInterface LoadGame(int worldId)
-        {
-            GameWorld world = LoadWorld(worldId);
-            if (world.HasEnded)
-            {
-                throw new Exception("The game has already ended");
-            }
-            SaveWorld(world);
-            Game g = new Game(world);
-
-            // TODO: move the thread spawn to a better location
-            Updater u = new Updater(g);
-            Thread updater = new Thread(u.Run);
-            updater.Name = "Updater thread";
-            UpdateManager.Instance.AddGameThread(world.Id, updater);
-
-            return g;
-        }
-
         private GameWorld LoadWorld(int worldId)
         {
             GameWorld world = null;
 
-            world = worldManager.GetWorld(worldId);
+            world = _worldManager.GetWorld(worldId);
 
             if (world != null)
             {
@@ -96,13 +117,13 @@ namespace CertainDeathEngine.DAL
 
             try
             {
-                DirectoryInfo di = new DirectoryInfo(FilePath);
+                DirectoryInfo di = new DirectoryInfo(_filePath);
                 FileInfo[] worldFiles = di.GetFiles();
 
-                if (worldFiles.Where(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())).Count() != 0)
+                if (worldFiles.Count(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())) != 0)
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    FileStream fs = File.Open(String.Format("{0}\\{1}.world", FilePath, worldId), FileMode.Open);
+                    FileStream fs = File.Open(String.Format("{0}\\{1}.world", _filePath, worldId), FileMode.Open);
 
                     object obj = formatter.Deserialize(fs);
                     world = (GameWorld)obj;
@@ -111,21 +132,20 @@ namespace CertainDeathEngine.DAL
                     fs.Dispose();
                 }
 
-
-                else
+                if (world == null)
                 {
                     // there is not a world with that id
-                    world = CreateWorld();
+                    throw new Exception("Can not find the world with that Id");
                 }
             }
             catch (Exception)
             {
                 // TODO do we want to do something better for this exception?
-                world = CreateWorld();
+                throw new Exception("We had a problem loading the world");
             }
 
             // World wasnt stored before, so do it now
-            worldManager.KeepWorld(world);
+            _worldManager.KeepWorld(world);
 
             // return the world
             return world;
@@ -133,8 +153,8 @@ namespace CertainDeathEngine.DAL
 
         private GameWorld CreateWorld()
         {
-            int worldId = nextWorldId++;
-            GameWorld newWorld = gen.GenerateWorld(worldId);
+            int worldId = GetNextId();
+            GameWorld newWorld = _worldGenerator.GenerateWorld(worldId);
             return newWorld;
         }
     }

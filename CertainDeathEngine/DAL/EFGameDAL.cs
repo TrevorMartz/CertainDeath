@@ -10,42 +10,82 @@ namespace CertainDeathEngine.DAL
 {
     public class EFGameDAL : IGameDAL
     {
-        static int nextWorldId = 1;
-        private CDDBModel cdDBModel;
-        private GameWorldGenerator gen;
-        WorldManager.WorldManager worldManager = WorldManager.WorldManager.Instance;
+        private static int _nextWorldId = 1;
+        private readonly CDDBModel _cdDbModel;
+        private readonly GameWorldGenerator _worldGenerator;
+        private readonly WorldManager.WorldManager _worldManager = WorldManager.WorldManager.Instance;
 
         public EFGameDAL()
         {
-            cdDBModel = new CDDBModel();
-            gen = new GameWorldGenerator();
+            _cdDbModel = new CDDBModel();
+            _worldGenerator = new GameWorldGenerator();
             SetNextWorldId();
         }
+
+        private static int GetNextId()
+        {
+            return Interlocked.Increment(ref _nextWorldId);
+        }
+
+        public EngineInterface CreateGame()
+        {
+            GameWorld world = CreateWorld();
+            return GetGameAndStartUpdateThread(world);
+        }
+
+        public EngineInterface CreateGame(int worldId)
+        {
+            GameWorld world = LoadWorld(worldId);
+            if (world.HasEnded)
+            {
+                throw new Exception("The game has already ended");
+            }
+
+            return GetGameAndStartUpdateThread(world);
+        }
+
+        public bool SaveGame(Game game)
+        {
+            return SaveWorld(game.World);
+        }
+        
 
         private void SetNextWorldId()
         {
             try
             {
                 // TODO: we need to figure out the id part of the world storage
-                int maxId = cdDBModel.Worlds.Max(x => x.WorldId);
-                nextWorldId = maxId + 1;
+                int maxId = _cdDbModel.Worlds.Max(x => x.WorldId);
+                _nextWorldId = maxId + 1;
             }
             catch (Exception)
             {
                 // TODO do we want to do something better for this exception?
-                nextWorldId = 1;
+                _nextWorldId = 1;
             }
         }
 
-        public bool SaveWorld(GameWorld world)
+        private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
         {
-            //throw new NotImplementedException();
-            if (worldManager.HasWorld(world.Id))
+            Game g = new Game(world);
+
+            // TODO: move the thread spawn to a better location
+            Updater u = new Updater(g);
+            Thread updater = new Thread(u.Run);
+            updater.Name = "Updater thread";
+            UpdateManager.Instance.AddGameThread(world.Id, updater);
+
+            return g;
+        }
+
+        private bool SaveWorld(GameWorld world)
+        {
+            if (_worldManager.HasWorld(world.Id))
             {
                 try
                 {
-                    cdDBModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world }, WorldId = world.Id });
-                    cdDBModel.SaveChanges();
+                    _cdDbModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world }, WorldId = world.Id });
+                    _cdDbModel.SaveChanges();
                     return true;
                 }
                 catch (Exception e)
@@ -59,69 +99,53 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        public EngineInterface LoadGame(int worldId)
-        {
-            //throw new NotImplementedException();
-            GameWorld world = LoadWorld(worldId);
-            if (world.HasEnded)
-            {
-                throw new Exception("The game has already ended");
-            }
-            SaveWorld(world);
-            Game g = new Game(world);
-
-            // TODO: move the thread spawn to a better location
-            Updater u = new Updater(g);
-            Thread updater = new Thread(u.Run);
-            updater.Name = "Updater thread";
-            UpdateManager.Instance.AddGameThread(world.Id, updater);
-
-            return g;
-        }
-
         private GameWorld LoadWorld(int worldId)
         {
             GameWorld world = null;
 
-            world = worldManager.GetWorld(worldId);
+            world = _worldManager.GetWorld(worldId);
 
             if (world != null)
             {
+                // Here the game world is already loaded and running, just return it
                 return world;
             }
-
-            try
+            else
             {
-                GameWorldWrapperWrapper wrapperwrapper = cdDBModel.Worlds.Where(x => x.WorldId == worldId).FirstOrDefault();
-                if (wrapperwrapper != null)
+
+                // otherwise we need to get it from the database
+                try
                 {
-                    world = wrapperwrapper.Worlds.World;
-                }
-                //world = cdDBModel.Worlds.Where(x => x.Worlds.World.Id == worldId).First().Worlds.World;
+                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.FirstOrDefault(x => x.WorldId == worldId);
+                    if (wrapperwrapper != null)
+                    {
+                        world = wrapperwrapper.Worlds.World;
+                    }
 
-                if (world == null)
+                    if (world == null)
+                    {
+                        // there is not a world with that id
+                        throw new Exception("Can not find the world with that Id");
+                    }
+                }
+                catch (Exception)
                 {
-                    // there is not a world with that id
-                    world = CreateWorld();
+                    // TODO do we want to do something better for this exception?
+                    throw new Exception("We had a problem loading the world");
                 }
-            }
-            catch (Exception)
-            {
-                // TODO do we want to do something better for this exception?
-                world = CreateWorld();
-            }
 
-            // World wasnt stored before, so do it now
-            worldManager.KeepWorld(world);
+                // World wasnt stored before, so do it now
+                _worldManager.KeepWorld(world);
 
-            // return the world
-            return world;
+                // return the world
+                return world;
+            }
         }
 
         private GameWorld CreateWorld()
         {
-            int worldId = nextWorldId++;
-            GameWorld newWorld = gen.GenerateWorld(worldId);
+            int worldId = GetNextId();
+            GameWorld newWorld = _worldGenerator.GenerateWorld(worldId);
             return newWorld;
         }
     }

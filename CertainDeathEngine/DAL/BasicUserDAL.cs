@@ -9,21 +9,21 @@ namespace CertainDeathEngine.DAL
 {
     public class BasicUserDAL : IUserDAL
     {
-        private string FilePath;
-        private List<CertainDeathUser> users;
+        private readonly string _filePath;
+        private readonly List<CertainDeathUser> _users;
 
         public BasicUserDAL(string path)
         {
-            FilePath = String.Format("{0}\\User", path);
-            users = Load();
+            _filePath = String.Format("{0}\\User", path);
+            _users = Load();
         }
 
         public CertainDeathUser CreateGameUser(MyAppUser fbUser)
         {
-            if (users.Where(x => x.FBUser.Email.Equals(fbUser.Email)).Count() == 0)
+            if (_users.Count(x => x.FBUser.Email.Equals(fbUser.Email)) == 0)
             {
                 CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = -1 };
-                users.Add(newUser);
+                _users.Add(newUser);
                 Save();
                 return newUser;
             }
@@ -38,14 +38,14 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
-            return (users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
+            return (_users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
         }
 
         private void Save()
         {
             try
             {
-                Serialize(users, "users.bin");
+                Serialize(_users, "users.bin");
             }
             catch (Exception)
             {
@@ -60,7 +60,7 @@ namespace CertainDeathEngine.DAL
 
         private void Serialize(List<CertainDeathUser> list, string filename)
         {
-            System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}", FilePath, filename));
+            System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}", _filePath, filename));
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(ms, list);
             ms.Flush();
@@ -73,7 +73,7 @@ namespace CertainDeathEngine.DAL
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream fs = File.Open(String.Format("{0}\\{1}", FilePath, filename), FileMode.Open);
+                FileStream fs = File.Open(String.Format("{0}\\{1}", _filePath, filename), FileMode.Open);
 
                 object obj = formatter.Deserialize(fs);
                 List<CertainDeathUser> list = (List<CertainDeathUser>)obj;
@@ -89,5 +89,11 @@ namespace CertainDeathEngine.DAL
             }
         }
 
+
+
+        public void GiveGameUserAGameWorldId(int userId, int worldId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace CertainDeathEngine.DAL
         CertainDeathUser CreateGameUser(MyAppUser fbUser);
 
         CertainDeathUser GetGameUser(MyAppUser fbUser);
+
+        void GiveGameUserAGameWorldId(int userId, int worldId);
     }
 }

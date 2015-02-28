@@ -5,30 +5,20 @@ using Microsoft.AspNet.Facebook.Client;
 using System.Threading.Tasks;
 //using System.Web.Hosting;
 using System.Web.Mvc;
+using CertainDeathEngine;
 
 namespace CertainDeath.Controllers
 {
     public class HomeController : Controller
     {
-        private IGameDAL GameDAL;
-        private IUserDAL UserDAL;
-        private IStatisticsDAL StatisticsDAL;
+        private readonly IGameDAL _gameDal;
+        private readonly IUserDAL _userDal;
 
-        public HomeController()
+        public HomeController(IGameDAL gameDal, IUserDAL userDal)
         {
-            //GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
-            GameDAL = new EFGameDAL();
-            //UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
-            UserDAL = new EFUserDAL();
-            StatisticsDAL = new EFStatisticsDAL();
+            this._gameDal = gameDal;
+            this._userDal = userDal;
         }
-
-        //public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
-        //{
-        //    this.GameDAL = gameDal;
-        //    this.UserDAL = userDal;
-        //    this.StatisticsDAL = statisticsDal;
-        //}
 
         [FacebookAuthorize("email", "user_photos")]
         public async Task<ActionResult> Index(FacebookContext context)
@@ -36,24 +26,28 @@ namespace CertainDeath.Controllers
             if (ModelState.IsValid)
             {
                 var facebookUser = await context.Client.GetCurrentUserAsync<MyAppUser>();
-                // I dont know what we want to return when the user has not created a world before,
-                // maybe a null and then to a registration page
-                var certainDeathUser = UserDAL.GetGameUser(facebookUser);
 
                 // Below is some default code.  I dont know if we will use it.
                 if (Request.IsAjaxRequest())
                     return PartialView("_FriendView", facebookUser);
 
+                var certainDeathUser = _userDal.GetGameUser(facebookUser);
+
                 if (certainDeathUser == null)
                 {
-                    // do we want a registration page?
+                    // TODO: return a registration page where they can pick a name or something
                     //return View("GameRegistration", facebookUser);
-                    certainDeathUser = UserDAL.CreateGameUser(facebookUser);
+                    certainDeathUser = _userDal.CreateGameUser(facebookUser);
                 }
 
                 // We have a user, play the game
+                if (certainDeathUser.WorldId < 1)
+                {
+                    // we need to create them a game world
+                    EngineInterface game = _gameDal.CreateGame();
+                    
+                }
                 return View("Game", certainDeathUser);
-
             }
 
             // something was wrong
@@ -65,6 +59,7 @@ namespace CertainDeath.Controllers
         // The path to this action is defined under appSettings (in Web.config) with the key 'Facebook:AuthorizationRedirectPath'.
         public ActionResult Permissions(FacebookRedirectContext context)
         {
+            // TODO: Do we need this action for anything?
             if (ModelState.IsValid)
             {
                 return View(context);

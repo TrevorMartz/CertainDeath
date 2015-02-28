@@ -8,6 +8,9 @@ using Microsoft.AspNet.Facebook.Realtime;
 
 namespace CertainDeath.Controllers
 {
+
+    // TODO: do we need this controller?
+
     public class UserRealtimeUpdateController : FacebookRealtimeUpdateController
     {
         private readonly static string UserVerifyToken = ConfigurationManager.AppSettings["Facebook:VerifyToken:User"];

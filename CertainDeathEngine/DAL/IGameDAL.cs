@@ -4,8 +4,8 @@ namespace CertainDeathEngine.DAL
 {
     public interface IGameDAL
     {
-        bool SaveWorld(GameWorld world);
-
-        EngineInterface LoadGame(int worldId);
+        EngineInterface CreateGame();
+        EngineInterface CreateGame(int worldId);
+        bool SaveGame(Game game);
     }
 }

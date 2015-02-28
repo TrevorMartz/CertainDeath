@@ -1,51 +1,52 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Diagnostics.Contracts;
-//using System.Web.Http.Dependencies;
-//using Ninject;
-//using Ninject.Syntax;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Web.Http.Dependencies;
+using Ninject;
+using Ninject.Syntax;
 
-//namespace CertainDeath.Infrastructure
-//{
-//    public class NinjectDependencyScope : IDependencyScope
-//    {
-//        private IResolutionRoot _resolver;
+namespace CertainDeath.Infrastructure
+{
+    // Provides a Ninject implementation of IDependencyScope
+    // which resolves services using the Ninject container.
+    public class NinjectDependencyScope : IDependencyScope
+    {
+        IResolutionRoot _resolver;
 
-//        internal NinjectDependencyScope(IResolutionRoot resolver)
-//        {
-//            Contract.Assert(resolver != null);
-//            _resolver = resolver;
-//        }
+        internal NinjectDependencyScope(IResolutionRoot resolver)
+        {
+            _resolver = resolver;
+        }
 
-//        public void Dispose()
-//        {
-//            var disposable = _resolver as IDisposable;
-//            if (disposable != null)
-//            {
-//                disposable.Dispose();
-//            }
+        public object GetService(Type serviceType)
+        {
+            if (_resolver == null)
+            {
+                throw new ObjectDisposedException("this", "This scope has already been disposed");
+            }
 
-//            _resolver = null;
-//        }
+            return _resolver.TryGet(serviceType);
+        }
 
-//        public object GetService(Type serviceType)
-//        {
-//            if (_resolver == null)
-//            {
-//                throw new ObjectDisposedException("this", "This scope has already been disposed");
-//            }
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            if (_resolver == null)
+            {
+                throw new ObjectDisposedException("this", "This scope has already been disposed");
+            }
 
-//            return _resolver.TryGet(serviceType);
-//        }
+            return _resolver.GetAll(serviceType);
+        }
 
-//        public IEnumerable<object> GetServices(Type serviceType)
-//        {
-//            if (_resolver == null)
-//            {
-//                throw new ObjectDisposedException("this", "This scope has already been disposed");
-//            }
+        public void Dispose()
+        {
+            IDisposable disposable = _resolver as IDisposable;
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
 
-//            return _resolver.GetAll(serviceType);
-//        }
-//    }
-//}
+            _resolver = null;
+        }
+    }
+}

@@ -12,31 +12,22 @@ namespace CertainDeath.Controllers
 {
     public class WebSocketController : ApiController
     {
-        private IGameDAL GameDAL;
-        private IUserDAL UserDAL;
-        private IStatisticsDAL StatisticsDAL;
+        private readonly IGameDAL _gameDal;
+        private readonly IUserDAL _userDal;
+        private readonly IStatisticsDAL _statisticsDal;
 
-        public WebSocketController()
+        public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
-            //GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
-            GameDAL = new EFGameDAL();
-            //UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
-            UserDAL = new EFUserDAL();
-            StatisticsDAL = new EFStatisticsDAL();
+            this._gameDal = gameDal;
+            this._userDal = userDal;
+            this._statisticsDal = statisticsDal;
         }
-
-        //public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
-        //{
-        //    this.GameDAL = gameDal;
-        //    this.UserDAL = userDal;
-        //    this.StatisticsDAL = statisticsDal;
-        //}
 
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
         {
             // pass in the world id
-            HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(GameDAL, UserDAL, StatisticsDAL, id));
+            HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(_gameDal, _userDal, _statisticsDal, id));
             return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
         }
 
@@ -55,7 +46,7 @@ namespace CertainDeath.Controllers
                 UserDAL = userDal;
                 StatisticsDAL = statisticsDal;
                 this.gameWorldId = worldId;
-                this.gameInstance = GameDAL.LoadGame(gameWorldId);
+                this.gameInstance = GameDAL.CreateGame(gameWorldId);
             }
 
             public override void OnMessage(string message)
