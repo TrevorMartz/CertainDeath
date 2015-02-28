@@ -17,12 +17,19 @@ namespace CertainDeath.Controllers
         private IUserDAL UserDAL;
         private IStatisticsDAL StatisticsDAL;
 
-        public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
+        public HomeController()
         {
-            GameDAL = gameDal;
-            UserDAL = userDal;
-            StatisticsDAL = statisticsDal;
+            GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
+            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
+            StatisticsDAL = new EFStatisticsDAL();
         }
+
+        //public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
+        //{
+        //    this.GameDAL = gameDal;
+        //    this.UserDAL = userDal;
+        //    this.StatisticsDAL = statisticsDal;
+        //}
 
         [FacebookAuthorize("email", "user_photos")]
         public async Task<ActionResult> Index(FacebookContext context)

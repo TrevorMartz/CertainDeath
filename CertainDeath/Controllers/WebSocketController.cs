@@ -23,12 +23,19 @@ namespace CertainDeath.Controllers
         private IUserDAL UserDAL;
         private IStatisticsDAL StatisticsDAL;
 
-        public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
+        public WebSocketController()
         {
-            GameDAL = gameDal;
-            UserDAL = userDal;
-            StatisticsDAL = statisticsDal;
+            GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
+            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
+            StatisticsDAL = new EFStatisticsDAL();
         }
+
+        //public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
+        //{
+        //    this.GameDAL = gameDal;
+        //    this.UserDAL = userDal;
+        //    this.StatisticsDAL = statisticsDal;
+        //}
 
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
