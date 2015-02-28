@@ -53,7 +53,7 @@ namespace CertainDeathEngine.WorldManager
             }
         }
 
-        public void StoreWorld(GameWorld world)
+        public void KeepWorld(GameWorld world)
         {
             lock (worlds)
             {

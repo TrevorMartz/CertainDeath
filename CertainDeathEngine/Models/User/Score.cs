@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CertainDeathEngine.Models.Resources;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CertainDeathEngine.Models.User
 {
     [Serializable]
+    [Table("Scores")]
     public class Score
     {
         [Key]

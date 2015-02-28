@@ -36,8 +36,7 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
-            return null;
-            //return (cdDBModel.Users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
+            return (cdDBModel.Users.Where(x => x.FBUser.Id.Equals(fbUser.Id)).FirstOrDefault());
         }
 
     }

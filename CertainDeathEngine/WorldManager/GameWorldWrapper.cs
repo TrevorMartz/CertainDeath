@@ -28,6 +28,7 @@ namespace CertainDeathEngine.WorldManager
         {
             get // serialize
             {
+                //return "BLAKE";
                 string retVal = "";
                 using (var ms = new MemoryStream())
                 {
@@ -44,6 +45,7 @@ namespace CertainDeathEngine.WorldManager
 
             set // deserialize
             {
+                //return;
                 GameWorld loadedWorld = null;
                 using (Stream s = GenerateStreamFromString(value))
                 {

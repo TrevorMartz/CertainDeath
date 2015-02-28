@@ -139,12 +139,13 @@ namespace CertainDeathEngine
 
         public void SaveWorld()
         {
-
-            if (worldManager.HasWorld(World.Id)) {
-                worldManager.StoreWorld(World);
-            } else {
-                throw new Exception("The world manager is missing the world");
-            }
+            // who can save the world???
+            
+            //if (worldManager.HasWorld(World.Id)) {
+            //    worldManager.KeepWorld(World);
+            //} else {
+            //    throw new Exception("The world manager is missing the world");
+            //}
         }
 
         public void GameOver()

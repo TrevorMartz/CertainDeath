@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNet.Facebook;
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CertainDeathEngine.Models.User
 {
     [Serializable]
+    [Table("FBUsers")]
     public class MyAppUser
     {
         public string Id { get; set; }

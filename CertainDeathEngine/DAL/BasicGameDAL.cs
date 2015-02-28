@@ -130,7 +130,7 @@ namespace CertainDeathEngine.DAL
             }
 
             // World wasnt stored before, so do it now
-            worldManager.StoreWorld(world);            
+            worldManager.KeepWorld(world);            
 
             // return the world
             return world;

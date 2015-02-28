@@ -25,8 +25,10 @@ namespace CertainDeath.Controllers
 
         public WebSocketController()
         {
-            GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
-            UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
+            //GameDAL = new BasicGameDAL(HostingEnvironment.MapPath("~/Data"));
+            GameDAL = new EFGameDAL();
+            //UserDAL = new BasicUserDAL(HostingEnvironment.MapPath("~/Data"));
+            UserDAL = new EFUserDAL();
             StatisticsDAL = new EFStatisticsDAL();
         }
 

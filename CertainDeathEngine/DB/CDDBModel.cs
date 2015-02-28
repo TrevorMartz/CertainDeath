@@ -9,23 +9,39 @@ namespace CertainDeathEngine.DB
 
     public class CDDBModel : DbContext
     {
-        public CDDBModel()
-            : base("name=CDDBModel")
-        {
-        }
+        //static private Initializer DbInitializer;
+
+        //static CDDBModel()
+        //{
+        //    DbInitializer = new CDDBModel.Initializer();
+        //    Database.SetInitializer<CDDBModel>(DbInitializer);
+        //}
+        //public class Initializer : IDatabaseInitializer<CDDBModel>
+        //{
+        //    public void InitializeDatabase(CDDBModel context)
+        //    {
+        //        string ddl = "CREATE TABLE TEST (c1 int);";
+        //        context.Database.ExecuteSqlCommand(ddl);
+        //    }
+        //}
 
         public virtual DbSet<Score> Scores { get; set; }
         public virtual DbSet<CertainDeathUser> Users { get; set; }
-        //public virtual DbSet<GameWorldWrapperWrapper> Worlds { get; set; }
+        public virtual DbSet<GameWorldWrapperWrapper> Worlds { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //storeInDB(modelBuilder);
-            //modelBuilder.ComplexType<GameWorld>().Ignore(p => p.World);
+            //modelBuilder.Entity<Score>().ToTable("Scores");
+            //modelBuilder.Entity<CertainDeathUser>().ToTable("Users");
+            //modelBuilder.Entity<MyAppUser>().ToTable("FBUsers");
+            //modelBuilder.Entity<GameWorldWrapperWrapper>().ToTable("Worlds");  
 
-            //modelBuilder.ComplexType<GameWorldWrapper>()
-            //    .Property(p => p.EFSerialized)
-            //    .HasColumnName("GameWorldBinaryStuffs");
+            //storeInDB(modelBuilder);
+            modelBuilder.ComplexType<GameWorldWrapper>().Ignore(p => p.World);
+
+            modelBuilder.ComplexType<GameWorldWrapper>()
+                .Property(p => p.EFSerialized)
+                .HasColumnName("GameWorldBinaryStuffs");
         }
 
         //private static object storeInDB(DbModelBuilder modelBuilder)
