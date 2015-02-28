@@ -22,14 +22,15 @@ namespace CertainDeathEngine.DAL
         {
             cdDBModel = new CDDBModel();
             gen = new GameWorldGenerator();
-            //SetNextWorldId();
+            SetNextWorldId();
         }
 
         private void SetNextWorldId()
         {
             try
             {
-                int maxId = cdDBModel.Worlds.Max(x => x.Worlds.World.Id);
+                // TODO: we need to figure out the id part of the world storage
+                int maxId = cdDBModel.Worlds.Max(x => x.WorldId);
                 nextWorldId = maxId + 1;
             }
             catch (Exception)
@@ -45,7 +46,7 @@ namespace CertainDeathEngine.DAL
             {
                 try
                 {
-                    cdDBModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world } });
+                    cdDBModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world }, WorldId = world.Id });
                     cdDBModel.SaveChanges();
                     return true;
                 }
@@ -93,7 +94,12 @@ namespace CertainDeathEngine.DAL
 
             try
             {
-                world = cdDBModel.Worlds.Where(x => x.Worlds.World.Id == worldId).First().Worlds.World;
+                GameWorldWrapperWrapper wrapperwrapper = cdDBModel.Worlds.Where(x => x.WorldId == worldId).FirstOrDefault();
+                if (wrapperwrapper != null)
+                {
+                    world = wrapperwrapper.Worlds.World;
+                }
+                //world = cdDBModel.Worlds.Where(x => x.Worlds.World.Id == worldId).First().Worlds.World;
 
                 if (world == null)
                 {

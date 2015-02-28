@@ -13,6 +13,7 @@ namespace CertainDeathEngine.WorldManager
     {
         [Key]
         public int Id { get; set; }
+        public int WorldId { get; set; }
         public virtual GameWorldWrapper Worlds { get; set; }
     }
 }
