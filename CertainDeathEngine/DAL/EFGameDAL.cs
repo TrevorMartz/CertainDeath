@@ -36,6 +36,7 @@ namespace CertainDeathEngine.DAL
             catch (Exception)
             {
                 // TODO do we want to do something better for this exception?
+                nextWorldId = 1;
             }
         }
 
