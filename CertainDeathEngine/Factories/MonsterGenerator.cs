@@ -54,26 +54,33 @@ namespace CertainDeathEngine.Factories
 			for (int i = 0; i < num; i++)
 				BuildMonster(null);
 		}
+
 		public Monster BuildMonster(string monsterType)
 		{
 			// top (x, 0)
 			// bottom (x, Tile.TOTAL_PIXELS)
 			// left (0, y)
 			// right (Tile.TOTAL_PIXELS, y)
+            Monster m;
+            lock (World.CurrentTile)
+            {
+                Tile randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
+                int squareIndex = RandomGen.Random.Next(Tile.SQUARES);
 
-			Tile randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
-			int squareIndex = RandomGen.Random.Next(Tile.SQUARES);
-			
-			Point Position = new Point(
-				squareIndex % Tile.SQUARE_SIZE * Square.PIXEL_SIZE,
-				squareIndex / Tile.SQUARE_SIZE * Square.PIXEL_SIZE
-			);
+                Point Position = new Point(
+                    squareIndex % Tile.SQUARE_SIZE * Square.PIXEL_SIZE,
+                    squareIndex / Tile.SQUARE_SIZE * Square.PIXEL_SIZE
+                );
 
-			Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
-			int Speed = 25;
-			Monster m = new Monster(randTile, Position, Goal, Speed) { 
-				Id = GetNextId(), Damage = 1};
-			randTile.AddObject(m);
+                Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
+                int Speed = 25;
+                m = new Monster(randTile, Position, Goal, Speed)
+                {
+                    Id = GetNextId(),
+                    Damage = 1
+                };
+                randTile.AddObject(m);
+            }
 			return m;
 		}
 

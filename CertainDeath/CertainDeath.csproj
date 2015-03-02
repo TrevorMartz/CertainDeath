@@ -168,6 +168,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeltaTile.cs" />
+    <Compile Include="Models\DeltaWorld.cs" />
+    <Compile Include="Models\ScreenRequest.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectResolver.cs" />
@@ -185,7 +188,7 @@
     <Content Include="Content\Images\SAND3.png" />
     <Content Include="Content\Images\SAND2.png" />
     <Content Include="Content\Images\SAND1.png" />
-    <Content Include="Content\Images\GRASS.png" />
+    <Content Include="Content\Images\GRASS_old.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Scripts\game.js" />
@@ -199,7 +202,6 @@
     <Content Include="Images\Grass.png" />
     <Content Include="Images\Torch.png" />
     <Content Include="packages.config" />
-    <Content Include="Json\ToClient.json" />
     <Content Include="Content\Images\spritesheet.json" />
     <Content Include="blah.snk" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
@@ -221,7 +223,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Home\Permissions.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -229,6 +230,7 @@
     <Content Include="Views\Shared\_FriendView.cshtml" />
     <Content Include="Views\Home\GameRegistration.cshtml" />
     <Content Include="Views\Home\LeaderBoard.cshtml" />
+    <Content Include="Views\Home\Game.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -269,7 +271,7 @@
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="">
+          <servers defaultServer="SelfHostServer">
             <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:44350/" workingDir="" />
           </servers>
         </WebProjectProperties>

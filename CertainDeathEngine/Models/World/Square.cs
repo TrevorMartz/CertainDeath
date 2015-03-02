@@ -59,5 +59,16 @@ namespace CertainDeathEngine.Models
                 return 0;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Square)
+            {
+                Square s = obj as Square;
+                bool equal = false;
+                equal = equal || Building != null && s.Building != null;
+            }
+            return base.Equals(obj);
+        }
     }
 }

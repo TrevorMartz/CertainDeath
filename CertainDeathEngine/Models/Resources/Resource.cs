@@ -20,25 +20,22 @@ namespace CertainDeathEngine.Models.Resources
 
         public int Gather(int toTake = 1)
         {
-            try
+            if(toTake <= 0)
             {
-                Monitor.Enter(Quantity);
-                if (Quantity - toTake < 0)
-                {
-                    //we are trying to take more than we have, but we don't want to give the user more than there was. So make a copy of how much is left to return.
-                    int toReturn = Quantity;
-                    Quantity = 0;
-                    return toReturn;
-                }
-                else
-                {
-                    Quantity -= toTake;
-                    return toTake;
-                }
+                return 0;
             }
-            finally
+
+            if (Quantity - toTake < 0)
             {
-                Monitor.Exit(Quantity);
+                //we are trying to take more than we have, but we don't want to give the user more than there was. So make a copy of how much is left to return.
+                int toReturn = Quantity;
+                Quantity = 0;
+                return toReturn;
+            }
+            else
+            {
+                Quantity -= toTake;
+                return toTake;
             }
         }
     }
