@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
+    [Serializable]
     public enum BuildingType
     {
         TURRET,

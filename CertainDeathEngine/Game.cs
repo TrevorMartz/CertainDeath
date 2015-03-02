@@ -1,35 +1,34 @@
 ﻿using CertainDeathEngine.Models;
-using CertainDeathEngine.Models.User;
-using CertainDeathEngine.Models.NPC;
-using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using CertainDeathEngine.Models.Resources;
-using System.Diagnostics;
 using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System.Windows;
+using CertainDeathEngine.DAL;
 
 namespace CertainDeathEngine
 {
     public class Game : EngineInterface
     {
+        WorldManager.WorldManager worldManager;
+        UpdateManager updateManager;
         public GameWorld World;
         public GameFactory buildingFactory;
         public MonsterGenerator MonsterGenerator;
+        private IStatisticsDAL statisticsDAL;
 
         public Game(GameWorld world)
         {
+            worldManager = WorldManager.WorldManager.Instance;
+            updateManager = UpdateManager.Instance;
             Init.InitAll();
             World = world;
             buildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 15, SpawnSize = 1, Delay = 0, Rate = 10000 };
             MonsterGenerator.Update(1);
+            statisticsDAL = new EFStatisticsDAL();
         }
 
         public string ToJSON()
@@ -132,9 +131,25 @@ namespace CertainDeathEngine
 
         public void SaveWorld()
         {
-            // TODO: make a save game work
+            // who can save the world???
+            
+            //if (worldManager.HasWorld(World.Id)) {
+            //    worldManager.KeepWorld(World);
+            //} else {
+            //    throw new Exception("The world manager is missing the world");
+            //}
+        }
 
-            // Move the world creation stuff into the game class
+        public void GameOver()
+        {
+            SaveScore();
+            World.HasEnded = true;
+            updateManager.RemoveGameThread(World.Id);
+        }
+
+        public void SaveScore()
+        {
+
         }
     }
 }

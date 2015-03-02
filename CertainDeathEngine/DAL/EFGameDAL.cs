@@ -1,23 +1,23 @@
-﻿using CertainDeathEngine.Models;
+﻿using CertainDeathEngine.DB;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.World;
+using CertainDeathEngine.WorldManager;
 using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
 namespace CertainDeathEngine.DAL
 {
-    public class BasicGameDAL : IGameDAL
+    public class EFGameDAL : IGameDAL
     {
         private static int _nextWorldId = 1;
-        private readonly string _filePath;
+        private readonly CDDBModel _cdDbModel;
         private readonly GameWorldGenerator _worldGenerator;
         private readonly WorldManager.WorldManager _worldManager = WorldManager.WorldManager.Instance;
 
-        public BasicGameDAL(string path)
+        public EFGameDAL()
         {
-            _filePath = String.Format("{0}\\World", path);
+            _cdDbModel = new CDDBModel();
             _worldGenerator = new GameWorldGenerator();
             SetNextWorldId();
         }
@@ -48,21 +48,20 @@ namespace CertainDeathEngine.DAL
         {
             return SaveWorld(game.World);
         }
+        
 
         private void SetNextWorldId()
         {
             try
             {
-                DirectoryInfo di = new DirectoryInfo(_filePath);
-                FileInfo[] worldFiles = di.GetFiles();
-
-                string maxFile = worldFiles.Max(x => x.Name.Substring(0, x.Name.Length - 6));
-                int maxFileNumber = int.Parse(maxFile);
-                _nextWorldId = maxFileNumber + 1;
+                // TODO: we need to figure out the id part of the world storage
+                int maxId = _cdDbModel.Worlds.Max(x => x.WorldId);
+                _nextWorldId = maxId + 1;
             }
             catch (Exception)
             {
                 // TODO do we want to do something better for this exception?
+                _nextWorldId = 1;
             }
         }
 
@@ -85,12 +84,8 @@ namespace CertainDeathEngine.DAL
             {
                 try
                 {
-                    System.IO.Stream ms = File.OpenWrite(String.Format("{0}\\{1}.world", _filePath, world.Id));
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(ms, world);
-                    ms.Flush();
-                    ms.Close();
-                    ms.Dispose();
+                    _cdDbModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world }, WorldId = world.Id });
+                    _cdDbModel.SaveChanges();
                     return true;
                 }
                 catch (Exception e)
@@ -112,43 +107,39 @@ namespace CertainDeathEngine.DAL
 
             if (world != null)
             {
+                // Here the game world is already loaded and running, just return it
                 return world;
             }
-
-            try
+            else
             {
-                DirectoryInfo di = new DirectoryInfo(_filePath);
-                FileInfo[] worldFiles = di.GetFiles();
 
-                if (worldFiles.Count(x => x.Name.Substring(0, x.Name.Length - 6).Equals(worldId.ToString())) != 0)
+                // otherwise we need to get it from the database
+                try
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    FileStream fs = File.Open(String.Format("{0}\\{1}.world", _filePath, worldId), FileMode.Open);
+                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.FirstOrDefault(x => x.WorldId == worldId);
+                    if (wrapperwrapper != null)
+                    {
+                        world = wrapperwrapper.Worlds.World;
+                    }
 
-                    object obj = formatter.Deserialize(fs);
-                    world = (GameWorld)obj;
-                    fs.Flush();
-                    fs.Close();
-                    fs.Dispose();
+                    if (world == null)
+                    {
+                        // there is not a world with that id
+                        throw new Exception("Can not find the world with that Id");
+                    }
+                }
+                catch (Exception)
+                {
+                    // TODO do we want to do something better for this exception?
+                    throw new Exception("We had a problem loading the world");
                 }
 
-                if (world == null)
-                {
-                    // there is not a world with that id
-                    throw new Exception("Can not find the world with that Id");
-                }
-            }
-            catch (Exception)
-            {
-                // TODO do we want to do something better for this exception?
-                throw new Exception("We had a problem loading the world");
-            }
+                // World wasnt stored before, so do it now
+                _worldManager.KeepWorld(world);
 
-            // World wasnt stored before, so do it now
-            _worldManager.KeepWorld(world);
-
-            // return the world
-            return world;
+                // return the world
+                return world;
+            }
         }
 
         private GameWorld CreateWorld()
