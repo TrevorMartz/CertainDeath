@@ -13,23 +13,8 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class Player : GameObject
     {
-        private Dictionary<ResourceType, int> Resources { get; set; }
         [JsonProperty]
-        public string JsonResources 
-        {
-            get
-            {
-                string value = "";
-                lock (Resources)
-                {
-                    foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
-                    {
-                        value = value + type.ToString() + GetResourceCount(type);
-                    }
-                }
-                return value;
-            }
-        }
+        public Dictionary<ResourceType, int> Resources { get; private set; }
 
         public Player()
         {
