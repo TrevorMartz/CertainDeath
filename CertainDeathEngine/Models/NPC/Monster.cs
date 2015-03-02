@@ -267,23 +267,27 @@ namespace CertainDeathEngine.Models.NPC
 
 		private void MoveToTile(Tile tile, Point positionChange)
 		{
-			if (tile == null)
-			{
-				// Then the monster has walked off the world.
-				// Either it has killed the fire of life, the game
-				// didn't end, and he kept walking.
-				// or he is trying to get to the fire of life and walked
-				// through a null tile. 
-				Tile.RemoveObject(this);
-			}
-			else {
-				Tile.RemoveObject(this);
-				Tile = tile;
-				tile.AddObject(this);
-				Position = new Point(
-					Position.X + positionChange.X,
-					Position.Y + positionChange.Y);
-			}
+            lock (Tile)
+            {
+                if (tile == null)
+                {
+                    // Then the monster has walked off the world.
+                    // Either it has killed the fire of life, the game
+                    // didn't end, and he kept walking.
+                    // or he is trying to get to the fire of life and walked
+                    // through a null tile. 
+                    Tile.RemoveObject(this);
+                }
+                else
+                {
+                    Tile.RemoveObject(this);
+                    Tile = tile;
+                    tile.AddObject(this);
+                    Position = new Point(
+                        Position.X + positionChange.X,
+                        Position.Y + positionChange.Y);
+                }
+            }
 		}
 
 		/* 
