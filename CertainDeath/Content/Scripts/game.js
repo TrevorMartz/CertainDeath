@@ -74,8 +74,19 @@ Server = (function () {
         var obj = JSON.parse(message.data);
         for (var x = 0; x < listeners.length; ++x) {
             for (var y = 0; y < listeners[x].subscribesTo.length; y++) {
-                if (obj[listeners[x].subscribesTo[y]]) {
-                    listeners[x].onmessage(obj[listeners[x].subscribesTo[y]], listeners[x].subscribesTo[y]);
+                var subs = listeners[x].subscribesTo[y].split('.');
+                var prop = obj;
+                var worked = true;
+                for (var z = 0; z < subs.length; z++) {
+                    if (prop[subs[z]]) {
+                        prop = prop[subs[z]];
+                    } else {
+                        worked = false;
+                        break;
+                    }
+                }
+                if (worked) {
+                    listeners[x].onmessage(prop, listeners[x].subscribesTo[y]);
                 }
             }
         }
