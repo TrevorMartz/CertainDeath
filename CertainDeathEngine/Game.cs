@@ -118,15 +118,18 @@ namespace CertainDeathEngine
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
+             Building buildingInstance;
             lock (World.CurrentTile)
             {
-                Building buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
+                buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
+                World.CurrentTile.AddObject(buildingInstance);
             }
+            
             // check if it is a good location
 
             // persist the building
 
-            return null;
+            return buildingInstance;
         }
 
         public void SaveWorld()

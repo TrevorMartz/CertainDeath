@@ -30,6 +30,12 @@ namespace CertainDeathEngine.DAL
         public EngineInterface CreateGame()
         {
             GameWorld world = CreateWorld();
+
+            // World wasnt stored before, so do it now
+            _worldManager.KeepWorld(world);
+
+            // todo move this line too
+            SaveWorld(world);
             return GetGameAndStartUpdateThread(world);
         }
 
@@ -68,6 +74,7 @@ namespace CertainDeathEngine.DAL
         private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
         {
             Game g = new Game(world);
+
 
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
