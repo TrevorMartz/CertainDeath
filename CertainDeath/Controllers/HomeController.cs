@@ -44,7 +44,8 @@ namespace CertainDeath.Controllers
                 if (certainDeathUser.WorldId < 1)
                 {
                     // we need to create them a game world
-                    EngineInterface game = _gameDal.CreateGame();
+                    Game game = (Game)_gameDal.CreateGame();
+                    _userDal.GiveGameUserAGameWorldId(certainDeathUser.Id, game.World.Id);
                     
                 }
                 return View("Game", certainDeathUser);

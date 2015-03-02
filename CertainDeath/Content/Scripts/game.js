@@ -58,7 +58,7 @@ Server = (function () {
     var socket = null;
     var listeners = new Array();
     function open() {
-        socket = new WebSocket("wss://" + window.location.host + "/api/WebSocket/10");
+        socket = new WebSocket("wss://" + window.location.host + "/api/WebSocket/2");
         socket.onmessage = onmessage;
     }
 
