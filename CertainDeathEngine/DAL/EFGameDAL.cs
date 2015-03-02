@@ -128,10 +128,10 @@ namespace CertainDeathEngine.DAL
                         throw new Exception("Can not find the world with that Id");
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     // TODO do we want to do something better for this exception?
-                    throw new Exception("We had a problem loading the world");
+                    throw new Exception("We had a problem loading the world", e);
                 }
 
                 // World wasnt stored before, so do it now
