@@ -91,9 +91,9 @@ namespace CertainDeathEngine
 		 */
 		string ToJSON();
 
-        IEnumerable<string> GetBuildableBuildingsList();
+        IEnumerable<BuildingType> GetBuildableBuildingsList();
 
-        Building BuildBuildingAtSquare(int row, int column, string buildingType);
+        Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType);
 
         void SaveWorld();
 	}

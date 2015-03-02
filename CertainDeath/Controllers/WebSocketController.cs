@@ -14,6 +14,9 @@ using System.Web.Hosting;
 using CertainDeathEngine.Models;
 using CertainDeathEngine;
 using System.Threading;
+using Newtonsoft.Json;
+using CertainDeath.Models;
+using Newtonsoft.Json.Linq;
 
 namespace CertainDeath.Controllers
 {
@@ -45,16 +48,30 @@ namespace CertainDeath.Controllers
 
             public override void OnMessage(string message)
             {
+                //JsonConvert.PopulateObject(message, new ScreenRequest());
+                dynamic result = JObject.Parse(message);
+
+                if (result["event"] == "click")
+                {
+                    gameInstance.SquareClicked((float)result.x, (float)result.y);
+                }
                 Trace.WriteLine(message);
             }
 
             public override void OnOpen()
             {
-                // we already know the world id so I dont think we need to ask again
-                //CertainDeathUser user = UserDAL.GetGameUser(null);// need to pass in some fb context
+                Thread t = new Thread(SendUpdates);
+                t.Start(); // Should be a safe call since the thread terminates when the connection closes
+            }
 
+            public void SendUpdates()
+            {
                 Send(gameInstance.ToJSON());
-                
+                while (this.WebSocketContext.IsClientConnected)
+                {
+                    Thread.Sleep(32);
+                    Send(gameInstance.ToJSON());
+                }
             }
 
             public override void OnClose()

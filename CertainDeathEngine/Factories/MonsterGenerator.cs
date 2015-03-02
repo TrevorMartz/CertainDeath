@@ -9,10 +9,9 @@ using System.Windows;
 
 namespace CertainDeathEngine.Factories
 {
-	public class MonsterGenerator : Temporal
+	public class MonsterGenerator : GameFactory, Temporal
 	{
-		private GameFactory Factory;
-		private GameWorld World;
+		
 		private long Time = 0;
 		private bool Delaying = true;
 
@@ -28,9 +27,8 @@ namespace CertainDeathEngine.Factories
 		// How many monsters spawn after the initial spawn
 		public int SpawnSize { get; set; }
 
-		public MonsterGenerator(GameFactory factory, GameWorld world)
+		public MonsterGenerator(GameWorld world) : base(world)
 		{
-			Factory = factory;
 			World = world;
 		}
 
@@ -78,7 +76,7 @@ namespace CertainDeathEngine.Factories
 			Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
 			int Speed = 25;
 			Monster m = new Monster(randTile, Position, Goal, Speed) { 
-				Id = Factory.GetNextId(), Damage = 1};
+				Id = GetNextId(), Damage = 1};
 			randTile.AddObject(m);
 			return m;
 		}

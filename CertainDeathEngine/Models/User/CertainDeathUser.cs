@@ -10,5 +10,6 @@ namespace CertainDeathEngine.Models.User
     {
         public MyAppUser FBUser { get; set; }
         public int WorldId { get; set; }
+        public Score Score { get; set; }
     }
 }

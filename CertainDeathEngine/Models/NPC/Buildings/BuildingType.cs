@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
-    enum TurretState
+    public enum BuildingType
     {
-        WAITING, ATTACKING
+        TURRET,
+        FIREOFLIFE,
+        WALL
     }
 }

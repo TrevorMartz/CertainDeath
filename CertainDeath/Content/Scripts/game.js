@@ -3,7 +3,7 @@
 var game;
 window.onload = function () {
     var elm = document.getElementById("content");
-    game = new Phaser.Game(elm.offsetWidth, elm.offsetWidth, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render });
+    game = new Phaser.Game(elm.offsetWidth, elm.offsetWidth, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render }, false, false);
 }
 
 var buildings;
@@ -29,8 +29,8 @@ function create () {
     //grass = game.add.tileSprite(0, 0, game.world.width, game.world.height, "objects", "grass");
     //View.current = new View.MainGameScreen(game, Server, 300, 30, game.width - 60, game.height - 60);
     var views = [
-        new View.InventoryBar(game, 10, 10, game.width - 20, 32*3),
-        new View.MainGameScreen(game, 30, 20 + 32 * 3, game.width - 60, game.height - 30 - 20 - 32 * 3),
+        new View.InventoryBar(game, 10, 10, game.width - 20, 32*2),
+        new View.MainGameScreen(game, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2),
     ];
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
@@ -39,8 +39,8 @@ function create () {
         Server.register(val);
     });
     Server.open();
-    // Uncomment later
-    //game.stage.backgroundColor = 0xbbddff;
+
+    game.stage.backgroundColor = 0xbbddff;
 }
 
 function update () {
@@ -70,13 +70,13 @@ Server = (function () {
         throw new Error("Not yet implemented.");
     }
 
-    function onmessage(message){
-        //this.messages.push(JSON.parse(message.data));
-        console.log(message.data);
+    function onmessage(message) {
         var obj = JSON.parse(message.data);
         for (var x = 0; x < listeners.length; ++x) {
-            if (obj[listeners[x].subscribesTo]) {
-                listeners[x].onmessage(obj[listeners[x].subscribesTo]);
+            for (var y = 0; y < listeners[x].subscribesTo.length; y++) {
+                if (obj[listeners[x].subscribesTo[y]]) {
+                    listeners[x].onmessage(obj[listeners[x].subscribesTo[y]], listeners[x].subscribesTo[y]);
+                }
             }
         }
     }
@@ -86,12 +86,17 @@ Server = (function () {
     }
 
     function close() {
+        socket.close();
+    }
 
+    function send(msg) {
+        socket.send(msg);
     }
 
     return {
         open: open,
         register: register,
-        close: close
+        close: close,
+        send: send
     }
 })();

@@ -36,7 +36,7 @@ namespace EngineConsoleTester
 
             GameWorldGenerator gen = new GameWorldGenerator();
             //gen.GenerateWorld(12);
-            Game game = new Game(gen.GenerateWorld(3, 3, false), new Player());
+            Game game = new Game(gen.GenerateWorld(3, 3, false));
             while (true)
             {
                 game.World.CurrentTile.PrintTileResources();
@@ -70,7 +70,7 @@ namespace EngineConsoleTester
         public static void ShayneTests()
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
-			Game g = new Game(generator.GenerateWorld(3), new Player());
+			Game g = new Game(generator.GenerateWorld(3));
             IncrementTime(g);
 			string json = g.ToJSON();
 			Console.WriteLine(json);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace CertainDeathEngine.Models.Resources
 {
@@ -19,17 +20,25 @@ namespace CertainDeathEngine.Models.Resources
 
         public int Gather(int toTake = 1)
         {
-            if (Quantity - toTake < 0)
+            try
             {
-                //we are trying to take more than we have, but we don't want to give the user more than there was. So make a copy of how much is left to return.
-                int toReturn = Quantity;
-                Quantity = 0;
-                return toReturn;
+                Monitor.Enter(Quantity);
+                if (Quantity - toTake < 0)
+                {
+                    //we are trying to take more than we have, but we don't want to give the user more than there was. So make a copy of how much is left to return.
+                    int toReturn = Quantity;
+                    Quantity = 0;
+                    return toReturn;
+                }
+                else
+                {
+                    Quantity -= toTake;
+                    return toTake;
+                }
             }
-            else
+            finally
             {
-                Quantity -= toTake;
-                return toTake;
+                Monitor.Exit(Quantity);
             }
         }
     }
