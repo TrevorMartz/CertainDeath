@@ -7,16 +7,7 @@ using System.Net.Http;
 using System.Web;
 //using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Mvc;
-using CertainDeathEngine.DAL;
-using CertainDeathEngine.Models.User;
-using System.Diagnostics;
-using System.Web.Hosting;
-using CertainDeathEngine.Models;
-using CertainDeathEngine;
 using System.Threading;
-using Newtonsoft.Json;
-using CertainDeath.Models;
 using Newtonsoft.Json.Linq;
 
 namespace CertainDeath.Controllers
