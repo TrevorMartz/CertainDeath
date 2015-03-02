@@ -14,7 +14,7 @@ namespace CertainDeathEngine
     public class Updater
     {
         const int FRAME_TICK_COUNT = 16;
-        private bool Running;
+        public bool Running;
         private Game Game;
         private GameWorld World;
         private int LastTimeInMillis;
@@ -38,7 +38,7 @@ namespace CertainDeathEngine
             updateCount = 1;
 
             LastTimeInMillis = GetCurrentTime() - FRAME_TICK_COUNT - FRAME_TICK_COUNT;
-            while (Running)
+            while (Running)// && (LastTimeInMillis - World.TimeLastQueried) > 60 * 100 * 1000) // one minute
             {
                 while (GetCurrentTime() < LastTimeInMillis + FRAME_TICK_COUNT)
                 {
@@ -49,8 +49,16 @@ namespace CertainDeathEngine
                 LastTimeInMillis = curTime;
 
                 ProcessDeltaTime(delta);
+                //todo: lock this?
+                World.TimeLastUpdated = LastTimeInMillis;
 
                 updateCount++;
+
+                if (updateCount%(60*1) == 0) // one minute
+                {
+                    //todo: save it
+                }
+
             }
         }
 

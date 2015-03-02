@@ -14,6 +14,10 @@ namespace CertainDeathEngine.Models
     [Serializable]
     public class GameWorld
     {
+        public long TimeLastSaved { get; set; }
+        public long TimeLastQueried { get; set; }
+        public long TimeLastUpdated { get; set; }
+
         public Player Player { get; set; }
 
         [JsonProperty]
