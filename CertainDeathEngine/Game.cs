@@ -36,7 +36,7 @@ namespace CertainDeathEngine
             string jsonString;
             lock (World.CurrentTile)
             {
-                jsonString = JsonConvert.SerializeObject(World.CurrentTile);
+                jsonString = JsonConvert.SerializeObject(World);
 
             }
             return jsonString;

@@ -13,6 +13,7 @@ using CertainDeathEngine.Models.NPC;
 using System.Threading;
 using CertainDeathEngine.Models.User;
 using System.Globalization;
+using CertainDeathEngine.Models.Resources;
 
 
 // This project will be used to provide console output for the CertainDeathEngine
@@ -24,7 +25,7 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            ShayneTests();
+            //ShayneTests();
             //BlakeIsSOOOOOOUgly();
             TrevorTests();
 
@@ -37,14 +38,8 @@ namespace EngineConsoleTester
             GameWorldGenerator gen = new GameWorldGenerator();
             //gen.GenerateWorld(12);
             Game game = new Game(gen.GenerateWorld(3, 3, false));
-            while (true)
-            {
-                game.World.CurrentTile.PrintTileResources();
-                string row = Console.ReadLine();
-                string col = Console.ReadLine();
-                game.SquareClicked(float.Parse(row, CultureInfo.InvariantCulture), float.Parse(col, CultureInfo.InvariantCulture));
-                game.World.CurrentTile.PrintTileResources();
-            }
+            game.World.Player.AddResource(ResourceType.COAL, 30);
+            Console.WriteLine(game.ToJSON());
             //Console.ReadLine();
         }
 

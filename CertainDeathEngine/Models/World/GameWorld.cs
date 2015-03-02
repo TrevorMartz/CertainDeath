@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 namespace CertainDeathEngine.Models
 {
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class GameWorld
     {
+        [JsonProperty]
         public Player Player { get; set; }
 
         [JsonProperty]
