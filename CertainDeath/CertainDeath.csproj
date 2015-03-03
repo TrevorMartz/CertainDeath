@@ -240,6 +240,7 @@
     <Content Include="Views\Home\LeaderBoard.cshtml" />
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
