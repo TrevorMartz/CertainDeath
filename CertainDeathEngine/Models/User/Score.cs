@@ -25,5 +25,37 @@ namespace CertainDeathEngine.Models.User
         public TimeSpan Survived { get; set; }
         public int FireLevel { get; set; }
 
+        public Score()
+        {
+            ResourcesCollected = new Dictionary<ResourceType, int>();
+        }
+
+        public void AddResource(ResourceType type, int count)
+        {
+            lock (ResourcesCollected)
+            {
+                if (ResourcesCollected.ContainsKey(type))
+                {
+                    ResourcesCollected[type] = Add(ResourcesCollected[type], count);
+                }
+                else
+                {
+                    ResourcesCollected[type] = count;
+                }
+            }
+        }
+
+        //this method is just to cap off resources if they overflow over max int. I doubt this will ever happen, but it is possible.
+        private int Add(int a, int b)
+        {
+            if (a + b < 0)
+            {
+                return int.MaxValue;
+            }
+            else
+            {
+                return a + b;
+            }
+        }
     }
 }

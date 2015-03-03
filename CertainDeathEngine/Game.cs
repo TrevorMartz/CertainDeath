@@ -59,7 +59,8 @@ namespace CertainDeathEngine
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
                     World.Player.AddResource(type, gathered);
-                    WorldScore.ResourcesCollected.Add(type, gathered);
+
+                    WorldScore.AddResource(type, gathered);
                     //Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
                 }
             }
@@ -126,13 +127,13 @@ namespace CertainDeathEngine
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-             Building buildingInstance;
+            Building buildingInstance;
             lock (World.CurrentTile)
             {
                 buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
                 World.CurrentTile.AddObject(buildingInstance);
             }
-            
+
             // check if it is a good location
 
             // persist the building
@@ -148,7 +149,7 @@ namespace CertainDeathEngine
         {
             // who can save the world???
             // GHOSTBUSTERS!
-            
+
             //if (worldManager.HasWorld(World.Id)) {
             //    worldManager.KeepWorld(World);
             //} else {

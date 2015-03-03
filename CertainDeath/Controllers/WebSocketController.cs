@@ -77,6 +77,7 @@ namespace CertainDeath.Controllers
                     Thread.Sleep(32);
                     Send(gameInstance.ToJSON());
                 }
+                UpdateManager.Instance.RemoveGameThread(gameWorldId);
             }
 
             public override void OnClose()

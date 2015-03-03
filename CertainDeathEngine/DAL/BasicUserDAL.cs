@@ -95,5 +95,16 @@ namespace CertainDeathEngine.DAL
         {
             throw new NotImplementedException();
         }
+
+
+        public IEnumerable<CertainDeathUser> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<MyAppUser> GetAllFbUsers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
