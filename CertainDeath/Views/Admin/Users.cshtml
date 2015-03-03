@@ -1,0 +1,14 @@
+﻿@*@model IEnumerable<CertainDeathEngine.Models>
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Users</h2>
+@foreach (var user in Model)
+{
+    <div>@Html.DisplayFor(x => user.Id)</div>
+    <div>@Html.DisplayFor(x => user.WorldId)</div>
+    <div>@Html.DisplayFor(x => user.FBUser)</div>
+}*@
+

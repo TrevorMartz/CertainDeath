@@ -38,9 +38,7 @@ namespace CertainDeathEngine.DAL
 
         public IEnumerable<MyAppUser> GetAllFbUsers()
         {
-            //var t = cdDBModel.Users.Include("FBUsers").Select(x => x);
-            //return t.FBUser
-            return null;
+            return cdDBModel.FBUsers.Select(x => x);
         }
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)

@@ -1,21 +1,23 @@
-﻿using CertainDeathEngine.DAL;
+﻿using CertainDeathEngine;
+using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models.User;
+using log4net;
 using Microsoft.AspNet.Facebook;
 using Microsoft.AspNet.Facebook.Client;
 using System.Threading.Tasks;
-//using System.Web.Hosting;
 using System.Web.Mvc;
-using CertainDeathEngine;
 
 namespace CertainDeath.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IGameDAL _gameDal;
         private readonly IUserDAL _userDal;
 
         public HomeController(IGameDAL gameDal, IUserDAL userDal)
         {
+            Log.Info("Created HomeController");
             this._gameDal = gameDal;
             this._userDal = userDal;
         }
