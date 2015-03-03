@@ -119,7 +119,7 @@ View = (function () {
         this.squaresHigh = 20;
         this.boardX = 0;
         this.boardY = 0;
-        this.subscribesTo = ["Squares", "Monsters", "Buildings"];
+        this.subscribesTo = ["CurrentTile.Squares", "CurrentTile.Monsters", "CurrentTile.Buildings"];
     }
 
     MainGameScreen.prototype = Object.create(Screen.prototype, {
@@ -169,7 +169,7 @@ View = (function () {
             value: function (msg, property) {
                 if (msg != 'undefined') {
 
-                    if (property === "Squares") {
+                    if (property === "CurrentTile.Squares") {
                         var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
 
                         // Make the board snap to a good scale so that the images still look crisp
@@ -214,7 +214,7 @@ View = (function () {
                                 } // end if
                             } // end for
                         } // end for
-                    } else if (property === "Monsters") {
+                    } else if (property === "CurrentTile.Monsters") {
                         var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
                         for (var x = 0; x < msg.length; ++x) {
                             var positions = msg[x].Position.split(",");
@@ -302,7 +302,7 @@ View = (function () {
         };
         this.game = game;
         this.resourceTypes = ["COAL", "IRON", "WOOD", "CORN", "STONE"];
-        this.subscribesTo = ["Inventory"];
+        this.subscribesTo = ["Player.Resources"];
         this.sprites = Array();
         this.resourceText = Array();
     }
