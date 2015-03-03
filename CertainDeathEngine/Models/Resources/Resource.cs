@@ -9,6 +9,7 @@ namespace CertainDeathEngine.Models.Resources
     [Serializable]
     public class Resource
     {
+        public static int MaxResources = 30;
         public int Quantity { get; private set; }
 		public ResourceType Type { get; set; }
 
