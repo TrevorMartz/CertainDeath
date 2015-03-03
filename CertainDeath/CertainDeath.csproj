@@ -189,6 +189,9 @@
     <Content Include="Content\Images\GRASS2.png" />
     <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
+    <Content Include="Content\Images\Lumbermill.png" />
+    <Content Include="Content\Images\Mine.png" />
+    <Content Include="Content\Images\Quarry.png" />
     <Content Include="Content\Images\SAND.png" />
     <Content Include="Content\Images\ShopButton.png" />
     <Content Include="Content\Images\SAND3.png" />
