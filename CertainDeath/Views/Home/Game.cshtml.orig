@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Facebook.Models
+@model CertainDeathEngine.Models.User.CertainDeathUser
+@{
+    ViewBag.Title = "CERTAIN DEATH!";
+}
+
+<article id="content">
+
+    @* TODO: We need to pass in the @Model.WorldId to the javascript files below.
+        http://stackoverflow.com/questions/2190801/passing-parameters-to-javascript-files
+        explains a good way to do so, but I dont want to play with the javascript yet since 
+<<<<<<< HEAD
+        I dont know if very well. - Blake 
+        
+            Thanks Blake, got it.
+            *@
+    <script>
+        var WorldId = @Model.WorldId;
+    </script>
+=======
+        I dont know if very well. - Blake *@
+
+    @*@Model.WorldId*@
+
+>>>>>>> 61136e7ea32e47eaa3d28aed73147078363f232f
+    <script src="~/Content/Scripts/phaser.js"></script>
+    <script src="~/Content/Scripts/view.js"></script>
+    <script src="~/Content/Scripts/game.js"></script>
+</article>
