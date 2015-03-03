@@ -24,12 +24,15 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public Tile Tile { get; protected set; }
 
+        public Point TilePosition { get; set; }
+
         public Building(Tile tile, Point position)
         {
             Tile = tile;
-            Position = position;
             Height = Square.PIXEL_SIZE;
             Width = Square.PIXEL_SIZE;
+            TilePosition = position;
+            Position = new Point(position.X * Square.PIXEL_SIZE, position.Y * Square.PIXEL_SIZE);
         }
 
         public abstract void Update(long millis);
