@@ -3,13 +3,10 @@
 var game;
 window.onload = function () {
     var elm = document.getElementById("content");
-    game = new Phaser.Game(elm.offsetWidth, elm.offsetWidth, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render }, false, false);
+    game = new Phaser.Game(elm.offsetWidth, elm.offsetWidth, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render }, false);
 }
 
-var buildings;
-var resources;
-var monsters;
-var grass;
+var shop;
 
 // The screen that is being rendered by the game
 // View.current
@@ -28,9 +25,12 @@ function create () {
     //grass = new game.add.sprite(game.world.centerX, 500, 'grass', 'objects');
     //grass = game.add.tileSprite(0, 0, game.world.width, game.world.height, "objects", "grass");
     //View.current = new View.MainGameScreen(game, Server, 300, 30, game.width - 60, game.height - 60);
+    shop = new View.BuildingShop(game, Server, 40, 40, game.world.width - 80, game.world.height - 80);
     var views = [
-        new View.InventoryBar(game, 10, 10, game.width - 20, 32*2),
-        new View.MainGameScreen(game, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2),
+        shop,
+        new View.ButtonScreen(game, 20, 10, 70, 32*2, "objects", "ShopButton", openShop),
+        new View.InventoryBar(game, 100, 10, game.width - 20 - 100, 32*2),
+        new View.MainGameScreen(game, Server, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2),
     ];
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
@@ -52,6 +52,13 @@ function render () {
     // I don't know what this is for
     // Docs say it's not used often, so...
     View.current.render();
+}
+
+function openShop() {
+    if (shop) {
+        shop.visible = true;
+        console.log("opening shop");
+    }
 }
 
 Server = (function () {
