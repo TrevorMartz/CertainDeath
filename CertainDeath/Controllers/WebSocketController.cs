@@ -82,6 +82,11 @@ namespace CertainDeath.Controllers
                     Thread.Sleep(32);
                     jsonString = GameInstance.ToJSON();
                     Send(jsonString);
+                    lock (((Game) GameInstance).World)
+                    {
+                        Trace.WriteLine("clearing " + ((Game) GameInstance).World.Updates.Count + " updates");
+                        ((Game) GameInstance).World.Updates.Clear();
+                    }
                 }
                 UpdateManager.Instance.RemoveGameThread(GameWorldId);
             }

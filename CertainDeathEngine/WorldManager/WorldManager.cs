@@ -67,5 +67,10 @@ namespace CertainDeathEngine.WorldManager
                 }
             }
         }
+
+        public IEnumerable<string> GetLoadedWorldIds()
+        {
+            return worlds.Keys.Select(x => x.ToString()).ToList();
+        }
     }
 }

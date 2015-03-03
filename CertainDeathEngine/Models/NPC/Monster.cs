@@ -228,9 +228,19 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
+            this.Tile.World.AddUpdateMessage(new UpdateMessage()
+		    {
+		        ObjectId = Attacking.Id,
+		        Data = "health:" + Attacking.HealthPoints
+		    });
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.RemoveBuilding();
+                this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                {
+                    ObjectId = Attacking.Id,
+                    Data = "remove"
+                });
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}
@@ -245,6 +255,11 @@ namespace CertainDeathEngine.Models.NPC
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
+            this.Tile.World.AddUpdateMessage(new UpdateMessage()
+		    {
+		        ObjectId = this.Id,
+		        Data = "positionX:" + Position.X + ",positionY:" + Position.Y
+		    });
 
 			// If they have moved to another tile,
 			if (Position.X < 0 || Position.X >= Tile.TOTAL_PIXELS ||
@@ -283,15 +298,33 @@ namespace CertainDeathEngine.Models.NPC
                     // or he is trying to get to the fire of life and walked
                     // through a null tile. 
                     Tile.RemoveObject(this);
+
+                    // todo: make an update command for removing a tile
                 }
                 else
                 {
                     Tile.RemoveObject(this);
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        Data = "remove"
+                    });
                     Tile = tile;
                     tile.AddObject(this);
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        Data = "add:positionX:" + Position.X + ",positionY:" + Position.Y
+                    });
                     Position = new Point(
                         Position.X + positionChange.X,
                         Position.Y + positionChange.Y);
+                    //todo: i dont know how to send a move update, so I will send a whole world update insteac
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = 0,
+                        Data = "sendWorld"
+                    });
                 }
             }
 		}

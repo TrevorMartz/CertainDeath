@@ -1,4 +1,6 @@
-﻿using CertainDeathEngine.DAL;
+﻿using CertainDeathEngine;
+using CertainDeathEngine.DAL;
+using CertainDeathEngine.WorldManager;
 using log4net;
 using System.Web.Mvc;
 
@@ -29,6 +31,16 @@ namespace CertainDeath.Controllers
         //{
         //    return View("FBUsers", _userDal.GetAllFbUsers());
         //}
+
+        public ActionResult LoadedWorlds()
+        {
+            return View("LoadedWorlds", WorldManager.Instance.GetLoadedWorldIds());
+        }
+
+        public ActionResult UpdateThreads()
+        {
+            return View("UpdateThreads", UpdateManager.Instance.GetUpdatingWorldIds());
+        }
 
         //public ActionResult Users()
         //{

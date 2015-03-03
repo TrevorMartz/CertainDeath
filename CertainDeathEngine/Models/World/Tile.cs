@@ -21,6 +21,8 @@ namespace CertainDeathEngine.Models
         public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;
         public static int SQUARES = SQUARE_SIZE * SQUARE_SIZE;
 
+        public GameWorld World { get; set; }
+
 
         [JsonProperty]
         public Square[,] Squares { get; set; }
@@ -97,13 +99,14 @@ namespace CertainDeathEngine.Models
 
         public Point Position { get; private set; }
 
-        public Tile(int x, int y)
+        public Tile(int x, int y, GameWorld world)
         {
             InitSquares();
             Position = new Point(x, y);
             this.Objects = new List<GameObject>();
             this.Monsters = new List<Monster>();
             this.Buildings = new List<Building>();
+            this.World = world;
         }
 
         public void InitSquares()

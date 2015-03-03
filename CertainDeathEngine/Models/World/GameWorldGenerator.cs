@@ -158,12 +158,14 @@ namespace CertainDeathEngine.Models.World
                     Trace.WriteLine("");
                 }
             }
+            foreach (var t in newWorld.Tiles)
+                t.World = newWorld;
             return newWorld;
         }
 
         public Tile GenerateTile(int x, int y)
         {
-            Tile newTile = new Tile(x, y);
+            Tile newTile = new Tile(x, y, null);
 
             for (int row = 0; row < Tile.SQUARE_SIZE; row++)
             {
