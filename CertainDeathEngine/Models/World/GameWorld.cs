@@ -15,7 +15,11 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class GameWorld
     {
-        [JsonProperty]
+
+        public long TimeLastSaved { get; set; }
+        public long TimeLastQueried { get; set; }
+        public long TimeLastUpdated { get; set; }
+
         public Player Player { get; set; }
 
         [JsonProperty]

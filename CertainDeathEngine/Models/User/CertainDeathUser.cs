@@ -15,6 +15,6 @@ namespace CertainDeathEngine.Models.User
         public int Id { get; set; }
         public MyAppUser FBUser { get; set; }
         public int WorldId { get; set; }
-        //public Score Score { get; set; }
+        //public Score Score { get; set; } <--This will probably not be necessary since the world now holds a score which will store a UserID
     }
 }

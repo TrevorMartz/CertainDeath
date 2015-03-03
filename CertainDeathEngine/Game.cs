@@ -7,6 +7,7 @@ using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System.Windows;
 using CertainDeathEngine.DAL;
+using CertainDeathEngine.Models.User;
 
 namespace CertainDeathEngine
 {
@@ -18,10 +19,15 @@ namespace CertainDeathEngine
         public GameFactory buildingFactory;
         public MonsterGenerator MonsterGenerator;
         private IStatisticsDAL statisticsDAL;
+        private DateTime WorldCreation;
+        private Score WorldScore;
 
         public Game(GameWorld world)
         {
             worldManager = WorldManager.WorldManager.Instance;
+            WorldCreation = new DateTime();
+            WorldScore = new Score();
+            WorldScore.FireLevel = 1;
             updateManager = UpdateManager.Instance;
             Init.InitAll();
             World = world;
@@ -53,6 +59,8 @@ namespace CertainDeathEngine
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
                     World.Player.AddResource(type, gathered);
+
+                    WorldScore.AddResource(type, gathered);
                     //Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
                 }
             }
@@ -61,6 +69,7 @@ namespace CertainDeathEngine
 
         public string MonsterClicked(int monsterid)
         {
+            //if monster died WorldScore.Kills++
             throw new NotImplementedException();
         }
 
@@ -118,28 +127,33 @@ namespace CertainDeathEngine
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-             Building buildingInstance;
+            Building buildingInstance;
             lock (World.CurrentTile)
             {
                 buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
                 World.CurrentTile.AddObject(buildingInstance);
             }
-            
+
             // check if it is a good location
 
             // persist the building
 
+            WorldScore.Buildings++;
             return buildingInstance;
         }
+
+        //Need to add a method for upgrading Fire Level
+        //  WorldScore.FireLevel++;
 
         public void SaveWorld()
         {
             // who can save the world???
-            
+            // GHOSTBUSTERS!
+
             //if (worldManager.HasWorld(World.Id)) {
             //    worldManager.KeepWorld(World);
             //} else {
-            //    throw new Exception("The world manager is missing the world");
+            //    throw new Exception("The world manager is missing the world"); :'(
             //}
         }
 
@@ -152,7 +166,7 @@ namespace CertainDeathEngine
 
         public void SaveScore()
         {
-
+            WorldScore.Survived = new DateTime() - WorldCreation;
         }
     }
 }

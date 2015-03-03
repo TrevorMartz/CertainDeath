@@ -31,6 +31,18 @@ namespace CertainDeathEngine.DAL
             }
         }
 
+        public IEnumerable<CertainDeathUser> GetAllUsers()
+        {
+            return cdDBModel.Users.Select(x => x);
+        }
+
+        public IEnumerable<MyAppUser> GetAllFbUsers()
+        {
+            //var t = cdDBModel.Users.Include("FBUsers").Select(x => x);
+            //return t.FBUser
+            return null;
+        }
+
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
         {
             return (cdDBModel.Users.FirstOrDefault(x => x.FBUser.Id.Equals(fbUser.Id)));

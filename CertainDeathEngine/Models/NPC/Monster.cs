@@ -29,7 +29,13 @@ namespace CertainDeathEngine.Models.NPC
 		public float Speed { get; set; }
 
 		// Direction to get to goal (As a normalized vector)
-		public Point Direction { get; private set; }
+		public Point DirectionVector { get; private set; }
+
+		// Approximate direction, rounded to the nearest of the 8
+		public MonsterDirection ApproxDirection { get; private set; }
+
+		[JsonProperty]
+		public string Direction { get { return ApproxDirection.Name; } }
 
 		// Monster needs to know where they are so they
 		// can go towards the FireOfLife
@@ -172,8 +178,8 @@ namespace CertainDeathEngine.Models.NPC
 		private Collision ShootRay(Point startingPoint, Point maxDist, long millis)
 		{
 			Point dist = new Point(Math.Abs(maxDist.X), Math.Abs(maxDist.Y));
-			double xSpeed = Math.Abs(Direction.X);
-			double ySpeed = Math.Abs(Direction.Y);
+			double xSpeed = Math.Abs(DirectionVector.X);
+			double ySpeed = Math.Abs(DirectionVector.Y);
 			Building hit = null;
 			Point pos = startingPoint;
 			System.Drawing.Point squarePos = ApproxSquare();
@@ -181,23 +187,23 @@ namespace CertainDeathEngine.Models.NPC
 				Math.Abs(startingPoint.X - pos.X) < dist.X &&
 				Math.Abs(startingPoint.Y - pos.Y) < dist.Y)
 			{
-				double xDistToNextSquare = Square.PIXEL_SIZE * (Direction.X < 0 ? -1 : 0) + squarePos.X * Square.PIXEL_SIZE - pos.X; //(squarePos.X + (Direction.X < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.X;
-				double yDistToNextSquare = Square.PIXEL_SIZE * (Direction.Y < 0 ? -1 : 1) + squarePos.Y * Square.PIXEL_SIZE - pos.Y; //(squarePos.Y + (Direction.Y < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.Y;
+				double xDistToNextSquare = Square.PIXEL_SIZE * (DirectionVector.X < 0 ? -1 : 0) + squarePos.X * Square.PIXEL_SIZE - pos.X; //(squarePos.X + (Direction.X < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.X;
+				double yDistToNextSquare = Square.PIXEL_SIZE * (DirectionVector.Y < 0 ? -1 : 1) + squarePos.Y * Square.PIXEL_SIZE - pos.Y; //(squarePos.Y + (Direction.Y < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.Y;
 				double xTime = Math.Abs(xDistToNextSquare) / xSpeed;
 				double yTime = Math.Abs(yDistToNextSquare) / ySpeed;
 				if (xTime < yTime && xTime < millis)
 				{
 					pos = new Point(
 						pos.X + xDistToNextSquare,
-						pos.Y + Direction.Y * xTime);
-					squarePos.X = squarePos.X + (Direction.X > 0 ? 1 : -1);
+						pos.Y + DirectionVector.Y * xTime);
+					squarePos.X = squarePos.X + (DirectionVector.X > 0 ? 1 : -1);
 				}
 				else if (yTime < xTime && yTime < millis)
 				{
 					pos = new Point(
-						pos.X + Direction.X * yTime,
+						pos.X + DirectionVector.X * yTime,
 						pos.Y + yDistToNextSquare);
-					squarePos.Y = squarePos.Y + (Direction.Y > 0 ? 1 : -1);
+					squarePos.Y = squarePos.Y + (DirectionVector.Y > 0 ? 1 : -1);
 				}
 				else if(yTime == xTime)
 				{
@@ -206,8 +212,8 @@ namespace CertainDeathEngine.Models.NPC
 						pos = new Point(
 							pos.X + xDistToNextSquare,
 							pos.Y + yDistToNextSquare);
-						squarePos.X = squarePos.X + (Direction.X > 0 ? 1 : -1);
-						squarePos.Y = squarePos.Y + (Direction.Y > 0 ? 1 : -1);
+						squarePos.X = squarePos.X + (DirectionVector.X > 0 ? 1 : -1);
+						squarePos.Y = squarePos.Y + (DirectionVector.Y > 0 ? 1 : -1);
 					}
 				}
                 lock (Tile.Squares)
@@ -261,8 +267,8 @@ namespace CertainDeathEngine.Models.NPC
 		public Point GetDistanceOverTime(long milliseconds)
 		{
 			return new Point(
-				Direction.X * Speed * (milliseconds / 1000.0),
-				Direction.Y * Speed * (milliseconds / 1000.0));
+				DirectionVector.X * Speed * (milliseconds / 1000.0),
+				DirectionVector.Y * Speed * (milliseconds / 1000.0));
 		}
 
 		private void MoveToTile(Tile tile, Point positionChange)
@@ -311,8 +317,33 @@ namespace CertainDeathEngine.Models.NPC
 			double xDist = Goal.X - (Position.X + Tile.Position.X * Tile.TOTAL_PIXELS);
 			double yDist = Goal.Y - (Position.Y + Tile.Position.Y * Tile.TOTAL_PIXELS);
 			double distance = Distance(xDist, yDist);
-			Direction = new Point(xDist / distance, yDist / distance);
+			DirectionVector = new Point(xDist / distance, yDist / distance);
+			CalcApproxDirection();
 			//Rotation = Math.Atan2(Direction.Y, Direction.X);
+		}
+
+		private void CalcApproxDirection()
+		{
+			if (DirectionVector.X == 0)
+				if (DirectionVector.Y > 0)
+					ApproxDirection = MonsterDirection.DOWN;
+				else
+					ApproxDirection = MonsterDirection.UP;
+			else if (DirectionVector.Y == 0)
+				if (DirectionVector.X > 0)
+					ApproxDirection = MonsterDirection.RIGHT;
+				else
+					ApproxDirection = MonsterDirection.LEFT;
+			else
+			{
+				double riseOverRun = -DirectionVector.Y / DirectionVector.X;
+				double angleRadians = Math.Atan(riseOverRun);
+				if (DirectionVector.X > 0 && DirectionVector.Y > 0)
+					angleRadians += Math.PI * 2;
+				else if (DirectionVector.X < 0)
+					angleRadians += Math.PI;
+				ApproxDirection = MonsterDirection.GetClosestDirection(angleRadians);
+			} 
 		}
 
 
@@ -322,8 +353,8 @@ namespace CertainDeathEngine.Models.NPC
 			double[] distances = new double[4];
 			for (int i = 0; i < 4; i++)
 			{
-				distances[i] = Distance(Position.X + Direction.X, Corners[i].X,
-					Position.Y + Direction.Y, Corners[i].Y);
+				distances[i] = Distance(Position.X + DirectionVector.X, Corners[i].X,
+					Position.Y + DirectionVector.Y, Corners[i].Y);
 			}
 
 			// find the corner with the biggest distance
