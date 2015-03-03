@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ using System.Threading.Tasks;
 namespace CertainDeathEngine.Models
 {
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Player : GameObject
     {
-        private Dictionary<ResourceType, int> Resources { get; set; }
+        [JsonProperty]
+        public Dictionary<ResourceType, int> Resources { get; private set; }
 
         public Player()
         {

@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 namespace CertainDeathEngine.Models
 {
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class GameWorld
     {
+
         public long TimeLastSaved { get; set; }
         public long TimeLastQueried { get; set; }
         public long TimeLastUpdated { get; set; }

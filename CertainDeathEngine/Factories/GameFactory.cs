@@ -7,6 +7,7 @@ namespace CertainDeathEngine.Factories
     public class GameFactory
     {
         static int nextObjectId = 1;
+        object idBaton = new object();
         public GameWorld World { get; protected set; }
         public GameFactory(GameWorld world)
         {
@@ -31,7 +32,7 @@ namespace CertainDeathEngine.Factories
 		public int GetNextId()
 		{
 			int id;
-			lock (this)
+			lock (idBaton)
 			{
 				id = nextObjectId++;
 			}
