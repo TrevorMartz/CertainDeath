@@ -174,12 +174,14 @@ namespace CertainDeathEngine.Models.World
                     Trace.WriteLine("");
                 }
             }
+            foreach (var t in newWorld.Tiles)
+                t.World = newWorld;
             return newWorld;
         }
 
         public Tile GenerateTile(int x, int y)
         {
-            Tile newTile = new Tile(x, y);
+            Tile newTile = new Tile(x, y, null);
 
             for (int row = 0; row < Tile.SQUARE_SIZE; row++)
             {
@@ -239,7 +241,7 @@ namespace CertainDeathEngine.Models.World
                 int col = RandomGen.Random.Next(Tile.SQUARE_SIZE);
                 while ((RandomGen.Random.NextDouble() * 3) > rarity)
                 {
-                    tile.Squares[row, col].Resource = new Resource(type, RandomGen.Random.Next(1, Resource.MaxResources));
+                    tile.Squares[row, col].Resource = new Resource(type, RandomGen.Random.Next(3, Resource.MaxResources));
                     switch (RandomGen.Random.Next(4))
                     {
                         case 0://east

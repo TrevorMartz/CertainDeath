@@ -67,5 +67,10 @@ namespace CertainDeathEngine
                 }
             }
         }
+
+        public IEnumerable<string> GetUpdatingWorldIds()
+        {
+            return threads.Keys.Select(x => x.ToString()).ToList();
+        }
     }
 }
