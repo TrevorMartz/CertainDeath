@@ -20,6 +20,7 @@ namespace CertainDeathEngine.Models
         public long TimeLastQueried { get; set; }
         public long TimeLastUpdated { get; set; }
 
+        [JsonProperty]
         public Player Player { get; set; }
 
         [JsonProperty]
