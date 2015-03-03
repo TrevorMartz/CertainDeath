@@ -31,6 +31,9 @@ namespace CertainDeathEngine.Models.NPC
 		// Direction to get to goal (As a normalized vector)
 		public Point Direction { get; private set; }
 
+		// Approximate direction, rounded to the nearest of the 8
+		public MonsterDirection ApproxDirection { get; private set; }
+
 		// Monster needs to know where they are so they
 		// can go towards the FireOfLife
 		public Tile Tile { get; private set; }
@@ -313,6 +316,28 @@ namespace CertainDeathEngine.Models.NPC
 			double distance = Distance(xDist, yDist);
 			Direction = new Point(xDist / distance, yDist / distance);
 			//Rotation = Math.Atan2(Direction.Y, Direction.X);
+		}
+
+		private void CalcApproxDirection()
+		{
+			if (Direction.X == 0)
+				if (Direction.Y > 0)
+					ApproxDirection = MonsterDirection.DOWN;
+				else
+					ApproxDirection = MonsterDirection.UP;
+			else if (Direction.Y == 0)
+				if (Direction.X > 0)
+					ApproxDirection = MonsterDirection.RIGHT;
+				else
+					ApproxDirection = MonsterDirection.LEFT;
+			else
+			{
+				double riseOverRun = Direction.Y / Direction.X;
+				double angleRadians = Math.Atan2(Direction.Y, Direction.X) 
+					+ Direction.X < 0 ? Math.PI / 2 : 0;
+				ApproxDirection = MonsterDirection.GetClosestDirection(angleRadians);
+			} 
+				
 		}
 
 

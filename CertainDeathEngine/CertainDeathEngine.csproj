@@ -79,6 +79,7 @@
     <Compile Include="DB\CDDBModel.cs" />
     <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Factories\MonsterGenerator.cs" />
+    <Compile Include="Models\MonsterDirection.cs" />
     <Compile Include="Models\NPC\Buildings\AutoHarvester.cs" />
     <Compile Include="Models\NPC\Buildings\BuildingType.cs" />
     <Compile Include="Models\NPC\Buildings\FireOfLife.cs" />
