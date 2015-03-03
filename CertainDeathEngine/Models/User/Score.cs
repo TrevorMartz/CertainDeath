@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Models.User
         public int Kills { get; set; }
         public int Buildings { get; set; }
         public Dictionary<ResourceType, int> ResourcesCollected { get; set; }
-        public long Survived { get; set; }
+        public TimeSpan Survived { get; set; }
         public int FireLevel { get; set; }
 
     }
