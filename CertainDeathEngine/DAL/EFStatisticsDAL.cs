@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.DB;
 using CertainDeathEngine.Models.User;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CertainDeathEngine.DAL
@@ -23,10 +24,10 @@ namespace CertainDeathEngine.DAL
             return cdDBModel.Scores.Where(x => x.UserId == userId);
         }
 
-        public IQueryable<Score> GetHighScores(int qty)
+        public IEnumerable<Score> GetHighScores(int qty)
         {
             //High score will be determined by time survived. The rest are just stats.
-            return cdDBModel.Scores.OrderBy(x => x.Survived).Take(qty);
+            return cdDBModel.Scores.OrderBy(x => x.Survived).Take(qty).ToList();
         }
     }
 }
