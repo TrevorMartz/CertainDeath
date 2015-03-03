@@ -31,6 +31,7 @@ namespace CertainDeathEngine.Models
 
 		private MonsterDirection (Direction dir)
 		{
+			Dir = dir;
 			Angle = ((int)Dir) * Math.PI / 4;
 		}
 
