@@ -13,9 +13,36 @@
         
             Thanks Blake, got it.
             *@
+    @Styles.Render("~/Content/Styles/GameStyle.css")
     <script>
         var WorldId = @Model.WorldId;
     </script>
+
+    <div id="shop-window">
+        <div class="exit-button">
+            X
+        </div>
+        <div class="shop-title">
+            <h3>Building Shop</h3>
+        </div>
+        <div class="building-list">
+            <div class="building-item">
+                <div class="title">
+                    Steel Factory
+                </div>
+                <div class="price">
+                    $200
+                </div>
+                <div class="description">
+                    Some description
+                </div>
+                <div class="purchase-button">
+                    Purchase
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="~/Content/Scripts/phaser.js"></script>
     <script src="~/Content/Scripts/view.js"></script>
     <script src="~/Content/Scripts/game.js"></script>

@@ -103,7 +103,7 @@ View = (function () {
      * @param game - A Phaser.js game object
      * @param server - A Server object to send and recieve 
      */
-    function MainGameScreen(game, x, y, screenWidth, screenHeight) {
+    function MainGameScreen(game, server, x, y, screenWidth, screenHeight) {
         if (screenWidth === undefined)
             screenWidth = game.width;
         if (screenHeight == undefined)
@@ -141,7 +141,7 @@ View = (function () {
                         game.input.activePointer.y >= this.boardY &&
                         game.input.activePointer.y <= this.boardY + this.squaresHigh * tileSize) {
 
-                        Server.send(JSON.stringify({
+                        this.server.send(JSON.stringify({
                             "event": "click",
                             "x": (game.input.activePointer.x - this.boardX) / (tileSize),
                             "y": (game.input.activePointer.y - this.boardY) / (tileSize)
@@ -188,9 +188,9 @@ View = (function () {
                                 }
 
                                 if (this.tiles[i][j] === undefined || this.tiles[i][j] === null) {
-                                    var rand = Math.ceil(Math.random() * 3);
+                                    //var rand = Math.ceil(Math.random() * 3);
                                     var sprite = game.add.sprite(i * tileSize + this.boardX, j * tileSize + this.boardY,
-                                        "objects", msg[i][j].TypeName + rand);
+                                        "objects", msg[i][j].TypeName);
                                     sprite.scale.setTo(tileSize / sprite.width);
                                     this.tiles[i][j] = sprite;
                                 }
@@ -211,7 +211,10 @@ View = (function () {
                                         sprite2.scale.setTo(tileSize / sprite2.width);
                                         this.resources[i][j] = sprite2;
                                     }
-                                } // end if
+                                } else if(this.resources[i][j] != undefined){
+                                    this.resources[i][j].destroy();
+                                    delete this.resources[i][j];
+                                }
                             } // end for
                         } // end for
                     } else if (property === "CurrentTile.Monsters") {
@@ -255,6 +258,7 @@ View = (function () {
     ScreenContainer.prototype = Object.create(Screen.prototype, {
         create: {
             value: function () {
+                Screen.prototype.create.call(this);
                 for (var x = 0; x < this.screens.length; ++x) {
                     this.screens[x].create();
                 }
@@ -262,6 +266,7 @@ View = (function () {
         },
         update: {
             value: function () {
+                Screen.prototype.update.call(this);
                 for (var x = 0; x < this.screens.length; ++x) {
                     this.screens[x].update();
                 }
@@ -269,6 +274,7 @@ View = (function () {
         },
         click: {
             value: function (evt) {
+                Screen.prototype.click.call(this);
                 for (var x = 0; x < this.screens.length; ++x) {
                     this.screens[x].click();
                 }
@@ -276,6 +282,7 @@ View = (function () {
         },
         destroy: {
             value: function () {
+                Screen.prototype.destroy.call(this);
                 for (var x = 0; x < this.screens.length; ++x) {
                     this.screens[x].destroy();
                 }
@@ -283,6 +290,7 @@ View = (function () {
         },
         render: {
             value: function () {
+                Screen.prototype.render.call(this);
                 for (var x = 0; x < this.screens.length; ++x) {
                     this.screens[x].render();
                 }
@@ -329,7 +337,9 @@ View = (function () {
             value: function () {
                 Screen.prototype.update.call(this);
 
-
+                for (var type in this.values) {
+                    this.resourceText[type].setText(this.values[type]);
+                }
             }
         },
         //click: {
@@ -354,11 +364,68 @@ View = (function () {
         }
     });
 
+    function ButtonScreen(game, x, y, width, height, group, key, callback) {
+        Screen.call(this, x, y, width, height);
+        this.game = game;
+        this.button = this.game.add.button(x, y, group, callback);
+        this.button.antialias = false;
+        this.button.setFrames(key, key, key, key);
+        this.button.scale.setTo(width / 32, height / 32);
+        this.button.input.useHandCursor = true;
+        this.visible = true;
+    }
+
+    ButtonScreen.prototype = Object.create(Screen.prototype, {
+        destroy: {
+            value: function () {
+                Screen.prototype.destroy.call(this);
+                this.button.destroy();
+            }
+        },
+        update: {
+            value : function(){
+                Screen.prototype.update.call(this);
+                this.button.visible = this.visible;
+            }
+        }
+    });
+
+    function BuildingShop(game, server, x, y, width, height) {
+        ScreenContainer.call(this, new Array(), x, y, width, height);
+        this.game = game;
+        this.server = server;
+        this.subscribesTo = "BuildingPrices";
+        this.visible = false;
+    }
+
+    BuildingShop.prototype = Object.create(ScreenContainer.prototype, {
+        create: {
+            value: function () {
+                ScreenContainer.prototype.create.call(this);
+                this.g = game.add.graphics(this.x, this.y);
+                this.g.beginFill(0x333333, 0.9);
+                this.g.drawRect(0, 0, this.width, this.height);
+                this.g.visible = false;
+                this.game.world.bringToTop(this.g);
+            }
+        },
+        update: {
+            value: function () {
+                ScreenContainer.prototype.update.call(this);
+                if (this.visible && $("#shop-window").length == 0) {
+                    var $shop = $("<div>").attr("id", "#shop-window").appendTo($("canvas").parent());
+                }
+            }
+        }
+    });
+
     return {
         MainGameScreen: MainGameScreen,
         LoadingScreen: LoadingScreen,
         ScreenContainer: ScreenContainer,
-        InventoryBar : InventoryBar,
+        InventoryBar: InventoryBar,
+        BuildingShop: BuildingShop,
+        ButtonScreen: ButtonScreen,
         Screen: Screen,
         current: new Screen(0, 0, 100, 100)
     }

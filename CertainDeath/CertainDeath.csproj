@@ -180,15 +180,18 @@
   <ItemGroup>
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
-    <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT.png" />
-    <Content Include="Content\Images\GRASS3.png" />
+    <Content Include="Content\Images\Fire.png" />
+    <Content Include="Content\Images\DIRT_old.png" />
+    <Content Include="Content\Images\GRASS.png" />
     <Content Include="Content\Images\GRASS2.png" />
-    <Content Include="Content\Images\GRASS1.png" />
+    <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
+    <Content Include="Content\Images\SAND.png" />
+    <Content Include="Content\Images\ShopButton.png" />
     <Content Include="Content\Images\SAND3.png" />
     <Content Include="Content\Images\SAND2.png" />
-    <Content Include="Content\Images\SAND1.png" />
+    <Content Include="Content\Images\SAND_old.png" />
     <Content Include="Content\Images\GRASS_old.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\spritesheet2.png" />
@@ -199,6 +202,7 @@
     <Content Include="Content\Scripts\game.js" />
     <Content Include="Content\Scripts\phaser.js" />
     <Content Include="Content\Scripts\view.js" />
+    <Content Include="Content\Styles\GameStyle.css" />
     <Content Include="Images\background.png" />
     <Content Include="Images\arrow.png" />
     <Content Include="favicon.ico" />
