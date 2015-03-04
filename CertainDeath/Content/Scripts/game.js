@@ -67,6 +67,8 @@ Server = (function () {
     function open() {
         socket = new WebSocket("wss://" + window.location.host + "/api/WebSocket/" + WorldId);
         socket.onmessage = onmessage;
+        socket.onclose = onclose;
+        socket.onerror = onerror;
     }
 
     function register(listener) {
@@ -109,6 +111,16 @@ Server = (function () {
 
     function send(msg) {
         socket.send(msg);
+    }
+
+    function onclose() {
+        View.current.destroy();
+        View.current = new View.TextScreen(game, 0, 0, game.world.width, game.world.height, "Disconnected", false);
+    }
+
+    function onerror() {
+        View.current.destroy();
+        View.current = new View.TextScreen(game, 0, 0, game.world.width, game.world.height, "Disconnected", false);
     }
 
     return {

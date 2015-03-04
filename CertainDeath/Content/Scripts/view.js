@@ -390,6 +390,38 @@ View = (function () {
         }
     });
 
+    function TextScreen(game, x, y, width, height, text, transparent) {
+        Screen.call(this, x, y, width, height);
+        this.text = text;
+        this.transparent = transparent;
+        this.game = game;
+    }
+
+    TextScreen.prototype = Object.create(Screen.prototype, {
+        create: {
+            value: function () {
+                Screen.prototype.create.call(this);
+                this.textO = game.add.text(this.x + this.width / 2, this.y + this.height / 2, this.text);
+                if (!this.transparent) {
+                    this.g = game.add.graphics(this.x, this.y);
+                    this.g.beginFill(0xFFFFFF);
+                    this.g.drawRect(0, 0, this.width, this.height);
+                }
+            }
+        },
+        destroy: {
+            value: function () {
+                Screen.prototype.destroy.call(this);
+                if (this.textO) {
+                    this.textO.destroy();
+                }
+                if (this.g) {
+                    this.g.destroy();
+                }
+            }
+        }
+    });
+
     function BuildingShop(game, server, x, y, width, height) {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
@@ -427,6 +459,7 @@ View = (function () {
         BuildingShop: BuildingShop,
         ButtonScreen: ButtonScreen,
         Screen: Screen,
+        TextScreen: TextScreen,
         current: new Screen(0, 0, 100, 100)
     }
 })();
