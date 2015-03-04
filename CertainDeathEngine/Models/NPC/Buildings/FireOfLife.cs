@@ -10,7 +10,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public FireOfLife(Tile tile)
-			: base(tile, new Point(Tile.SQUARE_SIZE / 2 + Square.PIXEL_SIZE / 2, Tile.SQUARE_SIZE / 2 + Square.PIXEL_SIZE / 2))
+			: base(tile, new Point(Tile.SQUARES_PER_ROW_AND_COLUMN / 2 , Tile.SQUARES_PER_ROW_AND_COLUMN / 2 ))
 		{
             Type = BuildingType.FIREOFLIFE;
             MaxLevel = 5;

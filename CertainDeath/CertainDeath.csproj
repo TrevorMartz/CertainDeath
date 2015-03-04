@@ -185,11 +185,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\ActualBrownDirtThatLooksLikeDirt.png" />
+    <Content Include="Content\Images\Bonfire.png" />
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
+    <Content Include="Content\Images\Grass.gif" />
     <Content Include="Content\Images\GRASS.png" />
     <Content Include="Content\Images\GRASS2.png" />
     <Content Include="Content\Images\GRASS7.png" />
@@ -256,7 +258,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_FriendView.cshtml" />
     <Content Include="Views\Home\GameRegistration.cshtml" />
-    <Content Include="Views\Home\LeaderBoard.cshtml" />
+    <Content Include="Views\Shared\_LeaderBoard.cshtml" />
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />

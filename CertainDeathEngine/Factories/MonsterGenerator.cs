@@ -70,8 +70,8 @@ namespace CertainDeathEngine.Factories
                 int squareIndex = RandomGen.Random.Next(Tile.SQUARES);
 
                 Point Position = new Point(
-                    squareIndex % Tile.SQUARE_SIZE * Square.PIXEL_SIZE,
-                    squareIndex / Tile.SQUARE_SIZE * Square.PIXEL_SIZE
+                    squareIndex % Tile.SQUARES_PER_ROW_AND_COLUMN * Square.PIXEL_SIZE,
+                    squareIndex / Tile.SQUARES_PER_ROW_AND_COLUMN * Square.PIXEL_SIZE
                 );
 
 				Point Goal = new Point(Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2, Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2);

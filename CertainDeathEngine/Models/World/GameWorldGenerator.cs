@@ -181,9 +181,9 @@ namespace CertainDeathEngine.Models.World
         {
             Tile newTile = new Tile(x, y, null);
 
-            for (int row = 0; row < Tile.SQUARE_SIZE; row++)
+            for (int row = 0; row < Tile.SQUARES_PER_ROW_AND_COLUMN; row++)
             {
-                for (int col = 0; col < Tile.SQUARE_SIZE; col++)
+                for (int col = 0; col < Tile.SQUARES_PER_ROW_AND_COLUMN; col++)
                 {
                     newTile.Squares[row, col].Type = SquareType.GRASS; //would like to change this to start with the most common tile type based on rarity values... big task
                 }
@@ -203,8 +203,8 @@ namespace CertainDeathEngine.Models.World
             //if random double is greater than the rarity of the item, stop spreading. pick x number of random points where x is the rarity * 10, rounded down
             for (float i = 1; i > rarity; i -= .1f)
             {
-                int row = RandomGen.Random.Next(Tile.SQUARE_SIZE);
-                int col = RandomGen.Random.Next(Tile.SQUARE_SIZE);
+                int row = RandomGen.Random.Next(Tile.SQUARES_PER_ROW_AND_COLUMN);
+                int col = RandomGen.Random.Next(Tile.SQUARES_PER_ROW_AND_COLUMN);
                 while (RandomGen.Random.NextDouble() > rarity)
                 {
                     for (int j = 0; j < RandomGen.Random.Next(10) + 5; j++)
@@ -213,13 +213,13 @@ namespace CertainDeathEngine.Models.World
                         switch (RandomGen.Random.Next(4))
                         {
                             case 0://east
-                                row += (row < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                                row += (row < (Tile.SQUARES_PER_ROW_AND_COLUMN - 1) ? 1 : -1);
                                 break;
                             case 1://west
                                 row -= (row > 0 ? 1 : -1);
                                 break;
                             case 2://sout
-                                col += (col < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                                col += (col < (Tile.SQUARES_PER_ROW_AND_COLUMN - 1) ? 1 : -1);
                                 break;
                             case 3://north
                                 col -= (col > 0 ? 1 : -1);
@@ -235,21 +235,21 @@ namespace CertainDeathEngine.Models.World
             //would like to make this so it won't override other resources.
             for (float i = ((float)RandomGen.Random.NextDouble()) + .1f; i > rarity; i -= .1f)
             {
-                int row = RandomGen.Random.Next(Tile.SQUARE_SIZE);
-                int col = RandomGen.Random.Next(Tile.SQUARE_SIZE);
+                int row = RandomGen.Random.Next(Tile.SQUARES_PER_ROW_AND_COLUMN);
+                int col = RandomGen.Random.Next(Tile.SQUARES_PER_ROW_AND_COLUMN);
                 while ((RandomGen.Random.NextDouble() * 3) > rarity)
                 {
                     tile.Squares[row, col].Resource = new Resource(type, RandomGen.Random.Next(3, Resource.MaxResources));
                     switch (RandomGen.Random.Next(4))
                     {
                         case 0://east
-                            row += (row < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                            row += (row < (Tile.SQUARES_PER_ROW_AND_COLUMN - 1) ? 1 : -1);
                             break;
                         case 1://west
                             row -= (row > 0 ? 1 : -1);
                             break;
                         case 2://sout
-                            col += (col < (Tile.SQUARE_SIZE - 1) ? 1 : -1);
+                            col += (col < (Tile.SQUARES_PER_ROW_AND_COLUMN - 1) ? 1 : -1);
                             break;
                         case 3://north
                             col -= (col > 0 ? 1 : -1);
@@ -261,11 +261,11 @@ namespace CertainDeathEngine.Models.World
 
         public static void PrintTilesSideBySide(Tile[] tiles)
         {
-            for (int row = 0; row < Tile.SQUARE_SIZE; row++)
+            for (int row = 0; row < Tile.SQUARES_PER_ROW_AND_COLUMN; row++)
             {
                 foreach (Tile t in tiles)
                 {
-                    for (int col = 0; col < Tile.SQUARE_SIZE; col++)
+                    for (int col = 0; col < Tile.SQUARES_PER_ROW_AND_COLUMN; col++)
                     {
                         Trace.Write((int)t.Squares[row, col].Type);
                     }
@@ -277,11 +277,11 @@ namespace CertainDeathEngine.Models.World
 
         public static void PrintTilesResourceSideBySide(Tile[] tiles)
         {
-            for (int row = 0; row < Tile.SQUARE_SIZE; row++)
+            for (int row = 0; row < Tile.SQUARES_PER_ROW_AND_COLUMN; row++)
             {
                 foreach (Tile t in tiles)
                 {
-                    for (int col = 0; col < Tile.SQUARE_SIZE; col++)
+                    for (int col = 0; col < Tile.SQUARES_PER_ROW_AND_COLUMN; col++)
                     {
                         if (t.Squares[row, col].Resource == null)
                         {
