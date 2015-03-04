@@ -33,7 +33,7 @@
         <header id="topHeader">
             <nav>
                 @Ajax.ActionLink("Admin", "Index", "Admin", new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "content"})
-                @*@Html.ActionLink("High Scores", "Leaderboard");*@
+                @Ajax.ActionLink("High Scores", "Index", "Home", new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "content"})
             </nav>
         </header>
         @RenderBody()
