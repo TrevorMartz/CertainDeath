@@ -32,7 +32,8 @@
     <div id="wrapper">
         <header id="topHeader">
             <nav>
-                @Ajax.ActionLink("Friends", "Index", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
+                @*@Ajax.ActionLink("Friends", "Index", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })*@
+                @Html.ActionLink("High Scores", "Leaderboard");
             </nav>
         </header>
         @RenderBody()

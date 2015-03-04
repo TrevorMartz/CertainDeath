@@ -70,5 +70,10 @@ namespace CertainDeath.Controllers
 
             return View("Error");
         }
+
+        public ActionResult Leaderboard()
+        {
+            return View("Index");
+        }
     }
 }

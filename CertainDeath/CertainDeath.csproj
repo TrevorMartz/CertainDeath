@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\ActualBrownDirtThatLooksLikeDirt.png" />
+    <Content Include="Content\Images\Bonfire.png" />
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT.png" />
