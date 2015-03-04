@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Threading;
 using log4net;
 using Newtonsoft.Json.Linq;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace CertainDeath.Controllers
 {
@@ -44,6 +46,7 @@ namespace CertainDeath.Controllers
             private IStatisticsDAL _statisticsDal;
             protected int GameWorldId;
             protected EngineInterface GameInstance;
+            private Thread thisEndOfTheWebSocketTread;
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
@@ -64,13 +67,15 @@ namespace CertainDeath.Controllers
                 {
                     GameInstance.SquareClicked((float)result.x, (float)result.y);
                 }
+                Log.Info("OnMessage: " + message);
                 Trace.WriteLine(message);
             }
 
             public override void OnOpen()
             {
-                Thread t = new Thread(SendUpdates);
-                t.Start(); // Should be a safe call since the thread terminates when the connection closes
+                thisEndOfTheWebSocketTread = new Thread(SendUpdates);
+                thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
+                thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
             }
 
             public void SendUpdates()
@@ -80,14 +85,41 @@ namespace CertainDeath.Controllers
                 while (this.WebSocketContext.IsClientConnected)
                 {
                     Thread.Sleep(32);
-                    jsonString = GameInstance.ToJSON();
-                    Send(jsonString);
                     lock (((Game) GameInstance).World)
                     {
+                        bool sendAll = false;
                         if (((Game) GameInstance).World.Updates.Count > 0)
                         {
-                            Trace.WriteLine("clearing " + ((Game) GameInstance).World.Updates.Count + " updates");
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append("\"updates\":[");
+                            foreach (var m in ((Game) GameInstance).World.Updates)
+                            {
+                                if (m.GetType() != typeof (WorldUpdateMessage))
+                                {
+                                    sb.Append(JsonConvert.SerializeObject(m));
+                                }
+                                else
+                                {
+                                    sendAll = true;
+                                }
+                                sb.Append(",");
+                            }
+                            sb.Remove(sb.Length - 1, 1);
+                            sb.Append("]");
+
+                            //Trace.WriteLine("sending " + ((Game) GameInstance).World.Updates.Count + " updates");
                             ((Game) GameInstance).World.Updates.Clear();
+
+                            jsonString = sb.ToString();
+                            Trace.WriteLine(jsonString);
+                            //Send(jsonString);
+
+                            //if (sendAll)
+                            //{
+                            //    // send the whole world for now
+                                jsonString = GameInstance.ToJSON();
+                                Send(jsonString);
+                            //}
                         }
                     }
                 }
@@ -96,6 +128,9 @@ namespace CertainDeath.Controllers
 
             public override void OnClose()
             {
+                thisEndOfTheWebSocketTread.Abort();
+                Log.Info("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
+                Log.Info("Connection closed");
                 Trace.WriteLine("[Connection closed]");
             }
         }

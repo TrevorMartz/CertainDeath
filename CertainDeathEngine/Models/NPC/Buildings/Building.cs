@@ -39,6 +39,10 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public void RemoveBuilding()
         {
+            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
+            {
+                ObjectId = this.Id
+            });
             Tile.RemoveObject(this);
         }
 	}
