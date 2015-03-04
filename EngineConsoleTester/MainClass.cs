@@ -103,9 +103,9 @@ namespace EngineConsoleTester
 				MonsterSquares.Add(m.ApproxSquare());
 			}
 
-			for (int y = 0; y < Tile.SQUARE_SIZE; y++)
+			for (int y = 0; y < Tile.SQUARES_PER_ROW_AND_COLUMN; y++)
 			{
-				for (int x = 0; x < Tile.SQUARE_SIZE; x++)
+				for (int x = 0; x < Tile.SQUARES_PER_ROW_AND_COLUMN; x++)
 				{
 					System.Drawing.Point squarePoint = new System.Drawing.Point(x, y);
 					Square square = g.World.CurrentTile.Squares[y,x];

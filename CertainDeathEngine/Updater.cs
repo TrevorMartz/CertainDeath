@@ -70,12 +70,12 @@ namespace CertainDeathEngine
             lock (World.CurrentTile.Objects)
             {
                 // update monsters
-                //foreach (Tile t in World.Tiles)
-                //{
-                    IEnumerable<Temporal> timeObjects = new List<Temporal>(World.CurrentTile.Objects.OfType<Temporal>());
+				foreach (Tile t in World.Tiles)
+				{
+                    IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
                     foreach (Temporal tim in timeObjects)
                         tim.Update(delta);
-                //}
+				}
             }
 
             lock (World.CurrentTile.Squares)
