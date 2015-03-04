@@ -130,19 +130,31 @@ namespace CertainDeathEngine
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-            Building buildingInstance;
+            
+            Building building;
             lock (World.CurrentTile)
             {
-                buildingInstance = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
-                World.CurrentTile.AddObject(buildingInstance);
+                // check if it is a good location
+                building = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
+                System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
+                for (int row2 = CornersAsSquareGrid[0].Y; row2 <= CornersAsSquareGrid[2].Y; row2++)
+                {
+                    for (int col2 = CornersAsSquareGrid[0].X; col2 <= CornersAsSquareGrid[1].X; col2++)
+                    {
+                        if(World.CurrentTile.Squares[row2, col2].Building != null)
+                        {
+                            return null;
+                        }
+                    }
+                }
+                
+                World.CurrentTile.AddObject(building);
             }
-
-            // check if it is a good location
 
             // persist the building
 
             WorldScore.Buildings++;
-            return buildingInstance;
+            return building;
         }
 
         //Need to add a method for upgrading Fire Level
