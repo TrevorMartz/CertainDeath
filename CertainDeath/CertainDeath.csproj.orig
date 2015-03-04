@@ -169,7 +169,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserRealtimeUpdateController.cs" />
     <Compile Include="Controllers\WebSocketController.cs" />
-    <Compile Include="Controllers\WorldUpdateMessage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,8 +183,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Content Include="Content\Images\DIRT.png" />
+=======
+    <Content Include="Content\Images\ActualBrownDirtThatLooksLikeDirt.png" />
     <Content Include="Content\Images\Bonfire.png" />
+>>>>>>> fa186ca564ee5de7cf6a7fa29568e55a00a309d7
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />

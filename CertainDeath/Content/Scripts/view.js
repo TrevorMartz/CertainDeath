@@ -34,7 +34,9 @@ View = (function () {
         click: function (evt) { },
 
         destroy: function () {
-            this.g.destroy();
+            if (this.g) {
+                this.g.destroy();
+            }
         },
 
         onmessage: function (obj){
@@ -158,11 +160,13 @@ View = (function () {
         destroy: {
             value: function () {
                 //FIXME: I think the foreach here will not behave as expected
-                for (obj in this.tiles) {
-                    obj.destroy();
+                for (var x = 0; x < this.tiles.length; ++x) {
+                    if(this.tiles[x].destroy)
+                        this.tiles[x].destroy();
                 }
-                for (obj in this.resources) {
-                    obj.destroy();
+                for (var x = 0; x < this.resources.length; ++x) {
+                    if(this.resources[x].destroy)
+                        this.resources[x].destroy();
                 }
             }
         },
@@ -429,6 +433,38 @@ View = (function () {
         }
     });
 
+    function TextScreen(game, x, y, width, height, text, transparent) {
+        Screen.call(this, x, y, width, height);
+        this.text = text;
+        this.transparent = transparent;
+        this.game = game;
+    }
+
+    TextScreen.prototype = Object.create(Screen.prototype, {
+        create: {
+            value: function () {
+                Screen.prototype.create.call(this);
+                this.textO = game.add.text(this.x + this.width / 2, this.y + this.height / 2, this.text);
+                if (!this.transparent) {
+                    this.g = game.add.graphics(this.x, this.y);
+                    this.g.beginFill(0xFFFFFF);
+                    this.g.drawRect(0, 0, this.width, this.height);
+                }
+            }
+        },
+        destroy: {
+            value: function () {
+                Screen.prototype.destroy.call(this);
+                if (this.textO) {
+                    this.textO.destroy();
+                }
+                if (this.g) {
+                    this.g.destroy();
+                }
+            }
+        }
+    });
+
     function BuildingShop(game, server, x, y, width, height) {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
@@ -466,6 +502,7 @@ View = (function () {
         BuildingShop: BuildingShop,
         ButtonScreen: ButtonScreen,
         Screen: Screen,
+        TextScreen: TextScreen,
         current: new Screen(0, 0, 100, 100)
     }
 })();
