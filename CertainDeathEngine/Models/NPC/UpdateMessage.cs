@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using log4net;
 
 namespace CertainDeathEngine.Models.NPC
 {
     public class UpdateMessage
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public int ObjectId { get; set; }
         public string Data { get; set; }
     }

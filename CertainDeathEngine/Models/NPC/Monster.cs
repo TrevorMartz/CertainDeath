@@ -1,11 +1,7 @@
 ﻿using CertainDeathEngine.Models.NPC.Buildings;
+using log4net;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC
@@ -14,6 +10,8 @@ namespace CertainDeathEngine.Models.NPC
 	[JsonObject(MemberSerialization.OptIn)]
     public class Monster : Killable, Temporal
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static int HALF_SQUARE = Square.PIXEL_SIZE / 2;
 		[JsonProperty]
 		public string Type { get { return "Monster"; } }

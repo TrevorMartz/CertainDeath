@@ -1,11 +1,13 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC.Buildings;
+using log4net;
 using System.Windows;
 
 namespace CertainDeathEngine.Factories
 {
     public class GameFactory
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         static int nextObjectId = 1;
         object idBaton = new object();
         public GameWorld World { get; protected set; }

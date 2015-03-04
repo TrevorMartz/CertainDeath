@@ -1,15 +1,15 @@
-﻿using CertainDeathEngine.DAL;
-using CertainDeathEngine.Models;
+﻿using CertainDeathEngine.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.WorldManager
 {
     public sealed class WorldManager
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly WorldManager _instance = new WorldManager();
 
         public static WorldManager Instance

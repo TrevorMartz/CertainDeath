@@ -1,10 +1,6 @@
-﻿using CertainDeathEngine.Models.NPC;
+﻿using log4net;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
@@ -13,7 +9,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 	[JsonObject(MemberSerialization.OptIn)]
 	public abstract class Building : Killable, Temporal
     {
-		[JsonProperty]
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        [JsonProperty]
 		public string Typename { get { return Type.ToString(); } }
 
         public virtual int Level { get; protected set; }

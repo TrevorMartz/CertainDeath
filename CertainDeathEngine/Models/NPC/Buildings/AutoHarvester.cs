@@ -1,9 +1,5 @@
-﻿using CertainDeathEngine.Models.Resources;
+﻿using log4net;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
@@ -11,6 +7,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     [Serializable]
     public class AutoHarvester : Building
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         //resources collected per second.
         public int HarvestRate { get; private set; }
         public int GatherRange { get; set; }

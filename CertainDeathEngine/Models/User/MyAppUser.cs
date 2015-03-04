@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Facebook;
-using Newtonsoft.Json;
+﻿using log4net;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +8,8 @@ namespace CertainDeathEngine.Models.User
     [Table("FBUsers")]
     public class MyAppUser
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

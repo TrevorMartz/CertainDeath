@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using log4net;
+using System;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
 	class FireOfLife : Building
-	{
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public FireOfLife(Tile tile) : base(tile, new Point(Tile.SQUARE_SIZE / 2, Tile.SQUARE_SIZE / 2))
 		{
             Type = BuildingType.FIREOFLIFE;

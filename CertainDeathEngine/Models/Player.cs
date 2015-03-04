@@ -1,11 +1,8 @@
 ﻿using CertainDeathEngine.Models.Resources;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models
 {
@@ -13,6 +10,8 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class Player : GameObject
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [JsonProperty]
         public Dictionary<ResourceType, int> Resources { get; private set; }
 

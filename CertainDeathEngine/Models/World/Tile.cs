@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
 using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
-using System.Threading;
+using log4net;
 
 namespace CertainDeathEngine.Models
 {
@@ -16,6 +14,7 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class Tile
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static int SQUARE_SIZE = 20;
         public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;

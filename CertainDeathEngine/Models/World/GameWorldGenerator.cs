@@ -1,15 +1,13 @@
 ﻿using CertainDeathEngine.Models.Resources;
-using System;
-using System.Collections.Generic;
+using log4net;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.World
 {
     public class GameWorldGenerator
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public bool printWorld { get; set; }
         public bool printResources { get; set; }
         #region RarityValues

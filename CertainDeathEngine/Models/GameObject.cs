@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
+using log4net;
 
 namespace CertainDeathEngine.Models
 {
@@ -11,6 +9,8 @@ namespace CertainDeathEngine.Models
 	[JsonObject(MemberSerialization.OptIn)]
     public abstract class GameObject
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		[JsonProperty]
         public int Id { get; set; }
 

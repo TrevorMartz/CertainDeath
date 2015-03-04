@@ -1,14 +1,14 @@
-﻿using System;
+﻿using log4net;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine
 {
     public sealed class UpdateManager
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly UpdateManager _instance = new UpdateManager();
         public static UpdateManager Instance
         {

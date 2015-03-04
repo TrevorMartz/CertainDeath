@@ -1,16 +1,12 @@
 ﻿using CertainDeathEngine.Models;
-using CertainDeathEngine.Models.Resources;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using log4net;
 
 namespace CertainDeathEngine
 {
     public static class Init
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public static bool Initted { get; private set; }
         public static void InitAll()
         {

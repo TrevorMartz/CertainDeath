@@ -1,15 +1,17 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
+using log4net;
 using System.Linq;
 using System.Windows;
 
 namespace CertainDeathEngine.Factories
 {
 	public class MonsterGenerator : GameFactory, Temporal
-	{
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		
-		private long Time = 0;
-		private bool Delaying = true;
+		private long _time = 0;
+		private bool _delaying = true;
 
 		// Delay in Millis before the monsters come
 		public int Delay { get; set; }
@@ -33,18 +35,18 @@ namespace CertainDeathEngine.Factories
 		// This will be used for sending back Delta JSON
 		public void Update(long millis)
 		{
-			Time += millis;
-			if (Delaying && Time > Delay)
+			_time += millis;
+			if (_delaying && _time > Delay)
 			{
-				Delaying = false;
+				_delaying = false;
 				SpawnMonsters(InitialSpawnSize);
-				Time -= Delay;
+				_time -= Delay;
 			}
-			if(!Delaying && Time > Rate) {
-				int monsters = (int)Time / Rate;
+			if(!_delaying && _time > Rate) {
+				int monsters = (int)_time / Rate;
 				for (int i = 0; i < monsters; i++)
 					SpawnMonsters(SpawnSize);
-				Time -= monsters * Rate;
+				_time -= monsters * Rate;
 			}
 		}
 

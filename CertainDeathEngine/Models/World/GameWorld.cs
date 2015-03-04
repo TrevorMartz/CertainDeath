@@ -1,14 +1,11 @@
 ﻿using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models
 {
@@ -16,6 +13,8 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class GameWorld
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [NonSerialized]
         public Queue<UpdateMessage> Updates;
         public long TimeLastSaved { get; set; }
