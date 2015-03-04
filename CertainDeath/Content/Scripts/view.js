@@ -226,55 +226,44 @@ View = (function () {
                             var ypos = parseFloat(positions[1]);
                             var direction = msg[x].Direction;
                             var status = msg[x].Status;
+                            var newAnimation = false;
+
                             var sprite = null;
-                            if (this.monsters[msg[x].Id] !== undefined) {
-                                sprite = this.monsters[msg[x].Id];
-                                sprite.x = xpos/32*tileSize+this.boardX;
-                                sprite.y = ypos / 32 * tileSize + this.boardY;
-                                console.log.apply(console, [status]);
-                                if (sprite.animations.currentAnim.name !== status) {
-                                	sprite.animations.stop();
-                                	//sprite.animations.add(status,
-									//monsterMap[status + "_" + String(direction.Name)],
-									//5, true);
-                                	sprite.animations.play(status);
-                                	if (direction.X === "LEFT") {
-                                		sprite.anchor.setTo(.5, 1); //so it flips around its middle
-                                		sprite.scale.x = -1; //flipped
-                                		sprite.animations.add(status,
-										monsterMap[status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
-										5, true);
-                                	}
-                                	else {
-                                		sprite.animations.add(status,
-										monsterMap[status + "_" + String(direction.Name)],
-										5, true);
-                                	}
-                                	sprite.animations.play(status);
-                                	this.monsters[msg[x].Id] = sprite;
-                                }
-                            } else {
-                            	sprite =
-									game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-									"stone_golem");
-                            	
-                            	if (direction.X === "LEFT") {
-                            		sprite.anchor.setTo(.5, 1); //so it flips around its middle
-                            		sprite.scale.x = -1; //flipped
-                            		sprite.animations.add(status,
+								// if monster exists
+								if (this.monsters[msg[x].Id] !== undefined) {
+									sprite = this.monsters[msg[x].Id];
+									sprite.x = xpos/32*tileSize+this.boardX;
+									sprite.y = ypos / 32 * tileSize + this.boardY;
+
+									// if monster has changed state
+									if (sprite.animations.currentAnim.name !== status) {
+										sprite.animations.stop();
+										newAnimation = true;
+									}
+								} else /*Monster does not exist yet*/ {
+                            		sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+										"stone_golem");
+                            		this.monsters[msg[x].Id] = sprite;
+                            		newAnimation = true;
+								}
+
+							if (newAnimation) {
+								if (direction.X === "LEFT") {
+									sprite.anchor.setTo(.5, 1); //so it flips around its middle
+									sprite.scale.x = -1; //flipped
+									sprite.animations.add(status,
 									monsterMap[status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
 									5, true);
-                            	}
-                            	else {
-                            		sprite.animations.add(status,
+								}
+								else {
+									sprite.animations.add(status,
 									monsterMap[status + "_" + String(direction.Name)],
 									5, true);
-                            	}
-                            	sprite.animations.play(status);
-                                this.monsters[msg[x].Id] = sprite;
-                            }
-                        }
-                    }
+								}
+								sprite.animations.play(status);
+							} // end if newAnimation
+                        } // end for each monster
+                    } // end if monster property
                     else if (property === "CurrentTile.Buildings") {
                     	if (msg[0] !== 'undefined') {
                     		var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
@@ -284,7 +273,7 @@ View = (function () {
                     		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
 										"objects", "Fire");
                     	}
-                    }
+                    } // end if building property
                 } // end if
             } // end func
         }
