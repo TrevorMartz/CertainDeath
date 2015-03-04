@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using log4net;
+using System;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
 	class FireOfLife : Building
-	{
-		public FireOfLife(Tile tile) : base(tile, new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2))
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+		public FireOfLife(Tile tile)
+			: base(tile, new Point(Tile.SQUARE_SIZE / 2 + Square.PIXEL_SIZE / 2, Tile.SQUARE_SIZE / 2 + Square.PIXEL_SIZE / 2))
 		{
             Type = BuildingType.FIREOFLIFE;
-			// I think its okay if this building doesn't have to snap to the
-			// square grid. It's special and should be in the very center.
-			// (If it isn't in the center, and it's small, the monsters might                  Too bad.
-			//    walk past it without hitting it, they are aiming for the exact
-			//    center of the tile and a 20 by 20 doesn't have an exact center)
             MaxLevel = 5;
             Level = 0;
             Upgrade();
@@ -28,8 +23,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                Width = Square.PIXEL_SIZE * Level;
-                Height = Square.PIXEL_SIZE * Level;
+                Width = Level;
+                Height = Level;
                 MaxHealthPoints = 100 * Level;
                 HealthPoints = MaxHealthPoints;
             }

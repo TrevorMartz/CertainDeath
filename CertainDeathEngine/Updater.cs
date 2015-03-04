@@ -1,18 +1,18 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace CertainDeathEngine
 {
     public class Updater
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         const int FRAME_TICK_COUNT = 16;
         public bool Running;
         private Game Game;

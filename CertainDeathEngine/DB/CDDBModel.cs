@@ -1,15 +1,18 @@
 using CertainDeathEngine.Models.User;
 using CertainDeathEngine.WorldManager;
+using log4net;
 using System.Data.Entity;
 
 namespace CertainDeathEngine.DB
 {
     public class CDDBModel : DbContext
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // Set up the EF Tables
         public virtual DbSet<Score> Scores { get; set; }
         public virtual DbSet<CertainDeathUser> Users { get; set; }
         public virtual DbSet<GameWorldWrapperWrapper> Worlds { get; set; }
+        public virtual DbSet<MyAppUser> FBUsers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -1,14 +1,12 @@
 ﻿using log4net;
-using System;
 
 namespace CertainDeathEngine.Models.NPC
 {
-    [Serializable]
-    public class Killable : GameObject
+    public class UpdateMessage
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public float HealthPoints { get; set; }
-        public int MaxHealthPoints { get; set; }
+        public int ObjectId { get; set; }
+        public string Data { get; set; }
     }
 }

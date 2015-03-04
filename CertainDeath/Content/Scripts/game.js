@@ -2,7 +2,8 @@
 /// <reference path="view.js" />
 var game;
 window.onload = function () {
-    var elm = document.getElementById("content");
+	var elm = document.getElementById("content");
+	makeMonsterMap();
     game = new Phaser.Game(elm.offsetWidth, elm.offsetWidth, Phaser.AUTO, "content", { preload: preload, create: create, update: update, render: render }, false);
 }
 
@@ -14,10 +15,33 @@ var shop;
 // The server object used to pull data from the server
 var server;
 
+var monsterMap;
+
+function makeMonsterMap() {
+	monsterMap = {};
+	var actions = ["WALKING_", "ATTACKING_", "DYING_"];
+	var directions = ["DOWN", "DOWN_RIGHT", "RIGHT", "UP_RIGHT", "UP", "UP_LEFT", "LEFT", "DOWN_LEFT"];
+	for(var a = 0; a < 2; a++) {
+		for (var d = 0; d < 8; d++) {
+			var animationArray = [];
+			for(var i = 0; i < 4; i++) {
+				animationArray[i] = actions[a] + directions[d] + "_" + i;
+			}
+			monsterMap[actions[a] + directions[d]] = animationArray;
+		}
+	}
+	var animationArray = [];
+	for(var i = 0; i < 8; i++) {
+		animationArray[i] = actions[2] + i;
+	}
+	monsterMap[actions[2]] = animationArray;
+}
+
 function preload () {
     // download all sprites
     game.load.atlas("objects", "/Content/Images/spritesheet2.png", "/Content/Images/spritesheet2.json");
-    //server = new Server("", onerror, onclose);
+    game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
+	//server = new Server("", onerror, onclose);
 }
 
 function create () {

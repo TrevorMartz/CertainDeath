@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft;
-using CertainDeathEngine.Models.NPC;
+﻿using System.Collections.Generic;
 using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine

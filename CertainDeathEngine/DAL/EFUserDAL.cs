@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.DB;
 using CertainDeathEngine.Models.User;
+using log4net;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace CertainDeathEngine.DAL
 {
     public class EFUserDAL : IUserDAL
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private CDDBModel cdDBModel;
 
         public EFUserDAL()
@@ -38,9 +40,7 @@ namespace CertainDeathEngine.DAL
 
         public IEnumerable<MyAppUser> GetAllFbUsers()
         {
-            //var t = cdDBModel.Users.Include("FBUsers").Select(x => x);
-            //return t.FBUser
-            return null;
+            return cdDBModel.FBUsers.Select(x => x);
         }
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)

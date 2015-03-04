@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNet.Facebook;
+﻿using log4net;
+using Microsoft.AspNet.Facebook;
 
 namespace CertainDeathEngine.Models.User
 {
     public class MyAppUserFriend
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string Name { get; set; }
         public string Link { get; set; }
 

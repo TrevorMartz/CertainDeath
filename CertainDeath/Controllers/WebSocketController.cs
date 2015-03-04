@@ -8,18 +8,21 @@ using System.Web;
 //using System.Web.Hosting;
 using System.Web.Http;
 using System.Threading;
+using log4net;
 using Newtonsoft.Json.Linq;
 
 namespace CertainDeath.Controllers
 {
     public class WebSocketController : ApiController
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IGameDAL _gameDal;
         private readonly IUserDAL _userDal;
         private readonly IStatisticsDAL _statisticsDal;
 
         public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
+            Log.Info("Created HomeController");
             this._gameDal = gameDal;
             this._userDal = userDal;
             this._statisticsDal = statisticsDal;
@@ -28,7 +31,7 @@ namespace CertainDeath.Controllers
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
         {
-            // pass in the world id
+            Log.Info("Creating WebSocketHandler for world " + id);
             HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(_gameDal, _userDal, _statisticsDal, id));
             return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
         }
@@ -36,19 +39,20 @@ namespace CertainDeath.Controllers
 
         public class GameWebSocketHandler : WebSocketHandler
         {
-            private IGameDAL GameDAL;
-            private IUserDAL UserDAL;
-            private IStatisticsDAL StatisticsDAL;
-            protected int gameWorldId;
-            protected EngineInterface gameInstance;
+            private IGameDAL _gameDal;
+            private IUserDAL _userDal;
+            private IStatisticsDAL _statisticsDal;
+            protected int GameWorldId;
+            protected EngineInterface GameInstance;
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
-                GameDAL = gameDal;
-                UserDAL = userDal;
-                StatisticsDAL = statisticsDal;
-                this.gameWorldId = worldId;
-                this.gameInstance = GameDAL.CreateGame(gameWorldId);
+                Log.Info("Created GameWebSocketHandler for world " + worldId);
+                _gameDal = gameDal;
+                _userDal = userDal;
+                _statisticsDal = statisticsDal;
+                this.GameWorldId = worldId;
+                this.GameInstance = _gameDal.CreateGame(GameWorldId);
             }
 
             public override void OnMessage(string message)
@@ -58,7 +62,7 @@ namespace CertainDeath.Controllers
 
                 if (result["event"] == "click")
                 {
-                    gameInstance.SquareClicked((float)result.x, (float)result.y);
+                    GameInstance.SquareClicked((float)result.x, (float)result.y);
                 }
                 Trace.WriteLine(message);
             }
@@ -71,13 +75,23 @@ namespace CertainDeath.Controllers
 
             public void SendUpdates()
             {
-                Send(gameInstance.ToJSON());
+                string jsonString = GameInstance.ToJSON();
+                Send(jsonString);
                 while (this.WebSocketContext.IsClientConnected)
                 {
                     Thread.Sleep(32);
-                    Send(gameInstance.ToJSON());
+                    jsonString = GameInstance.ToJSON();
+                    Send(jsonString);
+                    lock (((Game) GameInstance).World)
+                    {
+                        if (((Game) GameInstance).World.Updates.Count > 0)
+                        {
+                            Trace.WriteLine("clearing " + ((Game) GameInstance).World.Updates.Count + " updates");
+                            ((Game) GameInstance).World.Updates.Clear();
+                        }
+                    }
                 }
-                UpdateManager.Instance.RemoveGameThread(gameWorldId);
+                UpdateManager.Instance.RemoveGameThread(GameWorldId);
             }
 
             public override void OnClose()

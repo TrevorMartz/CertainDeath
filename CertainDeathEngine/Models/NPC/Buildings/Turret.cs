@@ -1,10 +1,6 @@
-﻿using CertainDeathEngine.Models.NPC.Buildings;
+﻿using log4net;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
@@ -13,7 +9,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     [JsonObject(MemberSerialization.OptIn)]
     public class Turret : Building
     {
-        
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         // The Radius of the turrets's attack circle
         public double Range { get; set; }
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using log4net;
+using System;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
@@ -10,6 +7,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     [Serializable]
     public class Wall : Building
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public Wall(Tile tile, Point pos) : base(tile, pos)
         {
             Type = BuildingType.WALL;

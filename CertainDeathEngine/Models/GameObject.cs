@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
+using log4net;
 
 namespace CertainDeathEngine.Models
 {
@@ -11,11 +9,13 @@ namespace CertainDeathEngine.Models
 	[JsonObject(MemberSerialization.OptIn)]
     public abstract class GameObject
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		[JsonProperty]
         public int Id { get; set; }
 
 		[JsonProperty]
-		// The center point of the object
+		// The center point of the object in pixels
 		public virtual Point Position { get { return _Position; } set { _Position = value; CalculateCorners(); } }
 		public virtual int Height { get { return _Height; } set { _Width = value; CalculateCorners(); } }
 		public virtual int Width { get { return _Width; } set { _Height = value; CalculateCorners(); } }
