@@ -243,8 +243,9 @@ namespace CertainDeathEngine.Models
                             Trace.Write("-");
                         }
                         else
-                        {//"(" + row + "," + col + ")" +     print the coords with each item
-                            Trace.Write((int)Squares[row, col].Resource.Type);
+                        {
+                            Trace.Write("(" + row + "," + col + ")");
+                            Trace.Write("{" + (int)Squares[row, col].Resource.Type + " " + Squares[row, col].Resource.Quantity + "}");
                         }
                     }
                     Trace.WriteLine("");
