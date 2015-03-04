@@ -6,15 +6,18 @@ using System.Windows;
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
     [Serializable]
-	[JsonObject(MemberSerialization.OptIn)]
-	public abstract class Building : Killable, Temporal
+    [JsonObject(MemberSerialization.OptIn)]
+    public abstract class Building : Killable, Temporal
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [JsonProperty]
-		public string Typename { get { return Type.ToString(); } }
+        public string Typename { get { return Type.ToString(); } }
 
-        public virtual int Level { get; protected set; }
+        [JsonProperty]
+        public Cost Cost { get; protected set; }
+
+        public int Level { get; protected set; }
 
         public int MaxLevel { get; protected set; }
 
@@ -41,5 +44,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             Tile.RemoveObject(this);
         }
-	}
+
+        public abstract void UpdateCost();
+    }
 }
