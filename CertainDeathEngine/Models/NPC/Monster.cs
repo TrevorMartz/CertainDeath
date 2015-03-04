@@ -29,11 +29,9 @@ namespace CertainDeathEngine.Models.NPC
 		// Direction to get to goal (As a normalized vector)
 		public Point DirectionVector { get; private set; }
 
-		// Approximate direction, rounded to the nearest of the 8
-		public MonsterDirection ApproxDirection { get; private set; }
-
 		[JsonProperty]
-		public string Direction { get { return ApproxDirection.Name; } }
+		// Approximate direction, rounded to the nearest of the 8
+		public MonsterDirection Direction { get; private set; }
 
 		// Monster needs to know where they are so they
 		// can go towards the FireOfLife
@@ -184,10 +182,10 @@ namespace CertainDeathEngine.Models.NPC
 			Building hit = null;
 			Point pos = startingPoint;
 			System.Drawing.Point squarePos = ApproxSquare();
-			while (hit == null &&
-				Math.Abs(startingPoint.X - pos.X) < dist.X &&
-				Math.Abs(startingPoint.Y - pos.Y) < dist.Y)
-			{
+			//while (hit == null &&
+			//	Math.Abs(startingPoint.X - pos.X) < dist.X &&
+			//	Math.Abs(startingPoint.Y - pos.Y) < dist.Y)
+			//{
 				double xDistToNextSquare = Square.PIXEL_SIZE * (DirectionVector.X < 0 ? -1 : 0) + squarePos.X * Square.PIXEL_SIZE - pos.X; //(squarePos.X + (Direction.X < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.X;
 				double yDistToNextSquare = Square.PIXEL_SIZE * (DirectionVector.Y < 0 ? -1 : 1) + squarePos.Y * Square.PIXEL_SIZE - pos.Y; //(squarePos.Y + (Direction.Y < 0 ? -1 : 1)) * Square.PIXEL_SIZE - pos.Y;
 				double xTime = Math.Abs(xDistToNextSquare) / xSpeed;
@@ -221,7 +219,7 @@ namespace CertainDeathEngine.Models.NPC
                 {
                     hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
                 }
-			}
+			//}
 			return new Collision() {Hit = hit, Distance = Distance(startingPoint, pos) };
 		}
 
@@ -360,14 +358,14 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			if (DirectionVector.X == 0)
 				if (DirectionVector.Y > 0)
-					ApproxDirection = MonsterDirection.DOWN;
+					Direction = MonsterDirection.DOWN;
 				else
-					ApproxDirection = MonsterDirection.UP;
+					Direction = MonsterDirection.UP;
 			else if (DirectionVector.Y == 0)
 				if (DirectionVector.X > 0)
-					ApproxDirection = MonsterDirection.RIGHT;
+					Direction = MonsterDirection.RIGHT;
 				else
-					ApproxDirection = MonsterDirection.LEFT;
+					Direction = MonsterDirection.LEFT;
 			else
 			{
 				double riseOverRun = -DirectionVector.Y / DirectionVector.X;
@@ -376,7 +374,7 @@ namespace CertainDeathEngine.Models.NPC
 					angleRadians += Math.PI * 2;
 				else if (DirectionVector.X < 0)
 					angleRadians += Math.PI;
-				ApproxDirection = MonsterDirection.GetClosestDirection(angleRadians);
+				Direction = MonsterDirection.GetClosestDirection(angleRadians);
 			} 
 		}
 
