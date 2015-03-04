@@ -30,6 +30,11 @@ function makeMonsterMap() {
 			monsterMap[actions[a] + directions[d]] = animationArray;
 		}
 	}
+	var animationArray = [];
+	for(var i = 0; i < 8; i++) {
+		animationArray[i] = actions[2] + i;
+	}
+	monsterMap[actions[2]] = animationArray;
 }
 
 function preload () {
