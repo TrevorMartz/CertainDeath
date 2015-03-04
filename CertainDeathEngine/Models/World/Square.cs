@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 using CertainDeathEngine.Models.Resources;
 using CertainDeathEngine.Models.World;
 using Newtonsoft.Json;
-using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
-using System.Threading;
+using log4net;
 
 namespace CertainDeathEngine.Models
 {
@@ -16,6 +11,8 @@ namespace CertainDeathEngine.Models
 	[JsonObject(MemberSerialization.OptIn)]
     public class Square
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public static readonly int PIXEL_SIZE = 32;
         public SquareType Type { get;  set; }
 

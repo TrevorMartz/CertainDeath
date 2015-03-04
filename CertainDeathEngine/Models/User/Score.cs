@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CertainDeathEngine.Models.Resources;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using log4net;
 
 namespace CertainDeathEngine.Models.User
 {
@@ -13,6 +11,8 @@ namespace CertainDeathEngine.Models.User
     [Table("Scores")]
     public class Score
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [Key]
         public int Id { get; set; }
 

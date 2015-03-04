@@ -8,11 +8,14 @@ using CertainDeathEngine.Models.NPC.Buildings;
 using System.Windows;
 using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models.User;
+using log4net;
 
 namespace CertainDeathEngine
 {
     public class Game : EngineInterface
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         WorldManager.WorldManager worldManager;
         UpdateManager updateManager;
         public GameWorld World;

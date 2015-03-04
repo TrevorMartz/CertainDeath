@@ -1,21 +1,18 @@
 ﻿using CertainDeathEngine.Models;
-//using Newtonsoft.Json;
+using log4net;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.WorldManager
 {
     [Serializable]
     public class GameWorldWrapper : Collection<GameWorld>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public GameWorld World { get; set; }
         //public long LastUpdateTime { get; set; }
         //public long LastSaveTime { get; set; }

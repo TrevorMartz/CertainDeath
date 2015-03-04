@@ -1,11 +1,7 @@
 ﻿using CertainDeathEngine.Models.NPC.Buildings;
+using log4net;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC
@@ -14,6 +10,8 @@ namespace CertainDeathEngine.Models.NPC
 	[JsonObject(MemberSerialization.OptIn)]
     public class Monster : Killable, Temporal
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static int HALF_SQUARE = Square.PIXEL_SIZE / 2;
 		[JsonProperty]
 		public string Type { get { return "Monster"; } }
@@ -76,6 +74,9 @@ namespace CertainDeathEngine.Models.NPC
 		// Monsters's current state {WALKING, ATTAKING, or DYING}
 		private MonsterState State { get; set; }
 
+		[JsonProperty]
+		public String Status { get { return Enum.GetName(typeof(MonsterState), State); } }
+
 		// The building the monster is attacking
 		private Building Attacking { get; set; }
 
@@ -113,6 +114,7 @@ namespace CertainDeathEngine.Models.NPC
 				{
 					Attack(millis);
 				}
+				//State = MonsterState.WALKING;
 			}
 			else if (State == MonsterState.WALKING)
 			{
@@ -122,6 +124,7 @@ namespace CertainDeathEngine.Models.NPC
 					Attacking = colide;
 					State = MonsterState.ATTACKING;
 				}
+				//State = MonsterState.ATTACKING;
 			}
 		}
 
@@ -228,9 +231,19 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
+            this.Tile.World.AddUpdateMessage(new UpdateMessage()
+		    {
+		        ObjectId = Attacking.Id,
+		        Data = "health:" + Attacking.HealthPoints
+		    });
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.RemoveBuilding();
+                this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                {
+                    ObjectId = Attacking.Id,
+                    Data = "remove"
+                });
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}
@@ -245,6 +258,11 @@ namespace CertainDeathEngine.Models.NPC
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
+            this.Tile.World.AddUpdateMessage(new UpdateMessage()
+		    {
+		        ObjectId = this.Id,
+		        Data = "positionX:" + Position.X + ",positionY:" + Position.Y
+		    });
 
 			// If they have moved to another tile,
 			if (Position.X < 0 || Position.X >= Tile.TOTAL_PIXELS ||
@@ -283,15 +301,33 @@ namespace CertainDeathEngine.Models.NPC
                     // or he is trying to get to the fire of life and walked
                     // through a null tile. 
                     Tile.RemoveObject(this);
+
+                    // todo: make an update command for removing a tile
                 }
                 else
                 {
                     Tile.RemoveObject(this);
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        Data = "remove"
+                    });
                     Tile = tile;
                     tile.AddObject(this);
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        Data = "add:positionX:" + Position.X + ",positionY:" + Position.Y
+                    });
                     Position = new Point(
                         Position.X + positionChange.X,
                         Position.Y + positionChange.Y);
+                    //todo: i dont know how to send a move update, so I will send a whole world update insteac
+                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    {
+                        ObjectId = 0,
+                        Data = "sendWorld"
+                    });
                 }
             }
 		}

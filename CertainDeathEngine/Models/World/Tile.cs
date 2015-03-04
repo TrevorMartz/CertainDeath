@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
 using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
-using System.Threading;
+using log4net;
 
 namespace CertainDeathEngine.Models
 {
@@ -16,10 +14,13 @@ namespace CertainDeathEngine.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class Tile
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static int SQUARE_SIZE = 20;
         public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;
         public static int SQUARES = SQUARE_SIZE * SQUARE_SIZE;
+
+        public GameWorld World { get; set; }
 
 
         [JsonProperty]
@@ -97,13 +98,14 @@ namespace CertainDeathEngine.Models
 
         public Point Position { get; private set; }
 
-        public Tile(int x, int y)
+        public Tile(int x, int y, GameWorld world)
         {
             InitSquares();
             Position = new Point(x, y);
             this.Objects = new List<GameObject>();
             this.Monsters = new List<Monster>();
             this.Buildings = new List<Building>();
+            this.World = world;
         }
 
         public void InitSquares()
@@ -240,8 +242,9 @@ namespace CertainDeathEngine.Models
                             Trace.Write("-");
                         }
                         else
-                        {//"(" + row + "," + col + ")" +     print the coords with each item
-                            Trace.Write((int)Squares[row, col].Resource.Type);
+                        {
+                            Trace.Write("(" + row + "," + col + ")");
+                            Trace.Write("{" + (int)Squares[row, col].Resource.Type + " " + Squares[row, col].Resource.Quantity + "}");
                         }
                     }
                     Trace.WriteLine("");

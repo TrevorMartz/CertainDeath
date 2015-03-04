@@ -10,6 +10,9 @@ using Microsoft.AspNet.Facebook;
 using CertainDeathEngine;
 using System.Data.Entity;
 using CertainDeathEngine.DB;
+using System.IO;
+using log4net;
+
 //using CertainDeath.Infrastructure;
 
 namespace CertainDeath
@@ -18,6 +21,10 @@ namespace CertainDeath
     {
         protected void Application_Start()
         {
+            log4net.Config.XmlConfigurator.Configure(new FileInfo(Server.MapPath("~/Web.config")));
+            ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            logger.Info("Application_Start");
+
 
             AreaRegistration.RegisterAllAreas();
             FacebookConfig.Register(GlobalFacebookConfiguration.Configuration);

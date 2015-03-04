@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using log4net;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
 namespace CertainDeathEngine.Models.User
 {
@@ -11,6 +9,8 @@ namespace CertainDeathEngine.Models.User
     [Table("Users")]
     public class CertainDeathUser
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [Key]
         public int Id { get; set; }
         public MyAppUser FBUser { get; set; }

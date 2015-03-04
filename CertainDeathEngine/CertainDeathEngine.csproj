@@ -40,6 +40,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.1.4\lib\net45\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Facebook">
       <HintPath>..\packages\Microsoft.AspNet.Facebook.1.1.0\lib\net45\Microsoft.AspNet.Facebook.dll</HintPath>
     </Reference>
@@ -86,6 +89,7 @@
     <Compile Include="Models\NPC\Buildings\Wall.cs" />
     <Compile Include="Models\NPC\Temporal.cs" />
     <Compile Include="Models\NPC\Buildings\Turret.cs" />
+    <Compile Include="Models\NPC\UpdateMessage.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />

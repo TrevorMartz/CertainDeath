@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using log4net;
 using Microsoft.AspNet.Facebook.Models;
 using Microsoft.AspNet.Facebook.Realtime;
 
@@ -13,6 +14,7 @@ namespace CertainDeath.Controllers
 
     public class UserRealtimeUpdateController : FacebookRealtimeUpdateController
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly static string UserVerifyToken = ConfigurationManager.AppSettings["Facebook:VerifyToken:User"];
 
         public override string VerifyToken

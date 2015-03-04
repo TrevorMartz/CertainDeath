@@ -1,15 +1,15 @@
 ﻿using CertainDeathEngine.Models.Resources;
-using System;
-using System.Collections.Generic;
+using log4net;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.World
 {
     public class GameWorldGenerator
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public bool printWorld { get; set; }
+        public bool printResources { get; set; }
         #region RarityValues
         //A higher rarity value makes the item rarer. They all default to .5
         private static float defaultValue = .3f;
@@ -105,7 +105,7 @@ namespace CertainDeathEngine.Models.World
             return f;
         }
 
-        public GameWorld GenerateWorld(int worldId, int worldSize = 3, bool print = false)
+        public GameWorld GenerateWorld(int worldId, int worldSize = 3)
         {
             Tile[,] baseWorld = new Tile[worldSize, worldSize];
 			int middle = worldSize / 2;
@@ -145,7 +145,21 @@ namespace CertainDeathEngine.Models.World
             }
             //Trace.WriteLine("Middle: " + middle);
 			GameWorld newWorld = new GameWorld(baseWorld, baseWorld[middle, middle], worldId);
-            if (print)
+
+            if (printWorld)
+            {
+                for (int row = 0; row < worldSize; row++)
+                {
+                    Tile[] tiles = new Tile[worldSize];
+                    for (int col = 0; col < worldSize; col++)
+                    {
+                        tiles[col] = baseWorld[row, col];
+                    }
+                    PrintTilesSideBySide(tiles);
+                    Trace.WriteLine("");
+                }
+            }
+            if (printResources)
             {
                 for (int row = 0; row < worldSize; row++)
                 {
@@ -158,12 +172,14 @@ namespace CertainDeathEngine.Models.World
                     Trace.WriteLine("");
                 }
             }
+            foreach (var t in newWorld.Tiles)
+                t.World = newWorld;
             return newWorld;
         }
 
         public Tile GenerateTile(int x, int y)
         {
-            Tile newTile = new Tile(x, y);
+            Tile newTile = new Tile(x, y, null);
 
             for (int row = 0; row < Tile.SQUARE_SIZE; row++)
             {
@@ -269,14 +285,14 @@ namespace CertainDeathEngine.Models.World
                     {
                         if (t.Squares[row, col].Resource == null)
                         {
-                            Trace.Write("-");
+                            Trace.Write("{- -}");
                         }
                         else
                         {//"(" + row + "," + col + ")" +     print the coords with each item
-                            Trace.Write("(" + row + "," + col + ")" + (int)t.Squares[row, col].Resource.Type);
+                            Trace.Write("{" +(int)t.Squares[row, col].Resource.Type + " " + t.Squares[row, col].Resource.Quantity + "}");
                         }
                     }
-                    Trace.Write(" ");
+                    Trace.Write("    ");
                 }
                 Trace.WriteLine("");
             }
