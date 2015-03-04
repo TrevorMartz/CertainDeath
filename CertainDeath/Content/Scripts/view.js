@@ -223,14 +223,25 @@ View = (function () {
                             var positions = msg[x].Position.split(",");
                             var xpos = parseFloat(positions[0]);
                             var ypos = parseFloat(positions[1]);
+                            var direction = msg[x].Direction;
+                            var status = msg[x].Status;
                             var sprite = null;
                             if (this.monsters[msg[x].Id] !== undefined) {
                                 sprite = this.monsters[msg[x].Id];
                                 sprite.x = xpos/32*tileSize+this.boardX;
                                 sprite.y = ypos / 32 * tileSize + this.boardY;
+								
+                                if (sprite.animations.currentAnim.name != status) {
+                                	sprite.animations.stop();
+                                }
                             } else {
-                                sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-                                    "objects", "Fire");
+                            	sprite =
+									game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+									"stone_golem");
+                            	sprite.animations.add(status,
+									monsterMap[status + "_" + String(direction)],
+									5, true);
+                            	sprite.animations.play(status);
                                 this.monsters[msg[x].Id] = sprite;
                             }
                         }

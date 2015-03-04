@@ -74,6 +74,9 @@ namespace CertainDeathEngine.Models.NPC
 		// Monsters's current state {WALKING, ATTAKING, or DYING}
 		private MonsterState State { get; set; }
 
+		[JsonProperty]
+		public String Status { get { return Enum.GetName(typeof(MonsterState), State); } }
+
 		// The building the monster is attacking
 		private Building Attacking { get; set; }
 
@@ -111,6 +114,7 @@ namespace CertainDeathEngine.Models.NPC
 				{
 					Attack(millis);
 				}
+				//State = MonsterState.WALKING;
 			}
 			else if (State == MonsterState.WALKING)
 			{
@@ -120,6 +124,7 @@ namespace CertainDeathEngine.Models.NPC
 					Attacking = colide;
 					State = MonsterState.ATTACKING;
 				}
+				//State = MonsterState.ATTACKING;
 			}
 		}
 

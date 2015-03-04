@@ -26,7 +26,7 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
+            ShayneTests();
             //BlakeIsSOOOOOOUgly();
             TrevorTests();
 
@@ -73,7 +73,7 @@ namespace EngineConsoleTester
         {
 			GameWorldGenerator generator = new GameWorldGenerator();
 			Game g = new Game(generator.GenerateWorld(3));
-            //IncrementTime(g);
+            IncrementTime(g);
 			string json = g.ToJSON();
 			Console.WriteLine(json);
         }
@@ -90,6 +90,8 @@ namespace EngineConsoleTester
 					foreach (Temporal tim in timeObjects)
 						tim.Update(500);
 				}
+				//string json = g.ToJSON();
+				//Console.WriteLine(json);
 				Console.ReadLine();
 			}
 		}
