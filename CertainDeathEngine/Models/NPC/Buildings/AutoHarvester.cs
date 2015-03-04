@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using CertainDeathEngine.Models.Resources;
+using log4net;
 using System;
 using System.Windows;
 
@@ -18,7 +19,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             : base(tile, position)
         {
             Type = BuildingType.HARVESTER;
-            //Move(position);
             MaxLevel = 5;
             Level = 0;
             Upgrade();
@@ -27,17 +27,18 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public override void Update(long millis)
         {
+            if (HealthPoints <= 0)
+            {
+                RemoveBuilding();
+            }
             if (State == HarvesterState.GATHERING)
             {
                 TimeSinceGather += millis;
                 if (TimeSinceGather >= 1000)
                 {
                     long timeToGather = (TimeSinceGather / 1000);
-                    //Console.WriteLine("TimeSinceGather: " + TimeSinceGather);
-                    //Console.WriteLine("timeToGather: " + timeToGather);
                     Gather((int)(HarvestRate * timeToGather));
                     TimeSinceGather -= timeToGather * 1000;
-                    //Console.WriteLine("TimeSinceGather after gather: " + TimeSinceGather + "\n");
                 }
             }
         }
@@ -78,24 +79,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             return null;
         }
 
-        public void Move(Tile newTile, Point position)
-        {
-            Tile = newTile;
-            Move(position);
-        }
-
-        public void Move(Point position)
-        {
-            //lock (Tile)
-            //{
-            //    Square = Tile.Squares[(int)position.Y, (int)position.X];
-            //}
-            //if(Square.Resource != null && Square.Resource.Quantity > 0)
-            //{
-            //    State = HarvesterState.GATHERING;
-            //}
-        }
-
         public override void Upgrade()
         {
             if (Level < MaxLevel)
@@ -105,7 +88,18 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 MaxHealthPoints = 10 * Level;
                 HealthPoints = MaxHealthPoints;
                 GatherRange = Level;
+                UpdateCost();
             }
+        }
+
+        public override void UpdateCost()
+        {
+            Cost = new Cost();
+            Cost.SetCost(ResourceType.COAL, 10 * Level);
+            Cost.SetCost(ResourceType.CORN, 10 * Level);
+            Cost.SetCost(ResourceType.IRON, 10 * Level);
+            Cost.SetCost(ResourceType.STONE, 10 * Level);
+            Cost.SetCost(ResourceType.WOOD, 10 * Level);
         }
     }
 
