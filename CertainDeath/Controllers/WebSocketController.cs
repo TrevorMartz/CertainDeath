@@ -84,11 +84,8 @@ namespace CertainDeath.Controllers
                     Send(jsonString);
                     lock (((Game) GameInstance).World)
                     {
-                        if (((Game) GameInstance).World.Updates.Count > 0)
-                        {
-                            Trace.WriteLine("clearing " + ((Game) GameInstance).World.Updates.Count + " updates");
-                            ((Game) GameInstance).World.Updates.Clear();
-                        }
+                        Trace.WriteLine("clearing " + ((Game) GameInstance).World.Updates.Count + " updates");
+                        ((Game) GameInstance).World.Updates.Clear();
                     }
                 }
                 UpdateManager.Instance.RemoveGameThread(GameWorldId);
