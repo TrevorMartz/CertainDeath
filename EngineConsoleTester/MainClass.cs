@@ -90,8 +90,7 @@ namespace EngineConsoleTester
 					foreach (Temporal tim in timeObjects)
 						tim.Update(500);
 				}
-				string json = g.ToJSON();
-				Console.WriteLine(json);
+				//Console.WriteLine(g.ToJSON());
 				Console.ReadLine();
 			}
 		}

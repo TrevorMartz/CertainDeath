@@ -233,6 +233,10 @@ View = (function () {
                                 console.log.apply(console, [status]);
                                 if (sprite.animations.currentAnim.name !== status) {
                                 	sprite.animations.stop();
+                                	sprite.animations.add(status,
+									monsterMap[status + "_" + String(direction)],
+									5, true);
+                                	sprite.animations.play(status);
                                 }
                             } else {
                             	sprite =

@@ -114,7 +114,6 @@ namespace CertainDeathEngine.Models.NPC
 				{
 					Attack(millis);
 				}
-				//State = MonsterState.WALKING;
 			}
 			else if (State == MonsterState.WALKING)
 			{
@@ -124,7 +123,6 @@ namespace CertainDeathEngine.Models.NPC
 					Attacking = colide;
 					State = MonsterState.ATTACKING;
 				}
-				//State = MonsterState.ATTACKING;
 			}
 		}
 
