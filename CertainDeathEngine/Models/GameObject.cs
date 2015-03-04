@@ -15,7 +15,7 @@ namespace CertainDeathEngine.Models
         public int Id { get; set; }
 
 		[JsonProperty]
-		// The center point of the object
+		// The center point of the object in pixels
 		public virtual Point Position { get { return _Position; } set { _Position = value; CalculateCorners(); } }
 		public virtual int Height { get { return _Height; } set { _Width = value; CalculateCorners(); } }
 		public virtual int Width { get { return _Width; } set { _Height = value; CalculateCorners(); } }
