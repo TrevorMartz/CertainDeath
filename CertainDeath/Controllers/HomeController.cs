@@ -14,12 +14,14 @@ namespace CertainDeath.Controllers
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IGameDAL _gameDal;
         private readonly IUserDAL _userDal;
+        private readonly IStatisticsDAL _statisticsDal;
 
-        public HomeController(IGameDAL gameDal, IUserDAL userDal)
+        public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created HomeController");
             this._gameDal = gameDal;
             this._userDal = userDal;
+            this._statisticsDal = statisticsDal;
         }
 
         [FacebookAuthorize("email", "user_photos")]
@@ -31,7 +33,7 @@ namespace CertainDeath.Controllers
 
                 // Below is some default code.  I dont know if we will use it.
                 if (Request.IsAjaxRequest())
-                    return PartialView("_FriendView", facebookUser);
+                    return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
 
                 var certainDeathUser = _userDal.GetGameUser(facebookUser);
 
@@ -70,5 +72,10 @@ namespace CertainDeath.Controllers
 
             return View("Error");
         }
+
+        //public ActionResult Leaderboard()
+        //{
+        //    return View("Index");
+        //}
     }
 }
