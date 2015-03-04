@@ -35,7 +35,7 @@ namespace CertainDeath
 
             //NinjectWebCommon.RegisterNinject(GlobalConfiguration.Configuration);
 
-            // Build the database
+            //Build the database
             //Database.SetInitializer<CDDBModel>(null);
 
             // Set up the Ninject stuff
