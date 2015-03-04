@@ -74,7 +74,7 @@ namespace CertainDeathEngine.Factories
                     squareIndex / Tile.SQUARE_SIZE * Square.PIXEL_SIZE
                 );
 
-                Point Goal = new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2);
+				Point Goal = new Point(Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2, Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2);
                 int Speed = 25;
                 m = new Monster(randTile, Position, Goal, Speed)
                 {

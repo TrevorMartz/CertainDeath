@@ -114,6 +114,7 @@ View = (function () {
         this.tiles = new Array();
         this.resources = new Array();
         this.monsters = new Array();
+        this.fireOfLife = {};
         this._pointerDown = false;
         this.squaresWide = 20;
         this.squaresHigh = 20;
@@ -225,39 +226,54 @@ View = (function () {
                             var ypos = parseFloat(positions[1]);
                             var direction = msg[x].Direction;
                             var status = msg[x].Status;
+                            var newAnimation = false;
+
                             var sprite = null;
-                            if (this.monsters[msg[x].Id] !== undefined) {
-                                sprite = this.monsters[msg[x].Id];
-                                sprite.x = xpos/32*tileSize+this.boardX;
-                                sprite.y = ypos / 32 * tileSize + this.boardY;
-                                console.log.apply(console, [status]);
-                                if (sprite.animations.currentAnim.name !== status) {
-                                	sprite.animations.stop();
-                                	sprite.animations.add(status,
-									monsterMap[status + "_" + String(direction)],
+								// if monster exists
+								if (this.monsters[msg[x].Id] !== undefined) {
+									sprite = this.monsters[msg[x].Id];
+									sprite.x = xpos/32*tileSize+this.boardX;
+									sprite.y = ypos / 32 * tileSize + this.boardY;
+
+									// if monster has changed state
+									if (sprite.animations.currentAnim.name !== status) {
+										sprite.animations.stop();
+										newAnimation = true;
+									}
+								} else /*Monster does not exist yet*/ {
+                            		sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+										"stone_golem");
+                            		this.monsters[msg[x].Id] = sprite;
+                            		newAnimation = true;
+								}
+
+							if (newAnimation) {
+								if (direction.X === "LEFT") {
+									sprite.anchor.setTo(.5, 1); //so it flips around its middle
+									sprite.scale.x = -1; //flipped
+									sprite.animations.add(status,
+									monsterMap[status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
 									5, true);
-                                	sprite.animations.play(status);
-                                }
-                            } else {
-                            	sprite =
-									game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-									"stone_golem");
-                            	sprite.animations.add(status,
-									monsterMap[status + "_" + String(direction)],
+								}
+								else {
+									sprite.animations.add(status,
+									monsterMap[status + "_" + String(direction.Name)],
 									5, true);
-                            	sprite.animations.play(status);
-                                this.monsters[msg[x].Id] = sprite;
-                            }
-                        }
-                    }
+								}
+								sprite.animations.play(status);
+							} // end if newAnimation
+                        } // end for each monster
+                    } // end if monster property
                     else if (property === "CurrentTile.Buildings") {
-                    	var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
-                    	var positions = msg[0].Position.split(",");
-                    	var xpos = parseFloat(positions[0]);
-                    	var ypos = parseFloat(positions[1]);
-                    	game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-									"objects", "Fire");
-                    }
+                    	if (msg[0] !== 'undefined') {
+                    		var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
+                    		var positions = msg[0].Position.split(",");
+                    		var xpos = parseFloat(positions[0]);
+                    		var ypos = parseFloat(positions[1]);
+                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+										"objects", "Fire");
+                    	}
+                    } // end if building property
                 } // end if
             } // end func
         }
