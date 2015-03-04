@@ -223,6 +223,10 @@
     <Content Include="blah.snk" />
     <Content Include="Content\Images\spritesheet2.json" />
     <Content Include="Content\Images\stone_golem.json" />
+    <Content Include="Content\Fonts\slkscre\slkscr-webfont.eot" />
+    <Content Include="Content\Fonts\slkscre\slkscr-webfont.svg" />
+    <Content Include="Content\Fonts\slkscre\slkscr-webfont.ttf" />
+    <Content Include="Content\Fonts\slkscre\slkscr-webfont.woff" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
