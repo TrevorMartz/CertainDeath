@@ -10,7 +10,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     [Serializable]
 	class FireOfLife : Building
 	{
-		public FireOfLife(Tile tile) : base(tile, new Point(Tile.SQUARE_SIZE / 2, Tile.SQUARE_SIZE / 2))
+		public FireOfLife(Tile tile) : base(tile, new Point(Tile.TOTAL_PIXELS / 2, Tile.TOTAL_PIXELS / 2))
 		{
             Type = BuildingType.FIREOFLIFE;
 			// I think its okay if this building doesn't have to snap to the
@@ -28,8 +28,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                Width = Level;
-                Height = Level;
+                Width = Square.PIXEL_SIZE * Level;
+                Height = Square.PIXEL_SIZE * Level;
                 MaxHealthPoints = 100 * Level;
                 HealthPoints = MaxHealthPoints;
             }

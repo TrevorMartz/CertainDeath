@@ -14,7 +14,6 @@ using System.Threading;
 using CertainDeathEngine.Models.User;
 using System.Globalization;
 using CertainDeathEngine.Models.Resources;
-using CertainDeathEngine.Models.NPC.Buildings;
 
 
 // This project will be used to provide console output for the CertainDeathEngine
@@ -26,9 +25,9 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            //ShayneTests();
+			ShayneTests();
             //BlakeIsSOOOOOOUgly();
-            TrevorTests();
+			//TrevorTests();
 
             Console.ReadLine();
         }
@@ -38,17 +37,10 @@ namespace EngineConsoleTester
 
             GameWorldGenerator gen = new GameWorldGenerator();
             //gen.GenerateWorld(12);
-            Game game = new Game(gen.GenerateWorld(3, 3));
-            Building building = game.BuildBuildingAtSquare(5, 3, CertainDeathEngine.Models.NPC.Buildings.BuildingType.HARVESTER);
-            building.Upgrade();
-            while (true)
-            {
-                game.World.CurrentTile.PrintTileResources();
-                Console.ReadLine();
-                building.Update(3499);
-            }
-            //game.World.Player.AddResource(ResourceType.COAL, 30);
-            //Console.WriteLine(game.ToJSON());
+            Game game = new Game(gen.GenerateWorld(3, 3, false));
+            game.World.Player.AddResource(ResourceType.COAL, 30);
+            Console.WriteLine(game.ToJSON());
+            //Console.ReadLine();
         }
 
         private static void BlakeIsSOOOOOOUgly()
@@ -61,6 +53,7 @@ namespace EngineConsoleTester
             GameDAL.SaveGame(g);
             while (true)
             {
+
                 PrintGame(g);
             }
             //Game g = (Game)GameDAL.LoadGame(2);

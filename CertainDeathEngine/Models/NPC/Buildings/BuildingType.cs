@@ -11,7 +11,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     {
         TURRET,
         FIREOFLIFE,
-        WALL,
-        HARVESTER
+        WALL
     }
 }
