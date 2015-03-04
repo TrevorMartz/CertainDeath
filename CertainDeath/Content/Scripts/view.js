@@ -34,7 +34,9 @@ View = (function () {
         click: function (evt) { },
 
         destroy: function () {
-            this.g.destroy();
+            if (this.g) {
+                this.g.destroy();
+            }
         },
 
         onmessage: function (obj){
@@ -157,11 +159,13 @@ View = (function () {
         destroy: {
             value: function () {
                 //FIXME: I think the foreach here will not behave as expected
-                for (obj in this.tiles) {
-                    obj.destroy();
+                for (var x = 0; x < this.tiles.length; ++x) {
+                    if(this.tiles[x].destroy)
+                        this.tiles[x].destroy();
                 }
-                for (obj in this.resources) {
-                    obj.destroy();
+                for (var x = 0; x < this.resources.length; ++x) {
+                    if(this.resources[x].destroy)
+                        this.resources[x].destroy();
                 }
             }
         },
