@@ -81,7 +81,7 @@ namespace CertainDeathEngine.DAL
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
             Thread updater = new Thread(u.Run);
-            updater.Name = "Updater thread";
+            updater.Name = "Updater thread for " + world.Id;
             UpdateManager.Instance.AddGameThread(world.Id, updater);
 
             return g;
