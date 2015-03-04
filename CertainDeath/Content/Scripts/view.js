@@ -230,8 +230,8 @@ View = (function () {
                                 sprite = this.monsters[msg[x].Id];
                                 sprite.x = xpos/32*tileSize+this.boardX;
                                 sprite.y = ypos / 32 * tileSize + this.boardY;
-								
-                                if (sprite.animations.currentAnim.name != status) {
+                                console.log.apply(console, [status]);
+                                if (sprite.animations.currentAnim.name !== status) {
                                 	sprite.animations.stop();
                                 }
                             } else {
@@ -245,6 +245,14 @@ View = (function () {
                                 this.monsters[msg[x].Id] = sprite;
                             }
                         }
+                    }
+                    else if (property === "CurrentTile.Buildings") {
+                    	var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
+                    	var positions = msg[0].Position.split(",");
+                    	var xpos = parseFloat(positions[0]);
+                    	var ypos = parseFloat(positions[1]);
+                    	game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+									"objects", "Fire");
                     }
                 } // end if
             } // end func
