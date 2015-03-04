@@ -64,7 +64,7 @@ namespace CertainDeathEngine.Models
 			{
 				return LEFT;
 			}
-			if (Math.Abs(RIGHT.Angle - angle) < PI_8ths)
+			if (Math.Abs(RIGHT.Angle - angle) < PI_8ths || Math.Abs((Math.PI * 2) - angle) < PI_8ths)
 			{
 				return RIGHT;
 			}
