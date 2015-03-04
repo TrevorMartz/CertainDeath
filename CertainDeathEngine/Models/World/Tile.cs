@@ -16,9 +16,9 @@ namespace CertainDeathEngine.Models
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static int SQUARE_SIZE = 20;
-        public static int TOTAL_PIXELS = SQUARE_SIZE * Square.PIXEL_SIZE;
-        public static int SQUARES = SQUARE_SIZE * SQUARE_SIZE;
+        public static int SQUARES_PER_ROW_AND_COLUMN = 20;
+        public static int TOTAL_PIXELS = SQUARES_PER_ROW_AND_COLUMN * Square.PIXEL_SIZE;
+        public static int SQUARES = SQUARES_PER_ROW_AND_COLUMN * SQUARES_PER_ROW_AND_COLUMN;
 
         public GameWorld World { get; set; }
 
@@ -112,10 +112,10 @@ namespace CertainDeathEngine.Models
         {
             lock (this)
             {
-                this.Squares = new Square[SQUARE_SIZE, SQUARE_SIZE];
-                for (int row = 0; row < SQUARE_SIZE; row++)
+                this.Squares = new Square[SQUARES_PER_ROW_AND_COLUMN, SQUARES_PER_ROW_AND_COLUMN];
+                for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
-                    for (int col = 0; col < SQUARE_SIZE; col++)
+                    for (int col = 0; col < SQUARES_PER_ROW_AND_COLUMN; col++)
                     {
                         Squares[row, col] = new Square();
                     }
@@ -201,26 +201,26 @@ namespace CertainDeathEngine.Models
             try
             {
                 string s = ConfigurationManager.AppSettings["TileSquareSize"];
-                SQUARE_SIZE = Convert.ToInt32(s);
-                if (SQUARE_SIZE <= 0)
+                SQUARES_PER_ROW_AND_COLUMN = Convert.ToInt32(s);
+                if (SQUARES_PER_ROW_AND_COLUMN <= 0)
                 {
-                    SQUARE_SIZE = 20;
+                    SQUARES_PER_ROW_AND_COLUMN = 20;
                 }
             }
             catch (Exception)
             {
-                SQUARE_SIZE = 20;
+                SQUARES_PER_ROW_AND_COLUMN = 20;
             }
-            SQUARES = SQUARE_SIZE * SQUARE_SIZE;
+            SQUARES = SQUARES_PER_ROW_AND_COLUMN * SQUARES_PER_ROW_AND_COLUMN;
         }
 
         public void PrintTile()
         {
             lock (this)
             {
-                for (int row = 0; row < SQUARE_SIZE; row++)
+                for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
-                    for (int col = 0; col < SQUARE_SIZE; col++)
+                    for (int col = 0; col < SQUARES_PER_ROW_AND_COLUMN; col++)
                     {
                         Trace.Write((int)Squares[row, col].Type);
                     }
@@ -233,9 +233,9 @@ namespace CertainDeathEngine.Models
         {
             lock (this)
             {
-                for (int row = 0; row < SQUARE_SIZE; row++)
+                for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
-                    for (int col = 0; col < SQUARE_SIZE; col++)
+                    for (int col = 0; col < SQUARES_PER_ROW_AND_COLUMN; col++)
                     {
                         if (Squares[row, col].Resource == null)
                         {
