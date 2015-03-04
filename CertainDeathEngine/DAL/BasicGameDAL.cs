@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.World;
+using log4net;
 using System;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace CertainDeathEngine.DAL
 {
     public class BasicGameDAL : IGameDAL
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static int _nextWorldId = 1;
         private readonly string _filePath;
         private readonly GameWorldGenerator _worldGenerator;

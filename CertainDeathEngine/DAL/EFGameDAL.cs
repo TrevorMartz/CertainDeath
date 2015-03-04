@@ -2,6 +2,7 @@
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.World;
 using CertainDeathEngine.WorldManager;
+using log4net;
 using System;
 using System.Linq;
 using System.Threading;
@@ -10,6 +11,7 @@ namespace CertainDeathEngine.DAL
 {
     public class EFGameDAL : IGameDAL
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static int _nextWorldId = 1;
         private readonly CDDBModel _cdDbModel;
         private readonly GameWorldGenerator _worldGenerator;

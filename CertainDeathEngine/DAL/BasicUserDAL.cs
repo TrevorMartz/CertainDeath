@@ -1,4 +1,5 @@
 ﻿using CertainDeathEngine.Models.User;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ namespace CertainDeathEngine.DAL
 {
     public class BasicUserDAL : IUserDAL
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly string _filePath;
         private readonly List<CertainDeathUser> _users;
 
