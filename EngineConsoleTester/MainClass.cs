@@ -40,15 +40,15 @@ namespace EngineConsoleTester
             //gen.GenerateWorld(12);
             Game game = new Game(gen.GenerateWorld(3, 3));
             Building building = game.BuildBuildingAtSquare(5, 3, CertainDeathEngine.Models.NPC.Buildings.BuildingType.HARVESTER);
-            building.Upgrade();
-            while (true)
-            {
-                game.World.CurrentTile.PrintTileResources();
-                Console.ReadLine();
-                building.Update(3499);
-            }
+            //building.Upgrade();
+            //while (true)
+            //{
+            //    game.World.CurrentTile.PrintTileResources();
+            //    Console.ReadLine();
+            //    building.Update(3499);
+            //}
             //game.World.Player.AddResource(ResourceType.COAL, 30);
-            //Console.WriteLine(game.ToJSON());
+            Console.WriteLine(game.ToJSON());
         }
 
         private static void BlakeIsSOOOOOOUgly()
@@ -103,9 +103,9 @@ namespace EngineConsoleTester
 				MonsterSquares.Add(m.ApproxSquare());
 			}
 
-			for (int y = 0; y < Tile.SQUARE_SIZE; y++)
+			for (int y = 0; y < Tile.SQUARES_PER_ROW_AND_COLUMN; y++)
 			{
-				for (int x = 0; x < Tile.SQUARE_SIZE; x++)
+                for (int x = 0; x < Tile.SQUARES_PER_ROW_AND_COLUMN; x++)
 				{
 					System.Drawing.Point squarePoint = new System.Drawing.Point(x, y);
 					Square square = g.World.CurrentTile.Squares[y,x];
