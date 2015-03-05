@@ -24,7 +24,7 @@ namespace CertainDeathEngine.Models
                     BuildingType.FIREOFLIFE, new FireOfLife(null).Cost
                 },
                 {
-                    BuildingType.HARVESTER, new AutoHarvester(null, new Point(0,0)).Cost
+                    BuildingType.AUTOHARVESTER, new AutoHarvester(null, new Point(0,0)).Cost
                 },
                 {
                     BuildingType.TURRET, new Turret(null, new Point(0,0)).Cost
