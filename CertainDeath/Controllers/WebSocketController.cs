@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-//using System.Web.Hosting;
 using System.Web.Http;
 using System.Threading;
 using log4net;
@@ -14,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeath.Controllers
 {
@@ -27,9 +27,9 @@ namespace CertainDeath.Controllers
         public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created HomeController");
-            this._gameDal = gameDal;
-            this._userDal = userDal;
-            this._statisticsDal = statisticsDal;
+            _gameDal = gameDal;
+            _userDal = userDal;
+            _statisticsDal = statisticsDal;
         }
 
         // GET: WebSocket
@@ -48,7 +48,7 @@ namespace CertainDeath.Controllers
             private IStatisticsDAL _statisticsDal;
             protected int GameWorldId;
             protected EngineInterface GameInstance;
-            private Thread thisEndOfTheWebSocketTread;
+            private Thread _thisEndOfTheWebSocketTread;
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
@@ -83,16 +83,16 @@ namespace CertainDeath.Controllers
 
             public override void OnOpen()
             {
-                thisEndOfTheWebSocketTread = new Thread(SendUpdates);
-                thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
-                thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
+                _thisEndOfTheWebSocketTread = new Thread(SendUpdates);
+                _thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
+                _thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
             }
 
             public void SendUpdates()
             {
                 string jsonString = GameInstance.ToJSON();
                 Send(jsonString);
-                while (this.WebSocketContext.IsClientConnected)
+                while (WebSocketContext.IsClientConnected)
                 {
                     Thread.Sleep(32);
                     lock (((Game) GameInstance).World)
@@ -104,7 +104,7 @@ namespace CertainDeath.Controllers
                             sb.Append("\"updates\":[");
                             foreach (var m in ((Game) GameInstance).World.Updates)
                             {
-                                if (m.GetType() != typeof (WorldUpdateMessage))
+                                if (m.GetType() != typeof(WorldUpdateMessage))
                                 {
                                     sb.Append(JsonConvert.SerializeObject(m));
                                 }
@@ -117,11 +117,10 @@ namespace CertainDeath.Controllers
                             sb.Remove(sb.Length - 1, 1);
                             sb.Append("]");
 
-                            Trace.WriteLine("sending " + ((Game)GameInstance).World.Updates.Count + " updates");
                             ((Game) GameInstance).World.Updates.Clear();
 
                             jsonString = sb.ToString();
-                            Trace.WriteLine(jsonString);
+                            //Trace.WriteLine(jsonString);
                             //Send(jsonString);
 
                             //if (sendAll)
@@ -138,7 +137,7 @@ namespace CertainDeath.Controllers
 
             public override void OnClose()
             {
-                thisEndOfTheWebSocketTread.Abort();
+                _thisEndOfTheWebSocketTread.Abort();
                 Log.Info("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
                 Log.Info("Connection closed");
                 Trace.WriteLine("[Connection closed]");
