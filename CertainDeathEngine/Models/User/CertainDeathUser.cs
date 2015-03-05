@@ -13,6 +13,7 @@ namespace CertainDeathEngine.Models.User
 
         [Key]
         public int Id { get; set; }
+        [Required]
         public MyAppUser FBUser { get; set; }
         public int WorldId { get; set; }
         public Score HighScore { get; set; }
