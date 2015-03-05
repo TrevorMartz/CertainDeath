@@ -43,7 +43,7 @@ namespace CertainDeathEngine
         public string ToJSON()
         {
             string jsonString;
-            lock (World.CurrentTile)
+            lock (World)
             {
                 jsonString = JsonConvert.SerializeObject(World);
 
@@ -54,7 +54,7 @@ namespace CertainDeathEngine
         public string SquareClicked(float row, float col)
         {
             Resource res;
-            lock (World.CurrentTile)
+            lock (World)
             {
                 res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
                 if (res != null)
@@ -132,7 +132,7 @@ namespace CertainDeathEngine
         {
             
             Building building;
-            lock (World.CurrentTile)
+            lock (World)
             {
                 // check if it is a good location
                 building = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
