@@ -31,7 +31,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             {
                 RemoveBuilding();
             }
-            if (State == HarvesterState.GATHERING)
+            if (State == HarvesterState.GATHERING) // todo: this never gets set to gathering
             {
                 TimeSinceGather += millis;
                 if (TimeSinceGather >= 1000)
@@ -53,10 +53,26 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     if (s != null)
                     {
                         toGather -= s.GatherResource(toGather);
+                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage()
+                        {
+                            ObjectId = this.Tile.World.Player.Id,
+                            ResourceType = s.Resource.Type.ToString(),
+                            Amount = toGather
+                        });
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage()
+                        {
+                            ObjectId = 0, // todo: does a square have an id?
+                            Amount = toGather
+                        });
                     }
                     else
                     {
                         State = HarvesterState.IDLE;
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                        {
+                            ObjectId = this.Id,
+                            State = HarvesterState.IDLE.ToString()
+                        });
                         return;
                     }
                 }

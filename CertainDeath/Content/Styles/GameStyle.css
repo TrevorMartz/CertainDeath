@@ -1,9 +1,121 @@
 ﻿
+#shop-window, #shop-window *{
+    box-sizing: border-box;
+}
+
+#content{
+    position: relative;
+}
 
 #shop-window {
     position: absolute;
     background-color: #222;
-    background-color: rgba(10, 10 10, 240);
+    background-color: rgba(10, 10 10, 0.9);
     border-radius: 10px;
-    display: none;
+    color:white;
+    font-family: silkscreen;
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    width: 80%;
+    padding: 20px;
+    max-height: 500px;
+    overflow: auto;
+    border: 5px solid #32d854;
+}
+
+#shop-window .exit-button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    background-color: #fb3535;
+    border-radius: 10px;
+    padding: 3px 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px #c42a2a;
+}
+
+#shop-window .exit-button:hover{
+    top: 12px;
+    box-shadow: 0px 2px #c42a2a;
+}
+
+#shop-window .shop-title h3{
+    font-size: 2em;
+    color:white;
+    text-align: center;
+}
+#shop-window .building-item{
+    background-color: white;
+    color: #333;
+    box-shadow: 0px 4px #ddd;
+    border-radius: 10px;
+    width: 46%;
+    margin: 10px 2%;
+    float:left;
+    padding: 20px;
+}
+
+#shop-window .title{
+    font-weight: bold;
+    color: #32d854;
+    font-size: 2em;
+}
+
+#shop-window .price-pair{
+    float:left;
+    background-color: #ddd;
+    margin: 4px;
+}
+
+#shop-window .price-pair div{
+    float:left;
+    background-color: #333;
+    color:white;
+    height: 25px;
+    padding: 2px 3px;
+}
+
+#shop-window .price-pair img{
+    margin-top:4px;
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 16px;
+}
+
+#shop-window .description{
+    clear:both;
+    font-size: 0.8em;
+    padding: 10px;
+}
+
+#shop-window .purchase-button{
+    position: relative;
+    font-size: 1.5em;
+    background-color: #fb3535;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0px 4px #c42a2a;
+    color: white;
+    width: auto;
+    text-align:center;
+}
+
+#shop-window .purchase-button:hover{
+    top: 2px;
+    box-shadow: 0px 2px #c42a2a;
+}
+
+@font-face {
+    font-family: 'silkscreen';
+    src: url('../Fonts/slkscre/slkscr-webfont.eot');
+    src: url('../Fonts/slkscre/slkscr-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/slkscre/slkscr-webfont.woff') format('woff'),
+         url('../Fonts/slkscre/slkscr-webfont.ttf') format('truetype'),
+         url('../Fonts/slkscre/slkscr-webfont.svg#silkscreen_expandednormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }

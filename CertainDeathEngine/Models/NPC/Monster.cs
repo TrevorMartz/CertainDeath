@@ -106,6 +106,12 @@ namespace CertainDeathEngine.Models.NPC
 					// someone else killed it, do nothing this step, then start walking
 					// If we can sell buildings there could be a problem here
 					State = MonsterState.WALKING;
+
+                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        State = MonsterState.WALKING.ToString()
+                    });
 					Attacking = null;
 				}
 				else
@@ -119,7 +125,12 @@ namespace CertainDeathEngine.Models.NPC
 				if (colide != null)
 				{
 					Attacking = colide;
-					State = MonsterState.ATTACKING;
+                    State = MonsterState.ATTACKING;
+                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        State = MonsterState.ATTACKING.ToString()
+                    });
 				}
 			}
 		}
@@ -228,19 +239,14 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
-            this.Tile.World.AddUpdateMessage(new UpdateMessage()
-		    {
-		        ObjectId = Attacking.Id,
-		        Data = "health:" + Attacking.HealthPoints
-		    });
+            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage()
+            {
+                ObjectId = Attacking.Id,
+                HealthPoints = Attacking.HealthPoints
+            });
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.RemoveBuilding();
-                this.Tile.World.AddUpdateMessage(new UpdateMessage()
-                {
-                    ObjectId = Attacking.Id,
-                    Data = "remove"
-                });
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}
@@ -255,10 +261,11 @@ namespace CertainDeathEngine.Models.NPC
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
-            this.Tile.World.AddUpdateMessage(new UpdateMessage()
+            this.Tile.World.AddUpdateMessage(new MoveUpdateMessage()
 		    {
 		        ObjectId = this.Id,
-		        Data = "positionX:" + Position.X + ",positionY:" + Position.Y
+                MoveX = Position.X,
+                MoveY = Position.Y
 		    });
 
 			// If they have moved to another tile,
@@ -298,32 +305,32 @@ namespace CertainDeathEngine.Models.NPC
                     // or he is trying to get to the fire of life and walked
                     // through a null tile. 
                     Tile.RemoveObject(this);
-
-                    // todo: make an update command for removing a tile
+                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                    });
                 }
                 else
                 {
                     Tile.RemoveObject(this);
-                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
                     {
                         ObjectId = this.Id,
-                        Data = "remove"
                     });
                     Tile = tile;
                     tile.AddObject(this);
-                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new MoveUpdateMessage()
                     {
                         ObjectId = this.Id,
-                        Data = "add:positionX:" + Position.X + ",positionY:" + Position.Y
+                        MoveX = Position.X,
+                        MoveY = Position.Y
                     });
                     Position = new Point(
                         Position.X + positionChange.X,
                         Position.Y + positionChange.Y);
                     //todo: i dont know how to send a move update, so I will send a whole world update insteac
-                    this.Tile.World.AddUpdateMessage(new UpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new WorldUpdateMessage()
                     {
-                        ObjectId = 0,
-                        Data = "sendWorld"
                     });
                 }
             }
