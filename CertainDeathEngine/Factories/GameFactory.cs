@@ -27,8 +27,8 @@ namespace CertainDeathEngine.Factories
                 case BuildingType.WALL:
                     building = new Wall(World.CurrentTile, position);
                     break;
-                case BuildingType.HARVESTER:
-                    building = new AutoHarvester(World.CurrentTile, position);
+                case BuildingType.AUTO_HARVESTER:
+                    building = new AutoHarvester(World.CurrentTile, position, World.Player);
                     break;
             }
             return building;

@@ -12,6 +12,7 @@ using log4net;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using CertainDeathEngine.Models.NPC.Buildings;
 using System;
 
 namespace CertainDeath.Controllers
@@ -70,7 +71,11 @@ namespace CertainDeath.Controllers
                 }
                 else if (result["event"] == "placeBuilding")
                 {
-                    GameInstance.BuildBuildingAtSquare(result["y"], result["x"], result["type"]);
+                    string type = result["type"];
+                    BuildingType btype = (BuildingType)Enum.Parse(typeof(BuildingType), type);
+                    int x = result.x;
+                    int y = result.y;
+                    GameInstance.BuildBuildingAtSquare(y, x, btype);
                 }
                 Log.Info("OnMessage: " + message);
                 Trace.WriteLine(message);

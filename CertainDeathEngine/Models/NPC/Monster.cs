@@ -83,7 +83,12 @@ namespace CertainDeathEngine.Models.NPC
 		// The time in milliseconds it takes for this monster to walk half a sqaure
 		private int MillisPerHalfSquare;
 
-		public Monster(Tile t, Point starting, Point goal, int speed)
+		private MonsterName MonsterName;
+
+		[JsonProperty]
+		public string Name { get { return Enum.GetName(typeof(MonsterName), MonsterName); } }
+
+		public Monster(Tile t, Point starting, Point goal, int speed, MonsterName name = MonsterName.STONE_GOLEM)
 		{
 			Tile = t;
 			Position = starting;
@@ -93,6 +98,7 @@ namespace CertainDeathEngine.Models.NPC
 			State = MonsterState.WALKING; // Go, find the fire, my minon!
 			_Height = Square.PIXEL_SIZE;
 			_Width = Square.PIXEL_SIZE;
+			MonsterName = name;
 			CalculateDirection();
 		}
 		public void Update(long millis)
@@ -439,4 +445,26 @@ namespace CertainDeathEngine.Models.NPC
     {
         WALKING, ATTACKING, DYING
     }
+
+	public enum MonsterName
+	{
+		BASAL_GOLEM,
+		BANSHEE,
+		BRIGAND,
+		CLERIC,
+		PEASANT,
+		DRUID,
+		FURY,
+		GARGOYLE,
+		GHOUL,
+		GNOME,
+		STONE_GOLEM,
+		GORGON,
+		GRIFFEN,
+		RANGER,
+		WARRIOR,
+		WIZARD,
+		WOLF,
+		ZOMBIE
+	}
 }
