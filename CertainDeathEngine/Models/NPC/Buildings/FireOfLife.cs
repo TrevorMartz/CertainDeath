@@ -13,7 +13,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 		public FireOfLife(Tile tile)
 			: base(tile, new Point(Tile.SQUARES_PER_ROW_AND_COLUMN / 2 , Tile.SQUARES_PER_ROW_AND_COLUMN / 2 ))
 		{
-            Type = BuildingType.FIREOFLIFE;
+            Type = BuildingType.FIRE_OF_LIFE;
             MaxLevel = 5;
             Level = 0;
             Upgrade();

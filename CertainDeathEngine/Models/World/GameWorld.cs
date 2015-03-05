@@ -21,10 +21,10 @@ namespace CertainDeathEngine.Models
             BuildingCostsForTheWorld = new Dictionary<BuildingType, Cost>()
             {
                 {
-                    BuildingType.FIREOFLIFE, new FireOfLife(null).Cost
+                    BuildingType.FIRE_OF_LIFE, new FireOfLife(null).Cost
                 },
                 {
-                    BuildingType.HARVESTER, new AutoHarvester(null, new Point(0,0)).Cost
+                    BuildingType.AUTO_HARVESTER, new AutoHarvester(null, new Point(0,0), null).Cost
                 },
                 {
                     BuildingType.TURRET, new Turret(null, new Point(0,0)).Cost

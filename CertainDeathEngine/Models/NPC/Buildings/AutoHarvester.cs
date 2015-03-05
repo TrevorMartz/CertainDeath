@@ -14,11 +14,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public int HarvestRate { get; private set; }
         public int GatherRange { get; set; }
         public HarvesterState State { get; set; }
+        private Player Player { get; set; }
         private long TimeSinceGather { get; set; }
-        public AutoHarvester(Tile tile, Point position)
+        public AutoHarvester(Tile tile, Point position, Player p)
             : base(tile, position)
         {
-            Type = BuildingType.HARVESTER;
+            Type = BuildingType.AUTO_HARVESTER;
+            Player = p;
             MaxLevel = 5;
             Level = 0;
             Upgrade();
@@ -52,7 +54,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Square s = FindGatherableSquare();
                     if (s != null)
                     {
-                        toGather -= s.GatherResource(toGather);
                         this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage()
                         {
                             ObjectId = this.Tile.World.Player.Id,
@@ -64,6 +65,10 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             ObjectId = 0, // todo: does a square have an id?
                             Amount = toGather
                         });
+                        ResourceType type = s.Resource.Type;
+                        int gathered = s.GatherResource(toGather);
+                        toGather -= gathered;
+                        Player.AddResource(type, gathered);
                     }
                     else
                     {
