@@ -24,13 +24,18 @@ namespace CertainDeath.Controllers
 
         public ActionResult Index()
         {
-            AdminViewModel avm = new AdminViewModel()
+            if (Request.IsAjaxRequest())
             {
-                LoadedWorlds = WorldManager.Instance.GetLoadedWorldIds(),
-                UpdateThreads = UpdateManager.Instance.GetUpdatingWorldIds(),
-                Users = _userDal.GetAllUsers()
-            };
-            return View(avm);
+                AdminViewModel avm = new AdminViewModel()
+                {
+                    LoadedWorlds = WorldManager.Instance.GetLoadedWorldIds(),
+                    UpdateThreads = UpdateManager.Instance.GetUpdatingWorldIds(),
+                    Users = _userDal.GetAllUsers()
+                };
+
+                return PartialView("Index", avm);
+            }
+            return new RedirectResult("/");
         }
     }
 }

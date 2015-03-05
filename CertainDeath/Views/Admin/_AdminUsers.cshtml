@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<CertainDeathEngine.Models.User.CertainDeathUser>
 
-@{
-    ViewBag.Title = "Admin Users View";
-    Layout = "~/Views/Admin/_AdminLayout.cshtml";
-}
-
 <h2>FBUsers</h2>@foreach (var user in Model)
 {
     @Html.Partial("_AdminUserView", user);
