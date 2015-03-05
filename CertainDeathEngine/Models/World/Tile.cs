@@ -110,7 +110,7 @@ namespace CertainDeathEngine.Models
 
         public void InitSquares()
         {
-            lock (this)
+            lock (World)
             {
                 this.Squares = new Square[SQUARES_PER_ROW_AND_COLUMN, SQUARES_PER_ROW_AND_COLUMN];
                 for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
@@ -126,7 +126,7 @@ namespace CertainDeathEngine.Models
         public Building GetBuildingAtPoint(Point p)
         {
             Building building = null;
-            lock (this)
+            lock (World)
             {
                 foreach (Building b in Buildings)
                 {
@@ -145,7 +145,7 @@ namespace CertainDeathEngine.Models
             Objects.Add(obj);
             if (obj is Monster)
             {
-                lock (this)
+                lock (World)
                 {
                     Monsters.Add(obj as Monster);
                 }
@@ -153,7 +153,7 @@ namespace CertainDeathEngine.Models
             else if (obj is Building)
             {
                 Building building = obj as Building;
-                lock (this)
+                lock (World)
                 {
                     Buildings.Add(building);
                     System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
@@ -173,7 +173,7 @@ namespace CertainDeathEngine.Models
             Objects.Remove(obj);
             if (obj is Monster)
             {
-                lock (this)
+                lock (World)
                 {
                     Monsters.Remove(obj as Monster);
                 }
@@ -181,7 +181,7 @@ namespace CertainDeathEngine.Models
             else if (obj is Building)
             {
                 Building building = obj as Building;
-                lock (this)
+                lock (World)
                 {
                     Buildings.Remove(building);
                     System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
@@ -216,7 +216,7 @@ namespace CertainDeathEngine.Models
 
         public void PrintTile()
         {
-            lock (this)
+            lock (World)
             {
                 for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
@@ -231,7 +231,7 @@ namespace CertainDeathEngine.Models
 
         public void PrintTileResources()
         {
-            lock (this)
+            lock (World)
             {
                 for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
@@ -243,8 +243,34 @@ namespace CertainDeathEngine.Models
                         }
                         else
                         {
-                            Trace.Write("(" + row + "," + col + ")");
+                            //Trace.Write("(" + row + "," + col + ")");
                             Trace.Write("{" + (int)Squares[row, col].Resource.Type + " " + Squares[row, col].Resource.Quantity + "}");
+                        }
+                    }
+                    Trace.WriteLine("");
+                }
+            }
+        }
+
+        public void PrintTileBuildings(bool printCoords = false)
+        {
+            lock (World)
+            {
+                for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
+                {
+                    for (int col = 0; col < SQUARES_PER_ROW_AND_COLUMN; col++)
+                    {
+                        if (Squares[row, col].Building == null)
+                        {
+                            Trace.Write("-");
+                        }
+                        else
+                        {
+                            if (printCoords)
+                            {
+                                Trace.Write("(" + row + "," + col + ")");
+                            }
+                            Trace.Write((int)Squares[row, col].Building.Type);
                         }
                     }
                     Trace.WriteLine("");
