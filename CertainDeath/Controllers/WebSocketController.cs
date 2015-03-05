@@ -67,6 +67,10 @@ namespace CertainDeath.Controllers
                 {
                     GameInstance.SquareClicked((float)result.x, (float)result.y);
                 }
+                else if (result["event"] == "placeBuilding")
+                {
+                    GameInstance.BuildBuildingAtSquare(result["y"], result["x"], result["type"]);
+                }
                 Log.Info("OnMessage: " + message);
                 Trace.WriteLine(message);
             }
