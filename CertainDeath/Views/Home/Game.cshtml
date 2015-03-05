@@ -26,115 +26,84 @@
             <h3>Building Shop</h3>
         </div>
         <div class="building-list">
-            <div class="building-item">
-                <div class="title">
-                    Steel Factory
-                </div>
-                <div class="price">
-                    <div class="price-pair">
-                        <img src="~/Content/Images/COAL.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/IRON.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/CORN.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/WOOD.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/STONE.png" />
-                        <div>27</div>
-                    </div>
-                </div>
-                <div class="description">
-                    The steel factory will harvest nearby steel
-                    resources and add them to your inventory, but
-                    it will do so at a slow rate.
-                </div>
-                <div class="purchase-button">
-                    Purchase
-                </div>
-            </div>
-            <div class="building-item">
-                <div class="title">
-                    Steel Factory
-                </div>
-                <div class="price">
-                    <div class="price-pair">
-                        <img src="~/Content/Images/COAL.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/IRON.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/CORN.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/WOOD.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/STONE.png" />
-                        <div>27</div>
-                    </div>
-                </div>
-                <div class="description">
-                    The steel factory will harvest nearby steel
-                    resources and add them to your inventory, but
-                    it will do so at a slow rate.
-                </div>
-                <div class="purchase-button">
-                    Purchase
-                </div>
-            </div>
-            <div class="building-item">
-                <div class="title">
-                    Steel Factory
-                </div>
-                <div class="price">
-                    <div class="price-pair">
-                        <img src="~/Content/Images/COAL.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/IRON.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/CORN.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/WOOD.png" />
-                        <div>27</div>
-                    </div>
-                    <div class="price-pair">
-                        <img src="~/Content/Images/STONE.png" />
-                        <div>27</div>
-                    </div>
-                </div>
-                <div class="description">
-                    The steel factory will harvest nearby steel
-                    resources and add them to your inventory, but
-                    it will do so at a slow rate.
-                </div>
-                <div class="purchase-button">
-                    Purchase
-                </div>
-            </div>
+            @* Dynamafilled with js *@
         </div>
     </div>
 
+    <script id="building-item" type="text/x-handlebars-template">
+        {{#BuildingData}}
+        <div class="building-item" id="{{Type}}">
+            <div class="title">
+                {{Title}}
+            </div>
+            <div class="price">
+                {{#each Prices}}
+                <div class="price-pair">
+                    <div>{{this}}</div>
+                    <img src="/Content/Images/{{@@key}}.png" />
+                </div>
+                {{/each}}
+            </div>
+            <div class="description">
+                {{Description}}
+            </div>
+            <div class="purchase-button">
+                Purchase
+            </div>
+        </div>
+        {{/BuildingData}}
+    </script>
+
+    <script>
+        $(function(){
+            var source = $("#building-item").html();
+            var template = Handlebars.compile(source);
+            var data = {
+                "BuildingData":[
+                    {
+                        "Title" : "Steel building",
+                        "Type" : "STEEL_BUILDING",
+                        "Prices" : {
+                            "COAL" : 10,
+                            "WOOD" : 30
+                        },
+                        "Description" : "This is a description of the steel building."
+                    },
+                    {
+                        "Title" : "Coal mine",
+                        "Type" : "COAL_MINE",
+                        "Prices" : {
+                            "CORN" : 2,
+                            "STONE" : 100
+                        },
+                        "Description" : "This is a description of the coal mine."
+                    },
+                    {
+                        "Title" : "Robber's den",
+                        "Type" : "ROBBERS_DEN",
+                        "Prices" : {
+                            "CORN" : 20
+                        },
+                        "Description" : "This building is a place for robbers. They will steal health from nearby monsters."
+                    },
+                    {
+                        "Title" : "Stone Wall",
+                        "Type" : "STONE_WALL",
+                        "Prices" : {
+                            "STONE" : 100
+                        },
+                        "Description" : "This is a stone wall. Does nothing. Just a hunk of stone."
+                    }
+                ]
+            };
+            $("#shop-window .building-list").html(template(data));
+        });
+
+    </script>
+
     <script src="~/Content/Scripts/phaser.js"></script>
+    <script src="~/Content/Scripts/handlebars-v3.0.0.js"></script>
     <script src="~/Content/Scripts/view.js"></script>
     <script src="~/Content/Scripts/game.js"></script>
+    <script src="~/Content/Scripts/dom-ui-linkup.js"></script>
 </article>

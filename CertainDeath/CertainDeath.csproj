@@ -209,7 +209,9 @@
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Images\WOOD.png" />
+    <Content Include="Content\Scripts\dom-ui-linkup.js" />
     <Content Include="Content\Scripts\game.js" />
+    <Content Include="Content\Scripts\handlebars-v3.0.0.js" />
     <Content Include="Content\Scripts\phaser.js" />
     <Content Include="Content\Scripts\view.js" />
     <Content Include="Content\Styles\GameStyle.css" />

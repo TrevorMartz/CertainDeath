@@ -123,6 +123,9 @@ View = (function () {
         this.boardX = 0;
         this.boardY = 0;
         this.subscribesTo = ["CurrentTile.Squares", "CurrentTile.Monsters", "CurrentTile.Buildings"];
+        
+        // Private variable?
+        this._placeState = null;
     }
 
     MainGameScreen.prototype = Object.create(Screen.prototype, {
@@ -136,20 +139,41 @@ View = (function () {
                 Screen.prototype.update.call(this);
 
                 // Now check the user's input
+                var tileSize = Math.min(this.height / 20, this.width / 20);
                 if (game.input.activePointer.isDown && !this._pointerDown) {
                     this._pointerDown = true;
-                    var tileSize = Math.min(this.height / 20, this.width / 20);
                     if(game.input.activePointer.x >= this.boardX &&
                         game.input.activePointer.x <= this.boardX + this.squaresWide * tileSize &&
                         game.input.activePointer.y >= this.boardY &&
                         game.input.activePointer.y <= this.boardY + this.squaresHigh * tileSize) {
+                        if (this._placeState) {
+                            // Send a request to place a building to the server
+                            var request = {
+                                "event": "placeBuilding",
+                                "type": this._placeState.type,
+                                "x": Math.floor((game.input.activePointer.x - this.boardX) / (tileSize)),
+                                "y": Math.floor((game.input.activePointer.y - this.boardY) / (tileSize))
+                            };
+                            this.server.send(JSON.stringify(request));
 
-                        this.server.send(JSON.stringify({
-                            "event": "click",
-                            "x": (game.input.activePointer.x - this.boardX) / (tileSize),
-                            "y": (game.input.activePointer.y - this.boardY) / (tileSize)
-                        }));
+                            this._placeState.sprite.destroy();
+                            this._placeState = null;
+                        } else {
+                            // Send a click event to the server
+                            this.server.send(JSON.stringify({
+                                "event": "click",
+                                "x": (game.input.activePointer.x - this.boardX) / (tileSize),
+                                "y": (game.input.activePointer.y - this.boardY) / (tileSize)
+                            }));
+                        }
                     }
+                } else if (this._placeState &&
+                        game.input.activePointer.x >= this.boardX &&
+                        game.input.activePointer.x <= this.boardX + this.squaresWide * tileSize &&
+                        game.input.activePointer.y >= this.boardY &&
+                        game.input.activePointer.y <= this.boardY + this.squaresHigh * tileSize) {
+                    this._placeState.sprite.x = game.input.activePointer.x - ((game.input.activePointer.x - this.x) % tileSize);
+                    this._placeState.sprite.y = game.input.activePointer.y - ((game.input.activePointer.y - this.y) % tileSize);
                 }
 
                 if (game.input.activePointer.isUp && this._pointerDown) {
@@ -167,6 +191,10 @@ View = (function () {
                 for (var x = 0; x < this.resources.length; ++x) {
                     if(this.resources[x].destroy)
                         this.resources[x].destroy();
+                }
+                if (this._placeState) {
+                    this._placeState.sprite.destroy();
+                    delete this._placeState;
                 }
             }
         },
@@ -276,7 +304,7 @@ View = (function () {
                         } // end for each monster
                     } // end if monster property
                     else if (property === "CurrentTile.Buildings") {
-                    	if (msg[0] !== 'undefined') {
+                    	if (msg[0] !== undefined) {
                     		var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
                     		var positions = msg[0].Position.split(",");
                     		var xpos = parseFloat(positions[0]);
@@ -287,6 +315,17 @@ View = (function () {
                     } // end if building property
                 } // end if
             } // end func
+        },
+        placeBuilding: {
+            /**
+             * @param type = the name of the type of building to be placed
+             */
+            value: function (type) {
+                console.log(type + " being placed.");
+                this._placeState = {};
+                this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", "Fire"); //type);
+                this._placeState.type = type;
+            }
         }
     });
 
@@ -472,7 +511,21 @@ View = (function () {
         }
     });
 
-    function BuildingShop(game, server, x, y, width, height) {
+    /**
+     * Ignore this doc. It's wrong.
+     * @param game = the instance of Phaser.Game
+     * @param server = the instance of Server that pulls data from the server
+     * @param x = the x coordinate of the top left corner of this view
+     * @param y = the y coordinate of the top left corner of this view
+     * @param width = the width of this view
+     * @param height = the height of this view
+     * @param funcs = an object that contains references to functions called
+     *              during the lifecycle of the game. The list of functions
+     *              includes:
+     *               - openShop()
+     *               - openUpgradeWindow()
+     */
+    function BuildingShop(game, server, x, y, width, height, funcs) {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
         this.server = server;
@@ -494,9 +547,7 @@ View = (function () {
         update: {
             value: function () {
                 ScreenContainer.prototype.update.call(this);
-                if (this.visible && $("#shop-window").length == 0) {
-                    var $shop = $("<div>").attr("id", "#shop-window").appendTo($("canvas").parent());
-                }
+                // Do nothing.
             }
         }
     });

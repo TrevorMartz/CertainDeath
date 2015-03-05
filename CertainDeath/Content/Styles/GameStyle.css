@@ -57,6 +57,11 @@
     padding: 20px;
 }
 
+#shop-window .building-item:nth-child(odd){
+    float:right;
+    clear: right;
+}
+
 #shop-window .title{
     font-weight: bold;
     color: #32d854;

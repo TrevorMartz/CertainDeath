@@ -55,12 +55,12 @@ function create () {
     //grass = new game.add.sprite(game.world.centerX, 500, 'grass', 'objects');
     //grass = game.add.tileSprite(0, 0, game.world.width, game.world.height, "objects", "grass");
     //View.current = new View.MainGameScreen(game, Server, 300, 30, game.width - 60, game.height - 60);
-    shop = new View.BuildingShop(game, Server, 40, 40, game.world.width - 80, game.world.height - 80);
+    //shop = new View.BuildingShop(game, Server, 40, 40, game.world.width - 80, game.world.height - 80);
+    mgw = new View.MainGameScreen(game, Server, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2);
     var views = [
-        shop,
         new View.ButtonScreen(game, 20, 10, 70, 32*2, "objects", "ShopButton", openShop),
         new View.InventoryBar(game, 100, 10, game.width - 20 - 100, 32*2),
-        new View.MainGameScreen(game, Server, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2),
+        mgw
     ];
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
@@ -85,10 +85,7 @@ function render () {
 }
 
 function openShop() {
-    if (shop) {
-        shop.visible = true;
-        console.log("opening shop");
-    }
+    $("#shop-window").show();
 }
 
 Server = (function () {
