@@ -1,6 +1,7 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
 using log4net;
+using System;
 using System.Linq;
 using System.Windows;
 
@@ -76,7 +77,7 @@ namespace CertainDeathEngine.Factories
 
 				Point Goal = new Point(Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2, Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2);
                 int Speed = 25;
-                m = new Monster(randTile, Position, Goal, Speed)
+                m = new Monster(randTile, Position, Goal, Speed, (MonsterName)RandomGen.Random.Next(Enum.GetValues(typeof(MonsterName)).Length))
                 {
                     Id = GetNextId(),
                     Damage = 1
