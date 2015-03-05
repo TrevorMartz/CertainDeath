@@ -69,5 +69,25 @@ namespace CertainDeathEngine.Models.NPC
         }
     }
 
+    public class AddResourceToPlayerUpdateMessage : UpdateMessage
+    {
+        public string ResourceType { get; set; }
+        public int Amount { get; set; }
+        public AddResourceToPlayerUpdateMessage()
+        {
+            UType = "AddResourceToPlayer";
+        }
+    }
+
+    public class RemoveResourceFromSquareUpdateMessage : UpdateMessage
+    {
+        public string Square { get; set; }
+        public int Amount { get; set; }
+        public RemoveResourceFromSquareUpdateMessage()
+        {
+            UType = "RemoveResourceFromSquare";
+        }
+    }
+
     
 }

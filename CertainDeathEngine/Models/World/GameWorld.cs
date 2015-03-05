@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows;
 
 namespace CertainDeathEngine.Models
 {
@@ -14,6 +15,24 @@ namespace CertainDeathEngine.Models
     public class GameWorld
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        [JsonProperty]
+        public Dictionary<BuildingType, Cost>
+            BuildingCostsForTheWorld = new Dictionary<BuildingType, Cost>()
+            {
+                {
+                    BuildingType.FIREOFLIFE, new FireOfLife(null).Cost
+                },
+                {
+                    BuildingType.HARVESTER, new AutoHarvester(null, new Point(0,0)).Cost
+                },
+                {
+                    BuildingType.TURRET, new Turret(null, new Point(0,0)).Cost
+                },
+                {
+                    BuildingType.WALL, new Wall(null, new Point(0,0)).Cost
+                },
+            };
 
         [NonSerialized]
         public Queue<UpdateMessage> Updates;

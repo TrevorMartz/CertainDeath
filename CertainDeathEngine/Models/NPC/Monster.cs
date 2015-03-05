@@ -246,10 +246,6 @@ namespace CertainDeathEngine.Models.NPC
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.RemoveBuilding();
-                this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
-                {
-                    ObjectId = Attacking.Id
-                });
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}

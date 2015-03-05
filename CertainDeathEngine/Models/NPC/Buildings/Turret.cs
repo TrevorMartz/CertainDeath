@@ -48,6 +48,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 					// someone else killed it, do nothing this step
 					// If we can sell buildings there could be a problem here
                     State = TurretState.WAITING;
+                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        State = TurretState.WAITING.ToString()
+                    });
 					Attacking = null;
 				}
 				else
@@ -61,7 +66,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 if (monsterToAttack != null)
 				{
 					Attacking = monsterToAttack;
-					State = TurretState.ATTACKING;
+                    State = TurretState.ATTACKING;
+                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                    {
+                        ObjectId = this.Id,
+                        State = TurretState.ATTACKING.ToString()
+                    });
 				}
 			}
         }
@@ -88,6 +98,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             float damage = Damage * (millis / 1000.0f);
             Attacking.HealthPoints -= damage;
+            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage()
+            {
+                ObjectId = Attacking.Id,
+                HealthPoints = Attacking.HealthPoints
+            });
+
             if (Attacking.HealthPoints <= 0)
             {
                 Tile.RemoveObject(Attacking);
