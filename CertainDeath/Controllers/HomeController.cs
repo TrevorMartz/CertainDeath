@@ -19,9 +19,9 @@ namespace CertainDeath.Controllers
         public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created HomeController");
-            this._gameDal = gameDal;
-            this._userDal = userDal;
-            this._statisticsDal = statisticsDal;
+            _gameDal = gameDal;
+            _userDal = userDal;
+            _statisticsDal = statisticsDal;
         }
 
         [FacebookAuthorize("email", "user_photos")]

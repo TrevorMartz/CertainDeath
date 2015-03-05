@@ -17,9 +17,9 @@ namespace CertainDeath.Controllers
         public AdminController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created AdminController");
-            this._gameDal = gameDal;
-            this._userDal = userDal;
-            this._statisticsDal = statisticsDal;
+            _gameDal = gameDal;
+            _userDal = userDal;
+            _statisticsDal = statisticsDal;
         }
 
         public ActionResult Index()

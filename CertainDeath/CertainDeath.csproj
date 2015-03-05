@@ -169,7 +169,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserRealtimeUpdateController.cs" />
     <Compile Include="Controllers\WebSocketController.cs" />
-    <Compile Include="Controllers\WorldUpdateMessage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
