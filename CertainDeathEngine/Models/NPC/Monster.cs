@@ -252,7 +252,6 @@ namespace CertainDeathEngine.Models.NPC
             });
 			if (Attacking.HealthPoints <= 0)
 			{
-                Attacking.RemoveBuilding();
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}

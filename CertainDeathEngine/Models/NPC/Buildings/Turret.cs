@@ -106,7 +106,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
             if (Attacking.HealthPoints <= 0)
             {
-                Tile.RemoveObject(Attacking);
                 State = TurretState.WAITING;
                 Attacking = null;
             }
