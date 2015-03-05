@@ -26,7 +26,7 @@ namespace EngineConsoleTester
         public static void Main(string[] args)
         {
             Init.InitAll();
-            ShayneTests();
+            //ShayneTests();
             //BlakeIsSOOOOOOUgly();
             TrevorTests();
 
@@ -40,6 +40,7 @@ namespace EngineConsoleTester
             //gen.GenerateWorld(12);
             Game game = new Game(gen.GenerateWorld(3, 3));
             Building building = game.BuildBuildingAtSquare(5, 3, CertainDeathEngine.Models.NPC.Buildings.BuildingType.AUTO_HARVESTER);
+            game.World.CurrentTile.PrintTileBuildings(true);
             //building.Upgrade();
             //while (true)
             //{
@@ -48,7 +49,7 @@ namespace EngineConsoleTester
             //    building.Update(3499);
             //}
             //game.World.Player.AddResource(ResourceType.COAL, 30);
-            Console.WriteLine(game.ToJSON());
+            //Console.WriteLine(game.ToJSON());
         }
 
         private static void BlakeIsSOOOOOOUgly()

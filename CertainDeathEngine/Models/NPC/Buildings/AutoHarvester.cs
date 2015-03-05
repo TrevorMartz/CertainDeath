@@ -19,7 +19,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public AutoHarvester(Tile tile, Point position, Player p)
             : base(tile, position)
         {
+            
             Type = BuildingType.AUTO_HARVESTER;
+            State = HarvesterState.GATHERING;
             Player = p;
             MaxLevel = 5;
             Level = 0;
@@ -33,7 +35,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             {
                 RemoveBuilding();
             }
-            if (State == HarvesterState.GATHERING) // todo: this never gets set to gathering
+            if (State == HarvesterState.GATHERING)
             {
                 TimeSinceGather += millis;
                 if (TimeSinceGather >= 1000)
@@ -47,7 +49,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         private void Gather(int toGather)
         {
-            lock (Tile)
+            lock (Tile.World)
             {
                 while (toGather > 0)
                 {

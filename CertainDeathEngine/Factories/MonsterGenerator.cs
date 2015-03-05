@@ -65,7 +65,7 @@ namespace CertainDeathEngine.Factories
 			// left (0, y)
 			// right (Tile.TOTAL_PIXELS, y)
             Monster m;
-            lock (World.CurrentTile)
+            lock (World)
             {
                 Tile randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
                 int squareIndex = RandomGen.Random.Next(Tile.SQUARES);

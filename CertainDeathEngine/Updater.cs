@@ -67,7 +67,7 @@ namespace CertainDeathEngine
             //Trace.WriteLine(string.Format("Processing game {0} delta {1} on {2}", World.Id ,delta, Thread.CurrentThread.ManagedThreadId));
             // Now update everything
 
-            lock (World.CurrentTile.Objects)
+            lock (World)
             {
                 // update monsters
 				foreach (Tile t in World.Tiles)
@@ -78,7 +78,7 @@ namespace CertainDeathEngine
 				}
             }
 
-            lock (World.CurrentTile.Squares)
+            lock (World)
             {
                 // check resources
                 foreach (Square s in World.CurrentTile.Squares)

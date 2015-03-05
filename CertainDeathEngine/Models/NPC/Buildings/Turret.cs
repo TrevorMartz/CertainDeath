@@ -80,7 +80,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             Monster monsterToReturn = null;
             double distanceFromTurret = Range;
-            lock (Tile.Monsters)
+            lock (Tile.World)
             {
                 foreach (Monster m in Tile.Monsters)
                 {
