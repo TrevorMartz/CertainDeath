@@ -189,6 +189,7 @@
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\Lumbermill.png" />
     <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />

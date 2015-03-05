@@ -117,7 +117,7 @@ namespace CertainDeath.Controllers
                             sb.Remove(sb.Length - 1, 1);
                             sb.Append("]");
 
-                            //Trace.WriteLine("sending " + ((Game) GameInstance).World.Updates.Count + " updates");
+                            Trace.WriteLine("sending " + ((Game)GameInstance).World.Updates.Count + " updates");
                             ((Game) GameInstance).World.Updates.Clear();
 
                             jsonString = sb.ToString();
