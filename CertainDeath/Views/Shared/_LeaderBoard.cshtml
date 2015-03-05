@@ -8,8 +8,8 @@
 <h2>LeaderBoard</h2>
 
 <ol class="leaders">
-    @foreach (var user in Model)
+    @foreach (var score in Model)
     {
-        <li>@user.FBUser.Name @user.FBUser.Name @user.HighScore.Survived</li>
+        <li>@score.ResourcesCollected</li>
     }
 </ol>

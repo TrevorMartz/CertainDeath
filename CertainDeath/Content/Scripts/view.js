@@ -264,35 +264,40 @@ View = (function () {
 								// if monster exists
 								if (this.monsters[msg[x].Id] !== undefined) {
 									sprite = this.monsters[msg[x].Id];
-									sprite.x = xpos/32*tileSize+this.boardX;
-									sprite.y = ypos / 32 * tileSize + this.boardY;
-
+									sprite[0].x = Math.round(xpos / 32 * tileSize + this.boardX + sprite[0].width / 2 * (direction.X === "LEFT" ? 1 : -1));
+									sprite[0].y = Math.round(ypos / 32 * tileSize + this.boardY - sprite[0].height / 2 + (direction.Y === "UP" ? 25 : 0));
+									sprite[1].x = xpos / 32 * tileSize + this.boardX;
+									sprite[1].y = ypos / 32 * tileSize + this.boardY;
 									// if monster has changed state
-									if (sprite.animations.currentAnim.name !== status) {
-										sprite.animations.stop();
+									if (sprite[0].animations.currentAnim.name !== status) {
+										sprite[0].animations.stop();
 										newAnimation = true;
 									}
 								} else /*Monster does not exist yet*/ {
-                            		sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-										"stone_golem");
+                            		sprite = [game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+										"stone_golem"), game.add.graphics(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY)];
+                            		sprite[0].x = Math.round(sprite[0].x + sprite[0].width / 2 * (direction.X ==="LEFT" ? 1 : -1));
+                            		sprite[0].Y = Math.round(sprite[0].Y - sprite[0].height / 2 + (direction.Y ==="UP" ? 25 : 0));
+                            		sprite[1].beginFill(0x000000, 0.5);
+                            		sprite[1].drawCircle(0, 0, 15);
                             		this.monsters[msg[x].Id] = sprite;
                             		newAnimation = true;
 								}
-
+								console.log.apply(console, [sprite[0]._cache.halfHeight]);
 							if (newAnimation) {
 								if (direction.X === "LEFT") {
-									sprite.anchor.setTo(.5, 1); //so it flips around its middle
-									sprite.scale.x = -1; //flipped
-									sprite.animations.add(status,
+									sprite[0].anchor.setTo(1, 0); 
+									sprite[0].scale.x = -1; //flipped
+									sprite[0].animations.add(status,
 									monsterMap[status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
 									5, true);
 								}
 								else {
-									sprite.animations.add(status,
+									sprite[0].animations.add(status,
 									monsterMap[status + "_" + String(direction.Name)],
 									5, true);
 								}
-								sprite.animations.play(status);
+								sprite[0].animations.play(status);
 							} // end if newAnimation
                         } // end for each monster
                     } // end if monster property
