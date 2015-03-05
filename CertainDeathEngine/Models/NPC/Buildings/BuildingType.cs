@@ -10,8 +10,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     public enum BuildingType
     {
         TURRET,
-        FIREOFLIFE,
+        FIRE_OF_LIFE,
         WALL,
-        HARVESTER
+        AUTO_HARVESTER
     }
 }
