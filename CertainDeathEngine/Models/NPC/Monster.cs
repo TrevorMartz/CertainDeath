@@ -163,7 +163,7 @@ namespace CertainDeathEngine.Models.NPC
 				else
 				{
 					double ratioTraveled = closestCollision.Distance / distanceCanGo;
-					Move(new Point(XYdist.X * ratioTraveled, XYdist.Y * ratioTraveled));
+					Move(closestCollision.DistancePoint);//XYdist.X * ratioTraveled, XYdist.Y * ratioTraveled));
 					return closestCollision.Hit;
 				}
 			}
@@ -220,7 +220,8 @@ namespace CertainDeathEngine.Models.NPC
                     hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
                 }
 			//}
-			return new Collision() {Hit = hit, Distance = Distance(startingPoint, pos) };
+				return new Collision(new Point(pos.X - startingPoint.X,
+						pos.Y - startingPoint.Y) ) { Hit = hit };
 		}
 
 		private void Attack(long millis)
@@ -417,6 +418,13 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			public Building Hit { get; set; }
 			public double Distance { get; set; }
+			public Point DistancePoint { get; set; }
+
+			public Collision(Point dist)
+			{
+				DistancePoint = dist;
+				Distance = GameObject.Distance(dist.X, dist.Y);
+			}
 		}
 	}
 

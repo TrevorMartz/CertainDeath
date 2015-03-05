@@ -84,19 +84,19 @@ namespace CertainDeathEngine.Models
 			return 0;
 		}
 
-		public double Distance(double x1, double x2, double y1, double y2)
+		public static double Distance(double x1, double x2, double y1, double y2)
 		{
 			double xDist = x1 - x2;
 			double yDist = y1 - y2;
 			return Distance(xDist, yDist);
 		}
 
-		public double Distance(double xDist, double yDist)
+		public static double Distance(double xDist, double yDist)
 		{
 			return Math.Sqrt(xDist * xDist + yDist * yDist);
 		}
 
-		public double Distance(Point p1, Point p2)
+		public static double Distance(Point p1, Point p2)
 		{
 			return Distance(p1.X, p2.X, p1.Y, p2.Y);
 		}
