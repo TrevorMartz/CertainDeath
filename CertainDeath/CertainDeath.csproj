@@ -189,6 +189,7 @@
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
     <Content Include="Content\Images\Grass.gif" />
@@ -205,7 +206,6 @@
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\spritesheet2.png" />
     <Content Include="Content\Images\STONE.png" />
-    <Content Include="Content\Images\stone_golem.png" />
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Images\WOOD.png" />
@@ -225,11 +225,11 @@
     <Content Include="Content\Images\spritesheet.json" />
     <Content Include="blah.snk" />
     <Content Include="Content\Images\spritesheet2.json" />
-    <Content Include="Content\Images\stone_golem.json" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.eot" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.svg" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.ttf" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.woff" />
+    <Content Include="Content\Images\monsters.json" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

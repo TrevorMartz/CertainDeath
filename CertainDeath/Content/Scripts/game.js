@@ -21,26 +21,32 @@ function makeMonsterMap() {
 	monsterMap = {};
 	var actions = ["WALKING_", "ATTACKING_", "DYING_"];
 	var directions = ["DOWN", "DOWN_RIGHT", "RIGHT", "UP_RIGHT", "UP", "UP_LEFT", "LEFT", "DOWN_LEFT"];
-	for(var a = 0; a < 2; a++) {
-		for (var d = 0; d < 8; d++) {
-			var animationArray = [];
-			for(var i = 0; i < 4; i++) {
-				animationArray[i] = actions[a] + directions[d] + "_" + i;
+	var monsters = ["BASAL_GOLEM", "BANSHEE", "BRIGAND", "CLERIC", "PEASANT", "DRUID", "FURY", "GARGOYLE",
+		"GHOUL", "GNOME", "STONE_GOLEM", "GORGON", "GRIFFEN", "RANGER", "WARRIOR", "WIZARD", "WOLF", "ZOMBIE"];
+	for (var m = 0; m < monsters.length; m++) {
+		var monster = monsters[m];
+		for (var a = 0; a < 2; a++) {
+			for (var d = 0; d < 8; d++) {
+				var animationArray = [];
+				for (var i = 0; i < 4; i++) {
+					animationArray[i] = monster + "/" + actions[a] + directions[d] + "_" + i;
+				}
+				monsterMap[monster + "/" + actions[a] + directions[d]] = animationArray;
 			}
-			monsterMap[actions[a] + directions[d]] = animationArray;
 		}
+		var animationArray = [];
+		for (var i = 0; i < 8; i++) {
+			animationArray[i] = monster + "_" + actions[2] + i;
+		}
+		monsterMap[monster + "/" + actions[2]] = animationArray;
 	}
-	var animationArray = [];
-	for(var i = 0; i < 8; i++) {
-		animationArray[i] = actions[2] + i;
-	}
-	monsterMap[actions[2]] = animationArray;
 }
 
 function preload () {
     // download all sprites
     game.load.atlas("objects", "/Content/Images/spritesheet2.png", "/Content/Images/spritesheet2.json");
-    game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
+    //game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
+    game.load.atlasJSONHash("monsters", "/Content/Images/monsters.png", "/Content/Images/monsters.json");
 	//server = new Server("", onerror, onclose);
 }
 
