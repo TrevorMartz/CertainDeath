@@ -1,0 +1,7 @@
+﻿@model IEnumerable<CertainDeathEngine.Models.User.CertainDeathUser>
+
+<h2>FBUsers</h2>@foreach (var user in Model)
+{
+    @Html.Partial("_AdminUserView", user);
+}
+

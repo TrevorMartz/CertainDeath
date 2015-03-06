@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CertainDeathEngine.Models.NPC.Buildings
 {
+    [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
     public class Cost
     {
@@ -25,7 +26,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public void SetCost(ResourceType type, int cost)
         {
-            if(cost > 0)
+            if (cost > 0)
             {
                 Costs[type] = cost;
             }

@@ -74,15 +74,15 @@
 },
 {
 	"filename": "ShopButton",
-	"frame": {"x":404,"y":2,"w":32,"h":32},
+	"frame": {"x":404,"y":2,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
 },
 {
 	"filename": "Torch sprite",
-	"frame": {"x":438,"y":2,"w":384,"h":32},
+	"frame": {"x":2,"y":68,"w":384,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":32},
@@ -90,7 +90,7 @@
 },
 {
 	"filename": "Torch",
-	"frame": {"x":824,"y":2,"w":32,"h":32},
+	"frame": {"x":388,"y":68,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -98,7 +98,7 @@
 },
 {
 	"filename": "WOOD",
-	"frame": {"x":858,"y":2,"w":32,"h":32},
+	"frame": {"x":422,"y":68,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -109,8 +109,8 @@
 	"version": "1.0",
 	"image": "spritesheet2.png",
 	"format": "RGBA8888",
-	"size": {"w":892,"h":36},
+	"size": {"w":470,"h":102},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:08b3ffa6956fa0606454c20622f7a294:7149a1933b7803087ac5d44c84027147:bc5e4c3e253241b36d5edc96e79f938b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e7a9e05946ca7503aefcea8cc7801d0f:37f6b09b284848ce03d80ec06412d307:bc5e4c3e253241b36d5edc96e79f938b$"
 }
 }
