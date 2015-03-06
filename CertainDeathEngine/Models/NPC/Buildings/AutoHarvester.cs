@@ -115,7 +115,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                HarvestRate = Level;
+                HarvestRate = Level * 2;
                 MaxHealthPoints = 10 * Level;
                 HealthPoints = MaxHealthPoints;
                 GatherRange = Level * 5;
