@@ -90,6 +90,8 @@ namespace CertainDeathEngine.Models.NPC
 
 		public Monster(Tile t, Point starting, Point goal, int speed, MonsterName name = MonsterName.STONE_GOLEM)
 		{
+			MaxHealthPoints = 1;
+			HealthPoints = MaxHealthPoints;
 			Tile = t;
 			Position = starting;
 			Goal = goal;

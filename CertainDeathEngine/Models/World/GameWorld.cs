@@ -24,7 +24,16 @@ namespace CertainDeathEngine.Models
                     BuildingType.FIRE_OF_LIFE, new FireOfLife(null).Cost
                 },
                 {
-                    BuildingType.AUTO_HARVESTER, new AutoHarvester(null, new Point(0,0), null).Cost
+                    BuildingType.AUTO_HARVESTER_MINE, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_MINE, null).Cost
+                },
+                {
+                    BuildingType.AUTO_HARVESTER_QUARRY, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_QUARRY, null).Cost
+                },
+                {
+                    BuildingType.AUTO_HARVESTER_FARM, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_FARM, null).Cost
+                },
+                {
+                    BuildingType.AUTO_HARVESTER_LUMBER_MILL, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_LUMBER_MILL, null).Cost
                 },
                 {
                     BuildingType.TURRET, new Turret(null, new Point(0,0)).Cost

@@ -16,11 +16,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public HarvesterState State { get; set; }
         private Player Player { get; set; }
         private long TimeSinceGather { get; set; }
-        public AutoHarvester(Tile tile, Point position, Player p)
+        public AutoHarvester(Tile tile, Point position, BuildingType type, Player p)
             : base(tile, position)
         {
             
-            Type = BuildingType.AUTO_HARVESTER;
+            Type = type;
             State = HarvesterState.GATHERING;
             Player = p;
             MaxLevel = 5;
@@ -93,7 +93,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 for (int col = (int)TilePosition.X - GatherRange; col < TilePosition.X + GatherRange; col++)
                 {
                     Square s = Tile.Squares[row, col];
-                    if(s != null && s.Resource != null /* and resource matches machine type */)
+                    if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
                     {
                         return s;
                     }
@@ -102,15 +102,23 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             return null;
         }
 
+        private bool TypeMatches(ResourceType resourceType)
+        {
+            return (Type == BuildingType.AUTO_HARVESTER_MINE && (resourceType == ResourceType.IRON || resourceType == ResourceType.COAL)) ||
+                (Type == BuildingType.AUTO_HARVESTER_QUARRY && resourceType == ResourceType.STONE) ||
+                (Type == BuildingType.AUTO_HARVESTER_FARM && resourceType == ResourceType.CORN) ||
+                (Type == BuildingType.AUTO_HARVESTER_LUMBER_MILL && resourceType == ResourceType.WOOD);
+        }
+
         public override void Upgrade()
         {
             if (Level < MaxLevel)
             {
                 Level++;
-                HarvestRate = Level;
+                HarvestRate = Level * 2;
                 MaxHealthPoints = 10 * Level;
                 HealthPoints = MaxHealthPoints;
-                GatherRange = Level;
+                GatherRange = Level * 5;
                 UpdateCost();
             }
         }

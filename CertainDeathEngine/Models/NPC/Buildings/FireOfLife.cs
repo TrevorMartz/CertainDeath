@@ -47,6 +47,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (HealthPoints <= 0)
             {
                 RemoveBuilding();
+                //TODO notify the game that it is over.
             }
         }
     }

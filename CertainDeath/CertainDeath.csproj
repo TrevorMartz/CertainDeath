@@ -198,6 +198,7 @@
     <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
     <Content Include="Content\Images\SAND.png" />
+    <Content Include="Content\Images\Shop.gif" />
     <Content Include="Content\Images\ShopButton.png" />
     <Content Include="Content\Images\SAND3.png" />
     <Content Include="Content\Images\SAND2.png" />

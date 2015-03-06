@@ -162,8 +162,6 @@ namespace CertainDeathEngine
 
         public void SaveWorld()
         {
-            // who can save the world???
-            // GHOSTBUSTERS!
 
             //if (worldManager.HasWorld(World.Id)) {
             //    worldManager.KeepWorld(World);

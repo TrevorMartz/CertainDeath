@@ -79,13 +79,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private Monster FindClosestAttackableMonster(long millis)
         {
             Monster monsterToReturn = null;
-            double distanceFromTurret = Range;
             lock (Tile.World)
             {
                 foreach (Monster m in Tile.Monsters)
                 {
                     double d = GetFastDistance(m);
-                    if (d < distanceFromTurret)
+                    if (d < Range)
                     {
                         monsterToReturn = m;
                     }
@@ -106,7 +105,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
             if (Attacking.HealthPoints <= 0)
             {
-                Tile.RemoveObject(Attacking);
                 State = TurretState.WAITING;
                 Attacking = null;
             }
@@ -117,10 +115,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                MaxHealthPoints = Level * 3;
+                MaxHealthPoints = Level * 300;
                 HealthPoints = MaxHealthPoints;
-                Range = 3 * Level;
+                Range = Square.PIXEL_SIZE * 1 + Level;
                 AttackSpeed = Level * .03f;//idk, just pikced a number.
+				Damage = Level * 100;
                 UpdateCost();
             }
         }
