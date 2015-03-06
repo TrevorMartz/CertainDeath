@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CertainDeathEngine.Models.Resources;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using log4net;
 
 namespace CertainDeathEngine.Models.User
@@ -28,6 +29,15 @@ namespace CertainDeathEngine.Models.User
         public Score()
         {
             ResourcesCollected = new Dictionary<ResourceType, int>();
+        }
+
+        public int TotalResources
+        {
+            get
+            {
+                return ResourcesCollected.Sum(i => i.Value);
+            }
+            set { int i = value; }
         }
 
         public void AddResource(ResourceType type, int count)
