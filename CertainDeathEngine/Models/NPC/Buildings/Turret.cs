@@ -117,10 +117,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                MaxHealthPoints = Level * 3;
+                MaxHealthPoints = Level * 300;
                 HealthPoints = MaxHealthPoints;
-                Range = 3 * Level;
+                Range = Square.PIXEL_SIZE * 1 + Level;
                 AttackSpeed = Level * .03f;//idk, just pikced a number.
+				Damage = Level * 100;
                 UpdateCost();
             }
         }
