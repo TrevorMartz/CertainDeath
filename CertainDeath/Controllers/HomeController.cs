@@ -19,9 +19,9 @@ namespace CertainDeath.Controllers
         public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created HomeController");
-            this._gameDal = gameDal;
-            this._userDal = userDal;
-            this._statisticsDal = statisticsDal;
+            _gameDal = gameDal;
+            _userDal = userDal;
+            _statisticsDal = statisticsDal;
         }
 
         [FacebookAuthorize("email", "user_photos")]
@@ -31,9 +31,11 @@ namespace CertainDeath.Controllers
             {
                 var facebookUser = await context.Client.GetCurrentUserAsync<MyAppUser>();
 
-                // Below is some default code.  I dont know if we will use it.
+                // If it is an ajax request then we give them a leader board
                 if (Request.IsAjaxRequest())
+                {
                     return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
+                }
 
                 var certainDeathUser = _userDal.GetGameUser(facebookUser);
 

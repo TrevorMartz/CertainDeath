@@ -44,26 +44,26 @@ View = (function () {
         },
 
         render: function () {
-            if (this.g === undefined && this.game !== undefined) {
-                var offset = 20;
-                this.g = this.game.add.graphics(0, 0);
+            //if (this.g === undefined && this.game !== undefined) {
+            //    var offset = 20;
+            //    this.g = this.game.add.graphics(0, 0);
 
-                var colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFF00];
+            //    var colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFF00];
 
-                this.g.lineStyle(2, colors[Math.floor(Math.random() * 6)], 1);
+            //    this.g.lineStyle(2, colors[Math.floor(Math.random() * 6)], 1);
 
-                this.g.moveTo(this.x - offset, this.y);
-                this.g.lineTo(this.x + this.width + offset, this.y);
+            //    this.g.moveTo(this.x - offset, this.y);
+            //    this.g.lineTo(this.x + this.width + offset, this.y);
 
-                this.g.moveTo(this.x - offset, this.y + this.height);
-                this.g.lineTo(this.x + this.width + offset, this.y + this.height);
+            //    this.g.moveTo(this.x - offset, this.y + this.height);
+            //    this.g.lineTo(this.x + this.width + offset, this.y + this.height);
 
-                this.g.moveTo(this.x, this.y - offset);
-                this.g.lineTo(this.x, this.y + this.height + offset);
+            //    this.g.moveTo(this.x, this.y - offset);
+            //    this.g.lineTo(this.x, this.y + this.height + offset);
 
-                this.g.moveTo(this.x + this.width, this.y - offset);
-                this.g.lineTo(this.x + this.width, this.y + this.height + offset);
-            }
+            //    this.g.moveTo(this.x + this.width, this.y - offset);
+            //    this.g.lineTo(this.x + this.width, this.y + this.height + offset);
+            //}
         }
     }
     Screen.prototype.constructor = Screen;
@@ -459,7 +459,7 @@ View = (function () {
         this.button = this.game.add.button(x, y, group, callback);
         this.button.antialias = false;
         this.button.setFrames(key, key, key, key);
-        this.button.scale.setTo(width / 32, height / 32);
+        this.button.scale.setTo(width / this.button.width, height / this.button.height);
         this.button.input.useHandCursor = true;
         this.visible = true;
     }

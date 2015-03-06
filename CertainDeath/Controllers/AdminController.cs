@@ -1,4 +1,5 @@
-﻿using CertainDeathEngine;
+﻿using CertainDeath.Models;
+using CertainDeathEngine;
 using CertainDeathEngine.DAL;
 using CertainDeathEngine.WorldManager;
 using log4net;
@@ -16,40 +17,25 @@ namespace CertainDeath.Controllers
         public AdminController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
             Log.Info("Created AdminController");
-            this._gameDal = gameDal;
-            this._userDal = userDal;
-            this._statisticsDal = statisticsDal;
+            _gameDal = gameDal;
+            _userDal = userDal;
+            _statisticsDal = statisticsDal;
         }
 
-        // GET: Admin
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAjaxRequest())
+            {
+                AdminViewModel avm = new AdminViewModel()
+                {
+                    LoadedWorlds = WorldManager.Instance.GetLoadedWorldIds(),
+                    UpdateThreads = UpdateManager.Instance.GetUpdatingWorldIds(),
+                    Users = _userDal.GetAllUsers()
+                };
+
+                return PartialView("Index", avm);
+            }
+            return new RedirectResult("/");
         }
-
-        //public ActionResult FBUsers()
-        //{
-        //    return View("FBUsers", _userDal.GetAllFbUsers());
-        //}
-
-        public ActionResult LoadedWorlds()
-        {
-            return View("LoadedWorlds", WorldManager.Instance.GetLoadedWorldIds());
-        }
-
-        public ActionResult UpdateThreads()
-        {
-            return View("UpdateThreads", UpdateManager.Instance.GetUpdatingWorldIds());
-        }
-
-        //public ActionResult Users()
-        //{
-        //    return View("Users", _userDal.GetAllUsers());
-        //}
-
-        //public ActionResult Worlds()
-        //{
-        //    return View("Worlds", _gameDal.GetWorldList());
-        //}
     }
 }

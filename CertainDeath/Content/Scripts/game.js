@@ -58,7 +58,7 @@ function create () {
     //shop = new View.BuildingShop(game, Server, 40, 40, game.world.width - 80, game.world.height - 80);
     mgw = new View.MainGameScreen(game, Server, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2);
     var views = [
-        new View.ButtonScreen(game, 20, 10, 70, 32*2, "objects", "ShopButton", openShop),
+        new View.ButtonScreen(game, 20, 10, 64, 64, "objects", "ShopButton", openShop),
         new View.InventoryBar(game, 100, 10, game.width - 20 - 100, 32*2),
         mgw
     ];
