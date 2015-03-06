@@ -121,14 +121,14 @@ namespace CertainDeath.Controllers
 
                             jsonString = sb.ToString();
                             Trace.WriteLine(jsonString);
-                            Send(jsonString);
+                            //Send(jsonString);
 
-                            if (sendAll)
-                            {
-                                // send the whole world for now
+                            //if (sendAll)
+                            //{
+                            //    // send the whole world for now
                                 jsonString = GameInstance.ToJSON();
                                 Send(jsonString);
-                            }
+                            //}
                         }
                     }
                 }
