@@ -23,6 +23,10 @@ namespace CertainDeathEngine.DB
             modelBuilder.ComplexType<GameWorldWrapper>()
                 .Property(p => p.EFSerialized)
                 .HasColumnName("GameWorldBinaryStuffs");
+
+            modelBuilder.Entity<Score>()
+                .Property(p => p.TotalResources)
+                .HasColumnName("TotalResources");
         }
     }
 }

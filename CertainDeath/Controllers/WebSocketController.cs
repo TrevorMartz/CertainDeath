@@ -120,7 +120,7 @@ namespace CertainDeath.Controllers
                             ((Game) GameInstance).World.Updates.Clear();
 
                             jsonString = sb.ToString();
-                            //Trace.WriteLine(jsonString);
+                            Trace.WriteLine(jsonString);
                             //Send(jsonString);
 
                             //if (sendAll)
