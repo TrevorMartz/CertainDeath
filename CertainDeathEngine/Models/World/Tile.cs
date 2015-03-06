@@ -110,8 +110,8 @@ namespace CertainDeathEngine.Models
 
         public void InitSquares()
         {
-            lock (World)
-            {
+            //lock (World)
+            //{
                 this.Squares = new Square[SQUARES_PER_ROW_AND_COLUMN, SQUARES_PER_ROW_AND_COLUMN];
                 for (int row = 0; row < SQUARES_PER_ROW_AND_COLUMN; row++)
                 {
@@ -120,7 +120,7 @@ namespace CertainDeathEngine.Models
                         Squares[row, col] = new Square();
                     }
                 }
-            }
+            //}
         }
 
         public Building GetBuildingAtPoint(Point p)

@@ -14,8 +14,8 @@ namespace CertainDeathEngine.WorldManager
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public GameWorld World { get; set; }
-        //public long LastUpdateTime { get; set; }
-        //public long LastSaveTime { get; set; }
+        public long LastUpdateTime { get; set; }
+        public long LastSaveTime { get; set; }
 
         public void SetWorld(GameWorld world)
         {

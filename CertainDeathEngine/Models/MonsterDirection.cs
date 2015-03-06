@@ -5,6 +5,7 @@ using System;
 namespace CertainDeathEngine.Models
 {
 	// Its like a java enum
+    [Serializable]
 	[JsonObject(MemberSerialization.OptIn)]
 	public class MonsterDirection
     {

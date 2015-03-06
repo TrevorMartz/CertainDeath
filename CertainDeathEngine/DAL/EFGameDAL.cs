@@ -60,7 +60,7 @@ namespace CertainDeathEngine.DAL
             Log.Info("Saving game: " + game.World.Id);
             return SaveWorld(game.World);
         }
-        
+
 
         private void SetNextWorldId()
         {
@@ -101,14 +101,28 @@ namespace CertainDeathEngine.DAL
                 try
                 {
                     // todo: update instead of replace the world?
-                    _cdDbModel.Worlds.Add(new GameWorldWrapperWrapper() { Worlds = new GameWorldWrapper() { World = world }, WorldId = world.Id });
+                    _cdDbModel.Worlds.Add(new GameWorldWrapperWrapper()
+                    {
+                        Worlds = new GameWorldWrapper()
+                            {
+                                World = world,
+                                LastSaveTime = Environment.TickCount,
+                                LastUpdateTime = world.TimeLastUpdated
+
+                            },
+                        WorldId = world.Id
+                    });
                     _cdDbModel.SaveChanges();
+                    lock (world)
+                    {
+                        world.TimeLastSaved = Environment.TickCount;
+                    }
                     Log.Info("Successfully saved the world with id: " + world.Id);
                     return true;
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Failed to save the world! "+ e.Message);
+                    Log.Error("Failed to save the world! " + e.Message);
                     throw new Exception(string.Format("Failed to save the world!!  OOOHHHH NNNOOOOOO {0}", e.Message));
                 }
             }
@@ -138,10 +152,10 @@ namespace CertainDeathEngine.DAL
                 try
                 {
                     Log.Info("Trying to get world with id " + worldId + " from the database");
-                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.FirstOrDefault(x => x.WorldId == worldId);
+                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.OrderByDescending(x => x.Worlds.LastSaveTime).FirstOrDefault(x => x.WorldId == worldId);
                     if (wrapperwrapper != null)
                     {
-                        Log.Info("Get world with id " + worldId + " from the database");
+                        Log.Info("Get world with id " + worldId + " and other of of " + wrapperwrapper.Id + " from the database");
                         world = wrapperwrapper.Worlds.World;
                     }
 

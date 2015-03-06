@@ -169,11 +169,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserRealtimeUpdateController.cs" />
     <Compile Include="Controllers\WebSocketController.cs" />
-    <Compile Include="Controllers\WorldUpdateMessage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminUserViewModel.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\DeltaTile.cs" />
     <Compile Include="Models\DeltaWorld.cs" />
     <Compile Include="Models\ScreenRequest.cs" />

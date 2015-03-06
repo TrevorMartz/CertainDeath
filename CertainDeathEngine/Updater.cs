@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using CertainDeathEngine.DAL;
 
 namespace CertainDeathEngine
 {
@@ -13,6 +14,7 @@ namespace CertainDeathEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private IGameDAL _gameDal = new EFGameDAL();
         const int FRAME_TICK_COUNT = 16;
         public bool Running;
         private readonly Game _game;
@@ -87,7 +89,7 @@ namespace CertainDeathEngine
             // save everything
             if ((_updateCount % 1000) == 0) // about one minute
             {
-                _game.SaveWorld();
+                _gameDal.SaveGame(_game);
             }
         }
 
