@@ -15,19 +15,15 @@ namespace CertainDeathEngine
 
         const int FRAME_TICK_COUNT = 16;
         public bool Running;
-        private Game Game;
-        private GameWorld World;
-        private int LastTimeInMillis;
-        private int updateCount;
-        private Random Rand;
+        private readonly Game _game;
+        private int _lastTimeInMillis;
+        private int _updateCount;
 
-        public Updater(Game g)
+        public Updater(Game game)
         {
-            Trace.WriteLine(string.Format("Creating a new Updater thread: {0}", Thread.CurrentThread.ManagedThreadId));
+            Log.Info(string.Format("Creating a new Updater thread: {0}", Thread.CurrentThread.ManagedThreadId));
             Running = false;
-            Game = g;
-            World = g.World;
-            Rand = new Random();
+            _game = game;
         }
 
 
@@ -35,30 +31,24 @@ namespace CertainDeathEngine
         {
             Trace.WriteLine(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
             Running = true;
-            updateCount = 1;
+            _updateCount = 1;
 
-            LastTimeInMillis = GetCurrentTime() - FRAME_TICK_COUNT - FRAME_TICK_COUNT;
-            while (Running)// && (LastTimeInMillis - World.TimeLastQueried) > 60 * 100 * 1000) // one minute
+            _lastTimeInMillis = GetCurrentTime() - FRAME_TICK_COUNT - FRAME_TICK_COUNT;
+            while (Running && (_lastTimeInMillis - _game.World.TimeLastQueried) > 3 * 60 * 100 * 1000) // three minutes
             {
-                while (GetCurrentTime() < LastTimeInMillis + FRAME_TICK_COUNT)
+                while (GetCurrentTime() < _lastTimeInMillis + FRAME_TICK_COUNT)
                 {
                     // just wait
                 }
                 int curTime = GetCurrentTime();
-                int delta = curTime - LastTimeInMillis;
-                LastTimeInMillis = curTime;
+                int delta = curTime - _lastTimeInMillis;
+                _lastTimeInMillis = curTime;
 
                 ProcessDeltaTime(delta);
                 //todo: lock this?
-                World.TimeLastUpdated = LastTimeInMillis;
+                _game.World.TimeLastUpdated = _lastTimeInMillis;
 
-                updateCount++;
-
-                if (updateCount%(60*1) == 0) // one minute
-                {
-                    //todo: save it
-                }
-
+                _updateCount++;
             }
         }
 
@@ -67,21 +57,21 @@ namespace CertainDeathEngine
             //Trace.WriteLine(string.Format("Processing game {0} delta {1} on {2}", World.Id ,delta, Thread.CurrentThread.ManagedThreadId));
             // Now update everything
 
-            lock (World)
+            lock (_game.World)
             {
                 // update monsters
-				foreach (Tile t in World.Tiles)
-				{
+                foreach (Tile t in _game.World.Tiles)
+                {
                     IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
                     foreach (Temporal tim in timeObjects)
                         tim.Update(delta);
-				}
+                }
             }
 
-            lock (World)
+            lock (_game.World)
             {
                 // check resources
-                foreach (Square s in World.CurrentTile.Squares)
+                foreach (Square s in _game.World.CurrentTile.Squares)
                 {
                     if (s.Resource != null)
                     {
@@ -95,9 +85,9 @@ namespace CertainDeathEngine
             //g.MonsterGenerator.Update(500);
 
             // save everything
-            if ((updateCount % 100) == 0)
+            if ((_updateCount % 1000) == 0) // about one minute
             {
-                Game.SaveWorld();
+                _game.SaveWorld();
             }
         }
 
