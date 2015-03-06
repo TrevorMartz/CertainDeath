@@ -169,11 +169,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserRealtimeUpdateController.cs" />
     <Compile Include="Controllers\WebSocketController.cs" />
-    <Compile Include="Controllers\WorldUpdateMessage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminUserViewModel.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\DeltaTile.cs" />
     <Compile Include="Models\DeltaWorld.cs" />
     <Compile Include="Models\ScreenRequest.cs" />
@@ -189,6 +188,7 @@
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\Lumbermill.png" />
     <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
@@ -265,12 +265,11 @@
     <Content Include="Views\Shared\_LeaderBoard.cshtml" />
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
-    <Content Include="Views\Admin\Users.cshtml" />
-    <Content Include="Views\Admin\FBUsers.cshtml" />
-    <Content Include="Views\Admin\LoadedWorlds.cshtml" />
-    <Content Include="Views\Admin\UpdateThreads.cshtml" />
+    <Content Include="Views\Admin\_AdminUsers.cshtml" />
+    <Content Include="Views\Admin\_AdminLoadedWorlds.cshtml" />
+    <Content Include="Views\Admin\_AdminUpdateThreads.cshtml" />
+    <Content Include="Views\Admin\_AdminUserView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

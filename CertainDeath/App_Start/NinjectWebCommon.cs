@@ -11,9 +11,8 @@ namespace CertainDeath
     using Ninject;
     using Ninject.Web.Common;
     using System.Web.Http;
-    using CertainDeath.Infrastructure;
+    using Infrastructure;
     using CertainDeathEngine.DAL;
-    using System.Web.Hosting;
 
     public static class NinjectWebCommon
     {

@@ -90,6 +90,8 @@ namespace CertainDeathEngine.Models.NPC
 
 		public Monster(Tile t, Point starting, Point goal, int speed, MonsterName name = MonsterName.STONE_GOLEM)
 		{
+			MaxHealthPoints = 1;
+			HealthPoints = MaxHealthPoints;
 			Tile = t;
 			Position = starting;
 			Goal = goal;
@@ -146,7 +148,7 @@ namespace CertainDeathEngine.Models.NPC
 			Point XYdist = GetDistanceOverTime(millis);
 			double distanceCanGo = Distance(XYdist.X, XYdist.Y);
 			bool somethingIsClose = false;
-            lock (Tile.Buildings)
+            lock (Tile.World)
             {
                 for (int i = 0; i < Tile.Buildings.Count && !somethingIsClose; i++)
                 {
@@ -232,7 +234,7 @@ namespace CertainDeathEngine.Models.NPC
 						squarePos.Y = squarePos.Y + (DirectionVector.Y > 0 ? 1 : -1);
 					}
 				}
-                lock (Tile.Squares)
+                lock (Tile.World)
                 {
                     hit = Tile.Squares[squarePos.Y, squarePos.X].Building;
                 }
@@ -301,7 +303,7 @@ namespace CertainDeathEngine.Models.NPC
 
 		private void MoveToTile(Tile tile, Point positionChange)
 		{
-            lock (Tile)
+            lock (Tile.World)
             {
                 if (tile == null)
                 {

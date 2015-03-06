@@ -1,11 +1,21 @@
-﻿
-@*@{
+﻿@model CertainDeath.Models.AdminViewModel
+@{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Index</h2>
-@Html.ActionLink("Users", "Users")
-@Html.ActionLink("FBUsers", "FBUsers")
-@Html.ActionLink("Scores", "Scores")
-@Html.ActionLink("Worlds", "Worlds")*@
+
+<h3>Refresh files</h3>
+
+<div>
+    <a href="https://g.certaindeathgame.com:44300/Content/Images/spritesheet.json">spritesheet.json</a>
+    <a href="https://g.certaindeathgame.com:44300/Content/Images/spritesheet2.json">spritesheet2.json</a>
+    <a href="https://g.certaindeathgame.com:44300/Content/Images/stone_golem.json">stone_golem.json</a>
+</div>
+
+<h3>Pages</h3>
+<div>
+    @Html.Partial("_AdminLoadedWorlds", @Model.LoadedWorlds)
+    @Html.Partial("_AdminUpdateThreads", @Model.UpdateThreads)
+    @Html.Partial("_AdminUsers", @Model.Users)
+</div>
