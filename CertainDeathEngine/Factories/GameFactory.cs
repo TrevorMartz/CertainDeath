@@ -27,8 +27,17 @@ namespace CertainDeathEngine.Factories
                 case BuildingType.WALL:
                     building = new Wall(World.CurrentTile, position);
                     break;
-                case BuildingType.AUTO_HARVESTER:
-                    building = new AutoHarvester(World.CurrentTile, position, World.Player);
+                case BuildingType.AUTO_HARVESTER_MINE:
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_MINE, World.Player);
+                    break;
+                case BuildingType.AUTO_HARVESTER_QUARRY:
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_QUARRY, World.Player);
+                    break;
+                case BuildingType.AUTO_HARVESTER_FARM:
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_FARM, World.Player);
+                    break;
+                case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL, World.Player);
                     break;
             }
             return building;

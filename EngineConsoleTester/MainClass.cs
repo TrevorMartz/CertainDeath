@@ -39,7 +39,7 @@ namespace EngineConsoleTester
             GameWorldGenerator gen = new GameWorldGenerator();
             //gen.GenerateWorld(12);
             Game game = new Game(gen.GenerateWorld(3, 3));
-            Building building = game.BuildBuildingAtSquare(5, 3, CertainDeathEngine.Models.NPC.Buildings.BuildingType.AUTO_HARVESTER);
+            //Building building = game.BuildBuildingAtSquare(5, 3, CertainDeathEngine.Models.NPC.Buildings.BuildingType.AUTO_HARVESTER);
             game.World.CurrentTile.PrintTileBuildings(true);
             //building.Upgrade();
             //while (true)

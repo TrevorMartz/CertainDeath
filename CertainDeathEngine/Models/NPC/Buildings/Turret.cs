@@ -79,13 +79,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private Monster FindClosestAttackableMonster(long millis)
         {
             Monster monsterToReturn = null;
-            double distanceFromTurret = Range;
             lock (Tile.World)
             {
                 foreach (Monster m in Tile.Monsters)
                 {
                     double d = GetFastDistance(m);
-                    if (d < distanceFromTurret)
+                    if (d < Range)
                     {
                         monsterToReturn = m;
                     }

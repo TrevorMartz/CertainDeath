@@ -12,6 +12,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         TURRET,
         FIRE_OF_LIFE,
         WALL,
-        AUTO_HARVESTER
+        AUTO_HARVESTER_MINE,//COAL AND IRON
+        AUTO_HARVESTER_QUARRY,//STONE
+        AUTO_HARVESTER_FARM,
+        AUTO_HARVESTER_LUMBER_MILL
     }
 }
