@@ -21,7 +21,7 @@ namespace CertainDeathEngine.DB
 
             // Tell EF that the deserialization will happen in the EFSerialized property
             modelBuilder.ComplexType<GameWorldWrapper>()
-                .Property(p => p.EFSerialized)
+                .Property(p => p.EfSerialized)
                 .HasColumnName("GameWorldBinaryStuffs");
 
             modelBuilder.Entity<Score>()

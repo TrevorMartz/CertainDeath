@@ -20,31 +20,31 @@ namespace CertainDeathEngine.WorldManager
             }
         }
 
-        static Dictionary<int, GameWorldWrapper> worlds;
+        private static Dictionary<int, GameWorldWrapper> _worlds;
 
         WorldManager()
         {
-            if (worlds == null)
+            if (_worlds == null)
             {
-                worlds = new Dictionary<int, GameWorldWrapper>();
+                _worlds = new Dictionary<int, GameWorldWrapper>();
             }
         }
 
         public bool HasWorld(int worldId)
         {
-            lock (worlds)
+            lock (_worlds)
             {
-                return (worlds.ContainsKey(worldId));
+                return (_worlds.ContainsKey(worldId));
             }
         }
 
         public GameWorld GetWorld(int worldId)
         {
-            lock (worlds)
+            lock (_worlds)
             {
-                if (worlds.ContainsKey(worldId))
+                if (_worlds.ContainsKey(worldId))
                 {
-                    return worlds[worldId].World;
+                    return _worlds[worldId].World;
                 }
                 else
                 {
@@ -55,22 +55,22 @@ namespace CertainDeathEngine.WorldManager
 
         public void KeepWorld(GameWorld world)
         {
-            lock (worlds)
+            lock (_worlds)
             {
-                if (worlds.ContainsKey(world.Id))
+                if (_worlds.ContainsKey(world.Id))
                 {
                     throw new Exception("The world is already loaded");
                 }
                 else
                 {
-                    worlds.Add(world.Id, new GameWorldWrapper() { World = world });
+                    _worlds.Add(world.Id, new GameWorldWrapper() { World = world });
                 }
             }
         }
 
         public IEnumerable<string> GetLoadedWorldIds()
         {
-            return worlds.Keys.Select(x => x.ToString()).ToList();
+            return _worlds.Keys.Select(x => x.ToString()).ToList();
         }
     }
 }

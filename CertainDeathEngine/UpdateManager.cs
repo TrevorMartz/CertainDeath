@@ -1,4 +1,5 @@
 ﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace CertainDeathEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static readonly UpdateManager _instance = new UpdateManager();
+        private static readonly UpdateManager _instance = new UpdateManager();
         public static UpdateManager Instance
         {
             get
@@ -18,59 +19,64 @@ namespace CertainDeathEngine
             }
         }
 
-        static Dictionary<int, Thread> threads;
+        private static Dictionary<int, Thread> _threads;
 
         UpdateManager()
         {
-            if (threads == null)
-                threads = new Dictionary<int, Thread>();
+            Log.Info("Creating Singlton UpdateManager");
+            if (_threads == null)
+                _threads = new Dictionary<int, Thread>();
+            else
+            {
+                throw new Exception("UpdateManager is a singlton.  Dont make it !!!!!!");
+            }
         }
 
         public void AddGameThread(int worldId, Thread thread)
         {
-            lock (threads)
+            Log.Info("Adding new game thread");
+            lock (_threads)
             {
-                if (threads.ContainsKey(worldId))
+                if (_threads.ContainsKey(worldId))
                 {
-                    if (threads[worldId].IsAlive)
+                    if (_threads[worldId].IsAlive)
                     {
                         // thread is already there and running
                         return;
                     }
                     else
                     {
-                        threads[worldId].Abort();
-                        threads[worldId] = thread;
+                        _threads[worldId].Abort();
+                        _threads[worldId] = thread;
                     }
                 }
                 else
                 {
-                    threads[worldId] = thread;
+                    _threads[worldId] = thread;
                 }
-                threads[worldId].Start();
+                _threads[worldId].Start();
             }
         }
 
         public void RemoveGameThread(int worldId)
         {
-            lock (threads)
+            lock (_threads)
             {
-                if (threads.ContainsKey(worldId))
+                if (_threads.ContainsKey(worldId))
                 {
-                    threads[worldId].Abort();
-                    threads.Remove(worldId);
+                    _threads[worldId].Abort();
+                    _threads.Remove(worldId);
                 }
                 else
                 {
                     // it wasnt there.
-                    return;
                 }
             }
         }
 
         public IEnumerable<string> GetUpdatingWorldIds()
         {
-            return threads.Keys.Select(x => x.ToString()).ToList();
+            return _threads.Keys.Select(x => x.ToString()).ToList();
         }
     }
 }

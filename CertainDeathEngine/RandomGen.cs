@@ -12,10 +12,12 @@ namespace CertainDeathEngine
 
         public static void Init()
         {
-            string s = ConfigurationManager.AppSettings["RandomNumberSeed"];
+            Log.Info("Initializing seeded random number generator");
+            string randomSeed = ConfigurationManager.AppSettings["RandomNumberSeed"];
+            Log.Info("Using RandomNumberSeed: " + randomSeed);
             try
             {
-                Random = new Random(Convert.ToInt32(s));
+                Random = new Random(Convert.ToInt32(randomSeed));
             }
             catch (Exception)
             {
@@ -25,6 +27,7 @@ namespace CertainDeathEngine
 
         public static void InitUnseeded()
         {
+            Log.Info("Initializing unseeded random number generator");
             Random = new Random();
         }
     }

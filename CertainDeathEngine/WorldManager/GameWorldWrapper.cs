@@ -19,11 +19,11 @@ namespace CertainDeathEngine.WorldManager
 
         public void SetWorld(GameWorld world)
         {
-            this.World = world;
+            World = world;
         }
 
 
-        public byte[] EFSerialized
+        public byte[] EfSerialized
         {
             get // serialize
             {

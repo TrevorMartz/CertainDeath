@@ -7,14 +7,15 @@ namespace CertainDeathEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		public static bool Initted { get; private set; }
+		public static bool HasBeenInitialized { get; private set; }
         public static void InitAll()
         {
-			if (!Initted)
+            Log.Info("Initializing");
+			if (!HasBeenInitialized)
 			{
 				RandomGen.Init();
 				Tile.InitSize();
-				Initted = true;
+				HasBeenInitialized = true;
 			}
         }
     }

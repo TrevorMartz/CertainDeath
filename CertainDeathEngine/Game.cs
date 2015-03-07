@@ -1,14 +1,14 @@
-﻿using CertainDeathEngine.Models;
+﻿using CertainDeathEngine.Factories;
+using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.NPC.Buildings;
+using CertainDeathEngine.Models.Resources;
+using CertainDeathEngine.Models.User;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using CertainDeathEngine.Models.Resources;
-using CertainDeathEngine.Factories;
-using CertainDeathEngine.Models.NPC.Buildings;
+using System.Linq;
 using System.Windows;
-using CertainDeathEngine.DAL;
-using CertainDeathEngine.Models.User;
-using log4net;
 
 namespace CertainDeathEngine
 {
@@ -16,28 +16,25 @@ namespace CertainDeathEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        WorldManager.WorldManager worldManager;
-        UpdateManager updateManager;
         public GameWorld World;
-        public GameFactory buildingFactory;
+        public GameFactory BuildingFactory;
         public MonsterGenerator MonsterGenerator;
-        private IStatisticsDAL statisticsDAL;
-        private DateTime WorldCreation;
-        private Score WorldScore;
+        private readonly UpdateManager _updateManager;
+        private readonly DateTime _worldCreation;
+        private readonly Score _worldScore;
 
         public Game(GameWorld world)
         {
-            worldManager = WorldManager.WorldManager.Instance;
-            WorldCreation = new DateTime();
-            WorldScore = new Score();
-            WorldScore.FireLevel = 1;
-            updateManager = UpdateManager.Instance;
+            Log.Info("Constructing Game for world " + world.Id);
+
             Init.InitAll();
             World = world;
-            buildingFactory = new GameFactory(World);
+            _worldCreation = new DateTime();
+            _worldScore = new Score { FireLevel = 1 };
+            _updateManager = UpdateManager.Instance;
+            BuildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 115, SpawnSize = 1, Delay = 30, Rate = 10000 };
             MonsterGenerator.Update(1);
-            statisticsDAL = new EFStatisticsDAL();
         }
 
         public string ToJSON()
@@ -53,18 +50,16 @@ namespace CertainDeathEngine
 
         public string SquareClicked(float row, float col)
         {
-            Resource res;
             lock (World)
             {
-                res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
+                Resource res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
                 if (res != null)
                 {
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
                     World.Player.AddResource(type, gathered);
 
-                    WorldScore.AddResource(type, gathered);
-                    //Trace.WriteLine("Resource: " + type + " player count: " + Player.GetResourceCount(type));
+                    _worldScore.AddResource(type, gathered);
                 }
             }
             return ToJSON();
@@ -120,40 +115,35 @@ namespace CertainDeathEngine
 
         public IEnumerable<BuildingType> GetBuildableBuildingsList()
         {
-            List<BuildingType> list = new List<BuildingType>();
-            foreach (BuildingType t in Enum.GetValues(typeof(BuildingType)))
-            {
-                list.Add(t);
-            }
-            return list;
+            return Enum.GetValues(typeof (BuildingType)).Cast<BuildingType>().ToList();
         }
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
         {
-            
+
             Building building;
             lock (World)
             {
                 // check if it is a good location
-                building = buildingFactory.BuildBuilding(buildingType, new Point((double)column, (double)row));
-                System.Drawing.Point[] CornersAsSquareGrid = building.CornerApproxSquares();
-                for (int row2 = CornersAsSquareGrid[0].Y; row2 <= CornersAsSquareGrid[2].Y; row2++)
+                building = BuildingFactory.BuildBuilding(buildingType, new Point(column, row));
+                System.Drawing.Point[] cornersAsSquareGrid = building.CornerApproxSquares();
+                for (int row2 = cornersAsSquareGrid[0].Y; row2 <= cornersAsSquareGrid[2].Y; row2++)
                 {
-                    for (int col2 = CornersAsSquareGrid[0].X; col2 <= CornersAsSquareGrid[1].X; col2++)
+                    for (int col2 = cornersAsSquareGrid[0].X; col2 <= cornersAsSquareGrid[1].X; col2++)
                     {
-                        if(World.CurrentTile.Squares[row2, col2].Building != null)
+                        if (World.CurrentTile.Squares[row2, col2].Building != null)
                         {
                             return null;
                         }
                     }
                 }
-                
+
                 World.CurrentTile.AddObject(building);
             }
 
             // persist the building
 
-            WorldScore.Buildings++;
+            _worldScore.Buildings++;
             return building;
         }
 
@@ -174,12 +164,12 @@ namespace CertainDeathEngine
         {
             SaveScore();
             World.HasEnded = true;
-            updateManager.RemoveGameThread(World.Id);
+            _updateManager.RemoveGameThread(World.Id);
         }
 
         public void SaveScore()
         {
-            WorldScore.Survived = new DateTime() - WorldCreation;
+            _worldScore.Survived = new DateTime() - _worldCreation;
         }
     }
 }

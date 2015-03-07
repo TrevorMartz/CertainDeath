@@ -14,7 +14,7 @@ namespace CertainDeathEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private IGameDAL _gameDal = new EFGameDAL();
+        private readonly IGameDAL _gameDal = new EFGameDAL();
         const int FRAME_TICK_COUNT = 16;
         public bool Running;
         private readonly Game _game;
