@@ -66,8 +66,11 @@ namespace CertainDeathEngine.DAL
         {
             try
             {
-                // TODO: we need to figure out the id part of the world storage
-                int maxId = _cdDbModel.Worlds.Max(x => x.WorldId);
+                int maxId = 1;
+                if (_cdDbModel.Worlds.Any())
+                {
+                    maxId = _cdDbModel.Worlds.Max(x => x.WorldId);
+                }
                 _nextWorldId = maxId + 1;
             }
             catch (Exception)

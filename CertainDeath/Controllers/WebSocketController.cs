@@ -49,6 +49,7 @@ namespace CertainDeath.Controllers
             protected int GameWorldId;
             protected EngineInterface GameInstance;
             private Thread _thisEndOfTheWebSocketTread;
+            private bool Running;
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
@@ -58,6 +59,7 @@ namespace CertainDeath.Controllers
                 _statisticsDal = statisticsDal;
                 this.GameWorldId = worldId;
                 this.GameInstance = _gameDal.CreateGame(GameWorldId);
+                Running = false;
             }
 
             public override void OnMessage(string message)
@@ -77,31 +79,32 @@ namespace CertainDeath.Controllers
                     int y = result.y;
                     GameInstance.BuildBuildingAtSquare(y, x, btype);
                 }
-                else if (result["event"] == "moveTile")
-                {
-                    string direction = result["direction"];
-                    switch (direction)
-                    {
-                        case "up":
-                            GameInstance.MoveUp();
-                            break;
-                        case "down":
-                            GameInstance.MoveDown();
-                            break;
-                        case "left":
-                            GameInstance.MoveLeft();
-                            break;
-                        case "right":
-                            GameInstance.MoveRight();
-                            break;
-                    }
-                }
+                //else if (result["event"] == "moveTile")
+                //{
+                //    string direction = result["direction"];
+                //    switch (direction)
+                //    {
+                //        case "up":
+                //            GameInstance.MoveUp();
+                //            break;
+                //        case "down":
+                //            GameInstance.MoveDown();
+                //            break;
+                //        case "left":
+                //            GameInstance.MoveLeft();
+                //            break;
+                //        case "right":
+                //            GameInstance.MoveRight();
+                //            break;
+                //    }
+                //}
                 Log.Info("OnMessage: " + message);
                 Trace.WriteLine(message);
             }
 
             public override void OnOpen()
             {
+                Running = true;
                 _thisEndOfTheWebSocketTread = new Thread(SendUpdates);
                 _thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
                 _thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
@@ -111,44 +114,51 @@ namespace CertainDeath.Controllers
             {
                 string jsonString = GameInstance.ToJSON();
                 Send(jsonString);
-                while (WebSocketContext.IsClientConnected)
+                while (WebSocketContext.IsClientConnected && Running)
                 {
-                    Thread.Sleep(32);
-                    lock (((Game) GameInstance).World)
+                    try
                     {
-                        bool sendAll = false;
-                        if (((Game) GameInstance).World.Updates.Count > 0)
+                        Thread.Sleep(32);
+                        lock (((Game) GameInstance).World)
                         {
-                            StringBuilder sb = new StringBuilder();
-                            sb.Append("\"updates\":[");
-                            foreach (var m in ((Game) GameInstance).World.Updates)
+                            bool sendAll = false;
+                            if (((Game) GameInstance).World.Updates.Count > 0)
                             {
-                                if (m.GetType() != typeof(WorldUpdateMessage))
+                                StringBuilder sb = new StringBuilder();
+                                sb.Append("\"updates\":[");
+                                foreach (var m in ((Game) GameInstance).World.Updates)
                                 {
-                                    sb.Append(JsonConvert.SerializeObject(m));
+                                    if (m.GetType() != typeof (WorldUpdateMessage))
+                                    {
+                                        sb.Append(JsonConvert.SerializeObject(m));
+                                    }
+                                    else
+                                    {
+                                        sendAll = true;
+                                    }
+                                    sb.Append(",");
                                 }
-                                else
-                                {
-                                    sendAll = true;
-                                }
-                                sb.Append(",");
+                                sb.Remove(sb.Length - 1, 1);
+                                sb.Append("]");
+
+                                ((Game) GameInstance).World.Updates.Clear();
+
+                                //jsonString = sb.ToString();
+                                //Trace.WriteLine(jsonString);
+                                //Send(jsonString);
+
+                                //if (sendAll)
+                                //{
+                                //    // send the whole world for now
+                                    jsonString = GameInstance.ToJSON();
+                                    Send(jsonString);
+                                //}
                             }
-                            sb.Remove(sb.Length - 1, 1);
-                            sb.Append("]");
-
-                            ((Game) GameInstance).World.Updates.Clear();
-
-                            jsonString = sb.ToString();
-                            Trace.WriteLine(jsonString);
-                            //Send(jsonString);
-
-                            //if (sendAll)
-                            //{
-                            //    // send the whole world for now
-                                jsonString = GameInstance.ToJSON();
-                                Send(jsonString);
-                            //}
                         }
+                    } 
+                    catch (Exception e)
+                    {
+                        Log.Error("Error on the listening thread: " + e.Message);
                     }
                 }
                 UpdateManager.Instance.RemoveGameThread(GameWorldId);
@@ -156,7 +166,8 @@ namespace CertainDeath.Controllers
 
             public override void OnClose()
             {
-                _thisEndOfTheWebSocketTread.Abort();
+                Running = false;
+                //_thisEndOfTheWebSocketTread.Abort();
                 Log.Info("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
                 Log.Info("Connection closed");
                 Trace.WriteLine("[Connection closed]");

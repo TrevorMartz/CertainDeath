@@ -31,7 +31,7 @@ namespace CertainDeathEngine
 
         public void Run()
         {
-            Trace.WriteLine(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
+            Log.Info(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
             Running = true;
             _updateCount = 1;
 
@@ -56,16 +56,13 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
-            //Trace.WriteLine(string.Format("Processing game {0} delta {1} on {2}", World.Id ,delta, Thread.CurrentThread.ManagedThreadId));
-            // Now update everything
-
             lock (_game.World)
             {
                 // update monsters
                 foreach (Tile t in _game.World.Tiles)
                 {
                     IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
-                    Trace.WriteLine("found " + timeObjects.Count() + " updatable things");
+                    //Trace.WriteLine("found " + timeObjects.Count() + " updatable things");
                     foreach (Temporal tim in timeObjects)
                         tim.Update(delta);
                 }
@@ -85,7 +82,7 @@ namespace CertainDeathEngine
             }
 
             // add spawns
-            //g.MonsterGenerator.Update(500);
+            _game.MonsterGenerator.Update(delta);
 
             // save everything
             if ((_updateCount % 1000) == 0) // about one minute
