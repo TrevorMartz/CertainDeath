@@ -65,6 +65,7 @@ namespace CertainDeathEngine
                 foreach (Tile t in _game.World.Tiles)
                 {
                     IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
+                    Trace.WriteLine("found " + timeObjects.Count() + " updatable things");
                     foreach (Temporal tim in timeObjects)
                         tim.Update(delta);
                 }

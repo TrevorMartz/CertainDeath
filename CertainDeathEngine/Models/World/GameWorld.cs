@@ -91,15 +91,15 @@ namespace CertainDeathEngine.Models
 		    tile.World = this;
             HasEnded = false;
             Player = new Player();
-			this.CurrentTile = tile;
-			tile.AddObject(new FireOfLife(tile));
+            this.CurrentTile = tile;
 			this.Id = worldId;
 			Tiles = tiles.Cast<Tile>().ToList();
 		    foreach (var t in Tiles)
 		    {
 		        t.World = this;
-		    }
-		    Updates = new Queue<UpdateMessage>();
+            }
+            Updates = new Queue<UpdateMessage>();
+            tile.AddObject(new FireOfLife(tile));
 		}
 
         [OnDeserializing]

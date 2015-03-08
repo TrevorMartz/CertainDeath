@@ -1,7 +1,9 @@
-﻿using CertainDeathEngine.DB;
+﻿using System;
+using CertainDeathEngine.DB;
 using CertainDeathEngine.Models.User;
 using log4net;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 
 namespace CertainDeathEngine.DAL
@@ -18,19 +20,27 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser CreateGameUser(MyAppUser fbUser)
         {
-            if (cdDBModel.Users.Count(x => x.FBUser.Email.Equals(fbUser.Email)) == 0)
+            try
             {
-                CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = -1 };
-                cdDBModel.Users.Add(newUser);
-                cdDBModel.SaveChanges();
-                return newUser;
+                if (cdDBModel.Users.Count(x => x.FBUser.Email.Equals(fbUser.Email)) == 0)
+                {
+                    CertainDeathUser newUser = new CertainDeathUser() {FBUser = fbUser, WorldId = -1};
+                    cdDBModel.Users.Add(newUser);
+                    cdDBModel.SaveChanges();
+                    return newUser;
+                }
+                else
+                {
+                    // the user already existed, so return the existing user
+                    return GetGameUser(fbUser);
+                    // TODO - Unless we want to trow exceptions for someone else to deal with - blake
+                }
             }
-            else
+            catch (Exception e)
             {
-                // the user already existed, so return the existing user
-                return GetGameUser(fbUser);
-                // TODO - Unless we want to trow exceptions for someone else to deal with - blake
+                Log.Error("Failed creating a game user: " + e.Message);
             }
+            return null;
         }
 
         public IEnumerable<CertainDeathUser> GetAllUsers()
@@ -50,9 +60,21 @@ namespace CertainDeathEngine.DAL
 
         public void GiveGameUserAGameWorldId(int userId, int worldId)
         {
-            CertainDeathUser u = cdDBModel.Users.FirstOrDefault(x => x.Id == userId);
-            u.WorldId = worldId;
-            cdDBModel.SaveChanges();
+            try
+            {
+                CertainDeathUser u = cdDBModel.Users.FirstOrDefault(x => x.Id == userId);
+                u.WorldId = worldId;
+                cdDBModel.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                Log.Error("DbSerialization error: " +
+                          ex.EntityValidationErrors.FirstOrDefault().ValidationErrors.FirstOrDefault().ErrorMessage);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Failed to give a user a world: " + e.Message);
+            }
         }
     }
 }

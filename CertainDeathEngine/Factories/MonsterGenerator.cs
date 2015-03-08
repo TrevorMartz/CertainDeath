@@ -84,6 +84,13 @@ namespace CertainDeathEngine.Factories
                 };
                 randTile.AddObject(m);
             }
+            this.World.AddUpdateMessage(new PlaceMonsterUpdateMessage()
+            {
+                ObjectId = m.Id,
+                PosX = m.Position.X,
+                PosY = m.Position.Y,
+                Type = m.Type
+            });
 			return m;
 		}
 

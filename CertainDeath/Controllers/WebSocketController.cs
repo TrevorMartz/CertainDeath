@@ -77,6 +77,25 @@ namespace CertainDeath.Controllers
                     int y = result.y;
                     GameInstance.BuildBuildingAtSquare(y, x, btype);
                 }
+                else if (result["event"] == "moveTile")
+                {
+                    string direction = result["direction"];
+                    switch (direction)
+                    {
+                        case "up":
+                            GameInstance.MoveUp();
+                            break;
+                        case "down":
+                            GameInstance.MoveDown();
+                            break;
+                        case "left":
+                            GameInstance.MoveLeft();
+                            break;
+                        case "right":
+                            GameInstance.MoveRight();
+                            break;
+                    }
+                }
                 Log.Info("OnMessage: " + message);
                 Trace.WriteLine(message);
             }
