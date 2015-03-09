@@ -183,12 +183,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\ActualBrownDirtThatLooksLikeDirt.png" />
     <Content Include="Content\Images\DIRT.png" />
     <Content Include="Content\Images\Bonfire.png" />
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\GRASS1.png" />
+    <Content Include="Content\Images\GRASS3.png" />
     <Content Include="Content\Images\GunTurret.png" />
+    <Content Include="Content\Images\Lumbermill.png" />
+    <Content Include="Content\Images\Mine.png" />
     <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
@@ -197,8 +202,11 @@
     <Content Include="Content\Images\GRASS2.png" />
     <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
+    <Content Include="Content\Images\Quarry.png" />
     <Content Include="Content\Images\SAND.png" />
+    <Content Include="Content\Images\SAND1.png" />
     <Content Include="Content\Images\Shop.gif" />
+    <Content Include="Content\Images\ShopButton.gif" />
     <Content Include="Content\Images\ShopButton.png" />
     <Content Include="Content\Images\SAND3.png" />
     <Content Include="Content\Images\SAND2.png" />
