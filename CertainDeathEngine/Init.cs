@@ -13,7 +13,7 @@ namespace CertainDeathEngine
             Log.Info("Initializing");
 			if (!HasBeenInitialized)
 			{
-				RandomGen.Init();
+                RandomGen.InitUnseeded();
 				Tile.InitSize();
 				HasBeenInitialized = true;
 			}
