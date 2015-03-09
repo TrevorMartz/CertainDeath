@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows;
+using CertainDeathEngine.Models.User;
 
 namespace CertainDeathEngine.Models
 {
@@ -61,6 +62,7 @@ namespace CertainDeathEngine.Models
 		public  List<Tile> Tiles { get; private set; }
 
         public bool HasEnded { get; set; }
+        public Score Score { get; set; }
 
         public GameWorld()
         {
@@ -84,6 +86,10 @@ namespace CertainDeathEngine.Models
 			Tiles = new List<Tile>();
 			Tiles.Add(t);
             Updates = new Queue<UpdateMessage>();
+            Score = new Score
+                    {
+                        FireLevel = 1, WorldId = Id
+                    };
 		}
 
 		public GameWorld(Tile[,] tiles, Tile tile, int worldId)
@@ -100,6 +106,11 @@ namespace CertainDeathEngine.Models
             }
             Updates = new Queue<UpdateMessage>();
             tile.AddObject(new FireOfLife(tile));
+            Score = new Score
+            {
+                FireLevel = 1,
+                WorldId = Id
+            };
 		}
 
         [OnDeserializing]

@@ -33,10 +33,6 @@ namespace CertainDeathEngine.Models.NPC
 		// Approximate direction, rounded to the nearest of the 8
 		public MonsterDirection Direction { get; private set; }
 
-		// Monster needs to know where they are so they
-		// can go towards the FireOfLife
-		public Tile Tile { get; private set; }
-
 		// Monster's damage per second
 		// This will be used when it is in contact with a building
 		// We can improve this later with attack speed and attack damage
@@ -254,7 +250,7 @@ namespace CertainDeathEngine.Models.NPC
             });
 			if (Attacking.HealthPoints <= 0)
 			{
-                Attacking.RemoveBuilding();
+                Attacking.Remove();
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}

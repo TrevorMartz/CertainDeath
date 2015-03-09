@@ -128,6 +128,11 @@ namespace CertainDeath.Controllers
                                 sb.Append("\"updates\":[");
                                 foreach (var m in ((Game) GameInstance).World.Updates)
                                 {
+                                    if (m.GetType() == typeof (GameOverUpdateMessage))
+                                    {
+                                        Running = false;
+                                        GameInstance.GameOver();
+                                    }
                                     if (m.GetType() != typeof (WorldUpdateMessage))
                                     {
                                         sb.Append(JsonConvert.SerializeObject(m));

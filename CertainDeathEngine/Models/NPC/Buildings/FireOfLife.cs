@@ -64,7 +64,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (HealthPoints <= 0)
             {
-                RemoveBuilding();
+                Remove();
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage()

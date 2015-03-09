@@ -51,6 +51,7 @@ namespace CertainDeath.Controllers
                 {
                     // we need to create them a game world
                     Game game = (Game)_gameDal.CreateGame();
+                    game.World.Score.UserId = certainDeathUser.Id;
                     _userDal.GiveGameUserAGameWorldId(certainDeathUser.Id, game.World.Id);
                     
                 }

@@ -33,7 +33,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (HealthPoints <= 0)
             {
-                RemoveBuilding();
+                Remove();
             }
             if (State == HarvesterState.GATHERING)
             {

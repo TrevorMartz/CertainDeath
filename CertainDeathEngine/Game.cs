@@ -1,4 +1,5 @@
-﻿using CertainDeathEngine.Factories;
+﻿using CertainDeathEngine.DAL;
+using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC.Buildings;
 using CertainDeathEngine.Models.Resources;
@@ -21,7 +22,7 @@ namespace CertainDeathEngine
         public MonsterGenerator MonsterGenerator;
         private readonly UpdateManager _updateManager;
         private readonly DateTime _worldCreation;
-        private readonly Score _worldScore;
+        private readonly IStatisticsDAL _statisticsDal = new EFStatisticsDAL();
 
         public Game(GameWorld world)
         {
@@ -30,7 +31,6 @@ namespace CertainDeathEngine
             Init.InitAll();
             World = world;
             _worldCreation = new DateTime();
-            _worldScore = new Score { FireLevel = 1 };
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 115, SpawnSize = 1, Delay = 0, Rate = 10000 };
@@ -59,7 +59,7 @@ namespace CertainDeathEngine
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
                     World.Player.AddResource(type, gathered);
 
-                    _worldScore.AddResource(type, gathered);
+                    World.Score.AddResource(type, gathered);
                 }
             }
             return ToJSON();
@@ -143,7 +143,7 @@ namespace CertainDeathEngine
 
             // persist the building
 
-            _worldScore.Buildings++;
+            World.Score.Buildings++;
             return building;
         }
 
@@ -169,7 +169,8 @@ namespace CertainDeathEngine
 
         public void SaveScore()
         {
-            _worldScore.Survived = new DateTime() - _worldCreation;
+            World.Score.Survived = new DateTime() - _worldCreation;
+            _statisticsDal.SaveScore(World.Score);
         }
     }
 }

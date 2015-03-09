@@ -39,7 +39,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 		{
             if (HealthPoints <= 0)
             {
-                RemoveBuilding();
+                Remove();
             }
 			if (State == TurretState.ATTACKING)
 			{
@@ -105,6 +105,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
             if (Attacking.HealthPoints <= 0)
             {
+                Attacking.Remove();
                 State = TurretState.WAITING;
                 Attacking = null;
             }
