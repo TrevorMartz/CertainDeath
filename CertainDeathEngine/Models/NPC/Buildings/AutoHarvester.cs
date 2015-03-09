@@ -88,9 +88,19 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         private Square FindGatherableSquare()
         {
-            for (int row = (int)TilePosition.Y - GatherRange; row < TilePosition.Y + GatherRange; row++)
+            int row1 = (int)TilePosition.Y - GatherRange;
+            if(row1 < 0)
             {
-                for (int col = (int)TilePosition.X - GatherRange; col < TilePosition.X + GatherRange; col++)
+                row1 = 0;
+            }
+            int col1 = (int)TilePosition.X - GatherRange;
+            if(col1 < 0)
+            {
+                col1 = 0;
+            }
+            for (int row = row1; row < TilePosition.Y + GatherRange; row++)
+            {
+                for (int col = col1; col < TilePosition.X + GatherRange; col++)
                 {
                     Square s = Tile.Squares[row, col];
                     if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))

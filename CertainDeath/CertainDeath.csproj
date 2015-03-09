@@ -279,6 +279,7 @@
     <Content Include="Views\Admin\_AdminUsers.cshtml" />
     <Content Include="Views\Admin\_AdminUserView.cshtml" />
     <Content Include="Views\Home\_HowToPlay.cshtml" />
+    <Content Include="Views\Home\_HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
