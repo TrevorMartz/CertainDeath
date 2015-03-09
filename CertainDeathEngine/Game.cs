@@ -33,7 +33,7 @@ namespace CertainDeathEngine
             _worldScore = new Score { FireLevel = 1 };
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
-            MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 115, SpawnSize = 1, Delay = 0, Rate = 10000 };
+            MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 150, SpawnSize = 1, Delay = 20000, Rate = 10000 };
             MonsterGenerator.Update(1);
         }
 
