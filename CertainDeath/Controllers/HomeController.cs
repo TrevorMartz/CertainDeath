@@ -31,11 +31,11 @@ namespace CertainDeath.Controllers
             {
                 var facebookUser = await context.Client.GetCurrentUserAsync<MyAppUser>();
 
-                // If it is an ajax request then we give them a leader board
-                if (Request.IsAjaxRequest())
-                {
-                    return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
-                }
+                // If it is an ajax request then we give them a leader board -- moved to its own method
+                //if (Request.IsAjaxRequest())
+                //{
+                //    return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
+                //}
 
                 var certainDeathUser = _userDal.GetGameUser(facebookUser);
 
@@ -75,9 +75,14 @@ namespace CertainDeath.Controllers
             return View("Error");
         }
 
-        //public ActionResult Leaderboard()
-        //{
-        //    return View("Index");
-        //}
+        public ActionResult Leaderboard()
+        {
+            return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
+        }
+
+        public ActionResult HowToPlay()
+        {
+            return PartialView("_HowToPlay");
+        }
     }
 }

@@ -6289,7 +6289,11 @@ jQuery.fn.extend({
 							!jQuery._data( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
 
 							if ( node.src ) {
-								// Hope ajax is available...
+								// Hope 
+
+
+
+ is available...
 								jQuery._evalUrl( node.src );
 							} else {
 								jQuery.globalEval( ( node.text || node.textContent || node.innerHTML || "" ).replace( rcleanScript, "" ) );
