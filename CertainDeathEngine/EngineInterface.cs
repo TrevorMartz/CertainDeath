@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC.Buildings;
 
 namespace CertainDeathEngine
@@ -37,7 +38,7 @@ namespace CertainDeathEngine
 		 * Returns a JSON string representing changes. 
 		 * JSON described in IncrementTimeAndReturnDelta method
 		 */
-		string SquareClicked(float x, float y);
+        void SquareClicked(RowColumnPair click);
 
 		/* Notify the game engine that a user has clicked on a monster. The monster wil take damage 
 		 * equal to the user's attack damage.

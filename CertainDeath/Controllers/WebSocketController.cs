@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System;
 using System.Collections.Generic;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeath.Controllers
@@ -70,7 +71,8 @@ namespace CertainDeath.Controllers
 
                 if (result["event"] == "click")
                 {
-                    GameInstance.SquareClicked((float)result.x, (float)result.y);
+                    RowColumnPair click = new RowColumnPair((int)(float)result.y, (int)(float)result.x);
+                    GameInstance.SquareClicked(click);
                 }
                 else if (result["event"] == "placeBuilding")
                 {

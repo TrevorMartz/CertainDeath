@@ -46,6 +46,10 @@ namespace CertainDeathEngine.Models
 
         [NonSerialized]
         public Queue<UpdateMessage> Updates;
+
+        [NonSerialized]
+        public Queue<RowColumnPair> SquareClicks;
+
         public long TimeLastSaved { get; set; }
         public long TimeLastQueried { get; set; }
         public long TimeLastUpdated { get; set; }
@@ -68,12 +72,14 @@ namespace CertainDeathEngine.Models
         {
             // only for use with the json deserializer
             Updates = new Queue<UpdateMessage>();
+            SquareClicks = new Queue<RowColumnPair>();
         }
 
         public GameWorld(int worldId)
             : this(new Tile(0, 0, null), worldId)
         {
             Updates = new Queue<UpdateMessage>();
+            SquareClicks = new Queue<RowColumnPair>();
         }
 
 		public GameWorld(Tile t, int worldId)
@@ -86,10 +92,11 @@ namespace CertainDeathEngine.Models
 			Tiles = new List<Tile>();
 			Tiles.Add(t);
             Updates = new Queue<UpdateMessage>();
+            SquareClicks = new Queue<RowColumnPair>();
             Score = new Score
-                    {
-                        FireLevel = 1, WorldId = Id
-                    };
+                {
+                    FireLevel = 1, WorldId = Id
+                };
 		}
 
 		public GameWorld(Tile[,] tiles, Tile tile, int worldId)
@@ -105,6 +112,7 @@ namespace CertainDeathEngine.Models
 		        t.World = this;
             }
             Updates = new Queue<UpdateMessage>();
+            SquareClicks = new Queue<RowColumnPair>();
             tile.AddObject(new FireOfLife(tile));
             Score = new Score
             {
@@ -119,6 +127,7 @@ namespace CertainDeathEngine.Models
             lock (this)
             {
                 Updates = new Queue<UpdateMessage>();
+                SquareClicks = new Queue<RowColumnPair>();
             }
         }
 
@@ -127,6 +136,14 @@ namespace CertainDeathEngine.Models
             lock (this.Updates)
             {
                 Updates.Enqueue(message);
+            }
+        }
+
+        public void AddClick(RowColumnPair click)
+        {
+            lock (this.SquareClicks)
+            {
+                SquareClicks.Enqueue(click);
             }
         }
     }

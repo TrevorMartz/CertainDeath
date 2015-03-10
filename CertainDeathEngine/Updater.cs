@@ -2,11 +2,14 @@
 using CertainDeathEngine.Models.NPC;
 using log4net;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using CertainDeathEngine.DAL;
+using CertainDeathEngine.Models.Resources;
+using System.Windows;
 
 namespace CertainDeathEngine
 {
@@ -56,27 +59,58 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
+
             lock (_game.World)
             {
                 // update monsters
                 foreach (Tile t in _game.World.Tiles)
                 {
                     IEnumerable<Temporal> timeObjects = new List<Temporal>(t.Objects.OfType<Temporal>());
-                    //Trace.WriteLine("found " + timeObjects.Count() + " updatable things");
                     foreach (Temporal tim in timeObjects)
+                    {
                         tim.Update(delta);
+                    }
                 }
             }
 
+            //lock (_game.World)
+            //{
+            //    // check clicks
+            //    foreach (Square s in _game.World.CurrentTile.Squares)
+            //    {
+            //        if (s.Resource != null)
+            //        {
+            //            // do some math to figure out the respawn rate
+
+            //        }
+            //    }
+            //}
+
+
             lock (_game.World)
             {
-                // check resources
-                foreach (Square s in _game.World.CurrentTile.Squares)
+                Queue<RowColumnPair> tempClicks;
+                lock (_game.World.SquareClicks)
                 {
-                    if (s.Resource != null)
-                    {
-                        // do some math to figure out the respawn rate
+                    tempClicks = new Queue<RowColumnPair>(_game.World.SquareClicks);
+                    _game.World.SquareClicks.Clear();
+                }
 
+                foreach (var click in tempClicks)
+                {
+                    Resource res = _game.World.CurrentTile.Squares[(int)click.Row, (int)click.Column].Resource;
+                    if (res != null)
+                    {
+                        ResourceType type = res.Type;
+                        int gathered = _game.World.CurrentTile.Squares[(int)click.Row, (int)click.Column].GatherResource();
+
+                        _game.World.Player.AddResource(type, gathered);
+                        _game.World.Score.AddResource(type, gathered);
+                        _game.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(_game.World.Player.Id)
+                        {
+                            ResourceType = type.ToString(),
+                            Amount = gathered
+                        });
                     }
                 }
             }

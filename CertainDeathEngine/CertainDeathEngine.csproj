@@ -92,6 +92,7 @@
     <Compile Include="Models\NPC\Buildings\Turret.cs" />
     <Compile Include="Models\NPC\UpdateMessage.cs" />
     <Compile Include="Models\Resources\ResourceType.cs" />
+    <Compile Include="Models\RowColumnPair.cs" />
     <Compile Include="Models\User\CertainDeathUser.cs" />
     <Compile Include="DAL\BasicGameDAL.cs" />
     <Compile Include="DAL\IGameDAL.cs" />

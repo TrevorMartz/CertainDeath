@@ -50,27 +50,9 @@ namespace CertainDeathEngine
             return jsonString;
         }
 
-        public string SquareClicked(float row, float col)
+        public void SquareClicked(RowColumnPair click)
         {
-            lock (World)
-            {
-                Resource res = World.CurrentTile.Squares[(int)row, (int)col].Resource;
-                if (res != null)
-                {
-                    ResourceType type = res.Type;
-                    int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-
-                    World.Player.AddResource(type, gathered);
-                    World.Score.AddResource(type, gathered);
-                    this.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.World.Player.Id)
-                    {
-                        ResourceType = type.ToString(),
-                        Amount = gathered
-                    });
-
-                }
-            }
-            return ToJSON();
+            World.AddClick(click);
         }
 
         public string MonsterClicked(int monsterid)
