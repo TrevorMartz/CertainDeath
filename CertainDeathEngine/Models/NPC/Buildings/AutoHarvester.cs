@@ -16,11 +16,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public HarvesterState State { get; set; }
         private Player Player { get; set; }
         private long TimeSinceGather { get; set; }
-        public AutoHarvester(Tile tile, Point position, BuildingType type, Player p)
+        public AutoHarvester(Tile tile, Point position, BuildingType type, Cost cost, Player p)
             : base(tile, position)
         {
             
             Type = type;
+            Cost = cost;
             State = HarvesterState.GATHERING;
             Player = p;
             MaxLevel = 5;
@@ -56,15 +57,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Square s = FindGatherableSquare();
                     if (s != null)
                     {
-                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                         {
-                            ObjectId = this.Tile.World.Player.Id,
                             ResourceType = s.Resource.Type.ToString(),
                             Amount = toGather
                         });
-                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
                         {
-                            ObjectId = 0, // todo: does a square have an id?
                             Amount = toGather
                         });
                         ResourceType type = s.Resource.Type;
@@ -75,9 +74,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     else
                     {
                         State = HarvesterState.IDLE;
-                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                         {
-                            ObjectId = this.Id,
                             State = HarvesterState.IDLE.ToString()
                         });
                         return;
@@ -124,6 +122,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (Level < MaxLevel)
             {
+                //TODO: Adjust Health Levels, Gather Range, Harvest Rate and Cost
                 Level++;
                 HarvestRate = Level * 2;
                 MaxHealthPoints = 10 * Level;
@@ -132,16 +131,15 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
             }
         }
 
-        public override void UpdateCost()
+        public override void UpdateCost() //TODO: Adjust this if we get to it...
         {
             Cost = new Cost();
             Cost.SetCost(ResourceType.COAL, 10 * Level);
@@ -151,9 +149,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }

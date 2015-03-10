@@ -19,7 +19,6 @@ View = (function () {
         this.width = screenWidth;
         this.height = screenHeight;
         this.subscribesTo = Array();
-        this.messages = Array();
     }
     Screen.prototype = {
         /**
@@ -40,7 +39,7 @@ View = (function () {
         },
 
         onmessage: function (obj){
-            messages.push(obj);
+
         },
 
         render: function () {
@@ -464,7 +463,7 @@ View = (function () {
         }
     });
 
-    function ButtonScreen(game, x, y, width, height, group, key, callback) {
+    function ButtonScreen(game, x, y, width, height, group, key, callback, onmessagecallback) {
         Screen.call(this, x, y, width, height);
         this.game = game;
         this.button = this.game.add.button(x, y, group, callback);
@@ -473,6 +472,8 @@ View = (function () {
         this.button.scale.setTo(width / this.button.width, height / this.button.height);
         this.button.input.useHandCursor = true;
         this.visible = true;
+        this.onmessagecallback = onmessagecallback;
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
     }
 
     ButtonScreen.prototype = Object.create(Screen.prototype, {
@@ -486,6 +487,14 @@ View = (function () {
             value : function(){
                 Screen.prototype.update.call(this);
                 this.button.visible = this.visible;
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                if (this.onmessagecallback)
+                    this.onmessagecallback(data);
+                //UpdateShopCosts(data);
             }
         }
     });
@@ -540,7 +549,7 @@ View = (function () {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
         this.server = server;
-        this.subscribesTo = "BuildingPrices";
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
         this.visible = false;
     }
 
@@ -559,6 +568,12 @@ View = (function () {
             value: function () {
                 ScreenContainer.prototype.update.call(this);
                 // Do nothing.
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                UpdateShopCosts(data);
             }
         }
     });

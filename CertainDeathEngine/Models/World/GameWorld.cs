@@ -124,7 +124,7 @@ namespace CertainDeathEngine.Models
 
         public void AddUpdateMessage(UpdateMessage message)
         {
-            lock (this)
+            lock (this.Updates)
             {
                 Updates.Enqueue(message);
             }

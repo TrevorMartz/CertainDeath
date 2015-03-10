@@ -8,32 +8,40 @@ namespace CertainDeathEngine.Models.NPC
     [JsonObject]
     public abstract class UpdateMessage
     {
-        public int ObjectId { get; set; }
+        public int ObjectId { get; private set; }
         public string UType { get; set; }
+
+        protected UpdateMessage(int id)
+        {
+            ObjectId = id;
+        }
     }
 
+    [JsonObject]
     public class BuildingStateChangeUpdateMessage : UpdateMessage
     {
         public string State { get; set; }
-        public BuildingStateChangeUpdateMessage()
+        public BuildingStateChangeUpdateMessage(int id) : base(id)
         {
             UType = "BuildingState";
         }
     }
 
+    [JsonObject]
     public class AddResourceToPlayerUpdateMessage : UpdateMessage
     {
         public string ResourceType { get; set; }
         public int Amount { get; set; }
-        public AddResourceToPlayerUpdateMessage()
+        public AddResourceToPlayerUpdateMessage(int id) : base(id)
         {
             UType = "AddResourceToPlayer";
         }
     }
 
+    [JsonObject]
     public class GameOverUpdateMessage : UpdateMessage
     {
-        public GameOverUpdateMessage()
+        public GameOverUpdateMessage(int id) : base(id)
         {
             UType = "GameOver";
         }
@@ -44,16 +52,17 @@ namespace CertainDeathEngine.Models.NPC
     {
         public float HealthPoints { get; set; }
 
-        public HealthUpdateMessage()
+        public HealthUpdateMessage(int id) : base(id)
         {
             UType = "Health";
         }
     }
 
+    [JsonObject]
     public class MonsterStateChangeUpdateMessage : UpdateMessage
     {
         public string State { get; set; }
-        public MonsterStateChangeUpdateMessage()
+        public MonsterStateChangeUpdateMessage(int id) : base(id)
         {
             UType = "MonsterState";
         }
@@ -65,7 +74,7 @@ namespace CertainDeathEngine.Models.NPC
         public double MoveX { get; set; }
         public double MoveY { get; set; }
 
-        public MoveUpdateMessage()
+        public MoveUpdateMessage(int id) : base(id)
         {
             UType = "Move";
         }
@@ -78,7 +87,7 @@ namespace CertainDeathEngine.Models.NPC
         public double PosY { get; set; }
         public string Type { get; set; }
 
-        public PlaceBuildingUpdateMessage()
+        public PlaceBuildingUpdateMessage(int id) : base(id)
         {
             UType = "PlaceBuilding";
         }
@@ -91,17 +100,18 @@ namespace CertainDeathEngine.Models.NPC
         public double PosY { get; set; }
         public string Type { get; set; }
 
-        public PlaceMonsterUpdateMessage()
+        public PlaceMonsterUpdateMessage(int id) : base(id)
         {
             UType = "PlaceMonster";
         }
     }
 
+    [JsonObject]
     public class RemoveResourceFromSquareUpdateMessage : UpdateMessage
     {
         public string Square { get; set; }
         public int Amount { get; set; }
-        public RemoveResourceFromSquareUpdateMessage()
+        public RemoveResourceFromSquareUpdateMessage(int id) : base(id)
         {
             UType = "RemoveResourceFromSquare";
         }
@@ -110,33 +120,36 @@ namespace CertainDeathEngine.Models.NPC
     [JsonObject]
     public class RemoveUpdateMessage : UpdateMessage
     {
-        public RemoveUpdateMessage()
+        public RemoveUpdateMessage(int id) : base(id)
         {
             UType = "Remove";
         }
     }
 
+    [JsonObject]
     public class UpdateBuildingCostUpdateMessage : UpdateMessage
     {
         public Cost NewCost { get; set; }
-        public UpdateBuildingCostUpdateMessage()
+        public UpdateBuildingCostUpdateMessage(int id) : base(id)
         {
             UType = "UpdateCost";
         }
     }
 
+    [JsonObject]
     public class UpgradeBuildingUpdateMessage : UpdateMessage
     {
         public int NewLevel { get; set; }
-        public UpgradeBuildingUpdateMessage()
+        public UpgradeBuildingUpdateMessage(int id) : base(id)
         {
             UType = "Upgrade";
         }
     }
 
+    [JsonObject]
     public class WorldUpdateMessage : UpdateMessage
     {
-        public WorldUpdateMessage()
+        public WorldUpdateMessage() : base(0)
         {
             UType = "World";
         }
