@@ -156,7 +156,7 @@ namespace CertainDeath.Controllers
                             jsonString = sb.ToString();
 
                             // comment the next line out
-                            //sendAll = true;
+                            sendAll = true;
 
                             if (sendAll)
                             {
