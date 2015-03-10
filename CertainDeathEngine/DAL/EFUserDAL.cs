@@ -23,7 +23,7 @@ namespace CertainDeathEngine.DAL
         {
             try
             {
-                if (cdDBModel.Users.Count(x => x.FBUser.Email.Equals(fbUser.Email)) == 0)
+                if (cdDBModel.Users.Count(x => x.FBUser.Id.Equals(fbUser.Id)) == 0)
                 {
                     CertainDeathUser newUser = new CertainDeathUser() {FBUser = fbUser, WorldId = -1};
                     cdDBModel.Users.Add(newUser);
