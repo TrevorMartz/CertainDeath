@@ -25,6 +25,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (Level < MaxLevel)
             {
+                //TODO: Adjust Health Levels and Cost
                 Level++;
                 Width = Level;
                 Height = Level;

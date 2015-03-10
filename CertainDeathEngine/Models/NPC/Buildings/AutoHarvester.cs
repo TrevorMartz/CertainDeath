@@ -16,11 +16,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public HarvesterState State { get; set; }
         private Player Player { get; set; }
         private long TimeSinceGather { get; set; }
-        public AutoHarvester(Tile tile, Point position, BuildingType type, Player p)
+        public AutoHarvester(Tile tile, Point position, BuildingType type, Cost cost, Player p)
             : base(tile, position)
         {
             
             Type = type;
+            Cost = cost;
             State = HarvesterState.GATHERING;
             Player = p;
             MaxLevel = 5;
@@ -121,6 +122,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (Level < MaxLevel)
             {
+                //TODO: Adjust Health Levels, Gather Range, Harvest Rate and Cost
                 Level++;
                 HarvestRate = Level * 2;
                 MaxHealthPoints = 10 * Level;
@@ -137,7 +139,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             }
         }
 
-        public override void UpdateCost()
+        public override void UpdateCost() //TODO: Adjust this if we get to it...
         {
             Cost = new Cost();
             Cost.SetCost(ResourceType.COAL, 10 * Level);

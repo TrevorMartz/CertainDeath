@@ -23,8 +23,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         // The monster the turret is attacking
         private Monster Attacking { get; set; }
-
-        public float AttackSpeed { get; set; }
         
 		public Turret(Tile tile, Point pos) : base(tile, pos)
 		{
@@ -112,12 +110,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (Level < MaxLevel)
             {
+                //TODO: Adjust Health, Damage Levels and Cost
                 Level++;
                 MaxHealthPoints = Level * 300;
                 HealthPoints = MaxHealthPoints;
                 Range = Square.PIXEL_SIZE * 1 + Level;
-                AttackSpeed = Level * .03f;//idk, just pikced a number.
-				Damage = Level * 100;
+				Damage = Level * 10;
                 UpdateCost();
                 if (Tile != null)
                 {
