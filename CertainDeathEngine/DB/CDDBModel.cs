@@ -16,6 +16,8 @@ namespace CertainDeathEngine.DB
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Log.Debug("The CDDB Model is being created");
+
             // Set the Worlds not to deserialize with EF.
             modelBuilder.ComplexType<GameWorldWrapper>().Ignore(p => p.World);
 
@@ -24,6 +26,7 @@ namespace CertainDeathEngine.DB
                 .Property(p => p.EfSerialized)
                 .HasColumnName("GameWorldBinaryStuffs");
 
+            // I did this because the score holds a dictionary of resources, and I want the total from all of them
             modelBuilder.Entity<Score>()
                 .Property(p => p.TotalResources)
                 .HasColumnName("TotalResources");

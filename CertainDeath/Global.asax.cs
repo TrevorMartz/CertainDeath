@@ -11,6 +11,7 @@ using CertainDeathEngine;
 using System.Data.Entity;
 using CertainDeathEngine.DB;
 using System.IO;
+using System.Web.Helpers;
 using log4net;
 
 //using CertainDeath.Infrastructure;
@@ -32,6 +33,8 @@ namespace CertainDeath
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
 
             //NinjectWebCommon.RegisterNinject(GlobalConfiguration.Configuration);
 

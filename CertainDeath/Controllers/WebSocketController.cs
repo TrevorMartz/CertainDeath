@@ -26,7 +26,7 @@ namespace CertainDeath.Controllers
 
         public WebSocketController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
-            Log.Info("Created HomeController");
+            Log.Debug("Created HomeController");
             _gameDal = gameDal;
             _userDal = userDal;
             _statisticsDal = statisticsDal;
@@ -35,7 +35,7 @@ namespace CertainDeath.Controllers
         // GET: WebSocket
         public HttpResponseMessage Get(int id)
         {
-            Log.Info("Creating WebSocketHandler for world " + id);
+            Log.Debug("Creating WebSocketHandler for world " + id);
             HttpContext.Current.AcceptWebSocketRequest(new GameWebSocketHandler(_gameDal, _userDal, _statisticsDal, id));
             return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
         }
@@ -53,7 +53,7 @@ namespace CertainDeath.Controllers
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
-                Log.Info("Created GameWebSocketHandler for world " + worldId);
+                Log.Debug("Created GameWebSocketHandler for world " + worldId);
                 _gameDal = gameDal;
                 _userDal = userDal;
                 _statisticsDal = statisticsDal;
@@ -98,7 +98,7 @@ namespace CertainDeath.Controllers
                 //            break;
                 //    }
                 //}
-                Log.Info("OnMessage: " + message);
+                Log.Debug("OnMessage: " + message);
                 Trace.WriteLine(message);
             }
 
@@ -173,8 +173,8 @@ namespace CertainDeath.Controllers
             {
                 Running = false;
                 //_thisEndOfTheWebSocketTread.Abort();
-                Log.Info("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
-                Log.Info("Connection closed");
+                Log.Debug("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
+                Log.Debug("Connection closed");
                 Trace.WriteLine("[Connection closed]");
             }
         }

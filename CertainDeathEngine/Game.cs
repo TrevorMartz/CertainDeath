@@ -26,7 +26,7 @@ namespace CertainDeathEngine
 
         public Game(GameWorld world)
         {
-            Log.Info("Constructing Game for world " + world.Id);
+            Log.Debug("Constructing Game for world " + world.Id);
 
             Init.InitAll();
             World = world;

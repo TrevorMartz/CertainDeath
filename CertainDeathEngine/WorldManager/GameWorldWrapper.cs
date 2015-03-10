@@ -27,7 +27,7 @@ namespace CertainDeathEngine.WorldManager
         {
             get // serialize
             {
-                Log.Info("Serializing game world with id " + World.Id);
+                Log.Debug("Serializing game world with id " + World.Id);
                 try
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -47,7 +47,7 @@ namespace CertainDeathEngine.WorldManager
 
             set // deserialize
             {
-                Log.Info("Deserializing a game world.  I dont yet know the id");
+                Log.Debug("Deserializing a game world.  I dont yet know the id");
                 try
                 {
                     using (Stream s = new MemoryStream(value))
