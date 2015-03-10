@@ -8,8 +8,10 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine
 {
@@ -57,9 +59,15 @@ namespace CertainDeathEngine
                 {
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-                    World.Player.AddResource(type, gathered);
 
+                    World.Player.AddResource(type, gathered);
                     World.Score.AddResource(type, gathered);
+                    this.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.World.Player.Id)
+                    {
+                        ResourceType = type.ToString(),
+                        Amount = gathered
+                    });
+
                 }
             }
             return ToJSON();
@@ -138,6 +146,12 @@ namespace CertainDeathEngine
                     }
                 }
 
+                this.World.AddUpdateMessage(new PlaceBuildingUpdateMessage(building.Id)
+                {
+                    PosX = building.Position.X,
+                    PosY = building.Position.Y,
+                    Type = building.Type.ToString()
+                });
                 World.CurrentTile.AddObject(building);
             }
 

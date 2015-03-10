@@ -33,9 +33,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
@@ -52,9 +51,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }
@@ -67,10 +65,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 Remove();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage()
-                    {
-                        ObjectId = this.Tile.World.Id
-                    });
+                    this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage(this.Tile.World.Id));
                 }
             }
         }

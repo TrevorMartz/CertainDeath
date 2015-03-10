@@ -13,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System;
+using System.Collections.Generic;
 using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeath.Controllers
@@ -64,7 +65,7 @@ namespace CertainDeath.Controllers
 
             public override void OnMessage(string message)
             {
-                //JsonConvert.PopulateObject(message, new ScreenRequest());
+                Log.Debug("OnMessage: " + message);
                 dynamic result = JObject.Parse(message);
 
                 if (result["event"] == "click")
@@ -79,27 +80,25 @@ namespace CertainDeath.Controllers
                     int y = result.y;
                     GameInstance.BuildBuildingAtSquare(y, x, btype);
                 }
-                //else if (result["event"] == "moveTile")
-                //{
-                //    string direction = result["direction"];
-                //    switch (direction)
-                //    {
-                //        case "up":
-                //            GameInstance.MoveUp();
-                //            break;
-                //        case "down":
-                //            GameInstance.MoveDown();
-                //            break;
-                //        case "left":
-                //            GameInstance.MoveLeft();
-                //            break;
-                //        case "right":
-                //            GameInstance.MoveRight();
-                //            break;
-                //    }
-                //}
-                Log.Debug("OnMessage: " + message);
-                Trace.WriteLine(message);
+                else if (result["event"] == "moveTile")
+                {
+                    string direction = result["direction"];
+                    switch (direction)
+                    {
+                        case "up":
+                            GameInstance.MoveUp();
+                            break;
+                        case "down":
+                            GameInstance.MoveDown();
+                            break;
+                        case "left":
+                            GameInstance.MoveLeft();
+                            break;
+                        case "right":
+                            GameInstance.MoveRight();
+                            break;
+                    }
+                }
             }
 
             public override void OnOpen()
@@ -112,6 +111,8 @@ namespace CertainDeath.Controllers
 
             public void SendUpdates()
             {
+                Log.Debug("Sending Updates");
+                Log.Debug("Sending whole world");
                 string jsonString = GameInstance.ToJSON();
                 Send(jsonString);
                 while (WebSocketContext.IsClientConnected && Running)
@@ -119,48 +120,55 @@ namespace CertainDeath.Controllers
                     try
                     {
                         Thread.Sleep(32);
-                        lock (((Game) GameInstance).World)
+                        Queue<UpdateMessage> tempUpdates;
+                        lock (((Game) GameInstance).World.Updates)
                         {
-                            bool sendAll = false;
-                            if (((Game) GameInstance).World.Updates.Count > 0)
-                            {
-                                StringBuilder sb = new StringBuilder();
-                                sb.Append("\"updates\":[");
-                                foreach (var m in ((Game) GameInstance).World.Updates)
-                                {
-                                    if (m.GetType() == typeof (GameOverUpdateMessage))
-                                    {
-                                        Running = false;
-                                        GameInstance.GameOver();
-                                    }
-                                    if (m.GetType() != typeof (WorldUpdateMessage))
-                                    {
-                                        sb.Append(JsonConvert.SerializeObject(m));
-                                    }
-                                    else
-                                    {
-                                        sendAll = true;
-                                    }
-                                    sb.Append(",");
-                                }
-                                sb.Remove(sb.Length - 1, 1);
-                                sb.Append("]");
-
-                                ((Game) GameInstance).World.Updates.Clear();
-
-                                //jsonString = sb.ToString();
-                                //Trace.WriteLine(jsonString);
-                                //Send(jsonString);
-
-                                //if (sendAll)
-                                //{
-                                //    // send the whole world for now
-                                    jsonString = GameInstance.ToJSON();
-                                    Send(jsonString);
-                                //}
-                            }
+                            tempUpdates = new Queue<UpdateMessage>(((Game) GameInstance).World.Updates);
+                            ((Game) GameInstance).World.Updates.Clear();
                         }
-                    } 
+
+                        bool sendAll = false;
+                        Log.Debug("there are " + tempUpdates.Count + " updates");
+                        if (tempUpdates.Count > 0)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append("\"updates\":[");
+                            foreach (UpdateMessage m in tempUpdates)
+                            {
+                                if (m.GetType() == typeof(GameOverUpdateMessage) || m is GameOverUpdateMessage)
+                                {
+                                    Running = false;
+                                    GameInstance.GameOver();
+                                }
+                                if (m.GetType() != typeof(WorldUpdateMessage) || !(m is WorldUpdateMessage))
+                                {
+                                    sb.Append(JsonConvert.SerializeObject(m));
+                                }
+                                else
+                                {
+                                    sendAll = true;
+                                }
+                                sb.Append(",");
+                            }
+                            sb.Remove(sb.Length - 1, 1);
+                            sb.Append("]");
+
+                            jsonString = sb.ToString();
+
+                            // comment the next line out
+                            //sendAll = true;
+
+                            if (sendAll)
+                            {
+                                jsonString = GameInstance.ToJSON();
+                            }
+
+                            // send it
+                            Log.Debug(jsonString);
+                            Trace.WriteLine(jsonString);
+                            Send(jsonString);
+                        } // if tempUpdates > 0
+                    }
                     catch (Exception e)
                     {
                         Log.Error("Error on the listening thread: " + e.Message);
@@ -175,7 +183,6 @@ namespace CertainDeath.Controllers
                 //_thisEndOfTheWebSocketTread.Abort();
                 Log.Debug("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
                 Log.Debug("Connection closed");
-                Trace.WriteLine("[Connection closed]");
             }
         }
     }

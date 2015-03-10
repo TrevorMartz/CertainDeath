@@ -138,20 +138,14 @@ namespace CertainDeathEngine.Models
         {
             if (this.GetType() == typeof(FireOfLife))
             {
-                this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage()
-                {
-                    ObjectId = this.Tile.World.Id
-                });
+                this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage(this.Tile.World.Id));
             }
             else if (this.GetType() == typeof (Monster) || this is Monster)
             {
                 this.Tile.World.Score.Kills++;
             }
 
-            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
-            {
-                ObjectId = this.Id
-            });
+            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
             Tile.RemoveObject(this);
         }
 

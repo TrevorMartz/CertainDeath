@@ -56,15 +56,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Square s = FindGatherableSquare();
                     if (s != null)
                     {
-                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                         {
-                            ObjectId = this.Tile.World.Player.Id,
                             ResourceType = s.Resource.Type.ToString(),
                             Amount = toGather
                         });
-                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
                         {
-                            ObjectId = 0, // todo: does a square have an id?
                             Amount = toGather
                         });
                         ResourceType type = s.Resource.Type;
@@ -75,9 +73,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     else
                     {
                         State = HarvesterState.IDLE;
-                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                         {
-                            ObjectId = this.Id,
                             State = HarvesterState.IDLE.ToString()
                         });
                         return;
@@ -132,9 +129,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
@@ -151,9 +147,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }

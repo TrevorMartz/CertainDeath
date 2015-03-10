@@ -48,9 +48,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 					// someone else killed it, do nothing this step
 					// If we can sell buildings there could be a problem here
                     State = TurretState.WAITING;
-                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         State = TurretState.WAITING.ToString()
                     });
 					Attacking = null;
@@ -67,9 +66,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 				{
 					Attacking = monsterToAttack;
                     State = TurretState.ATTACKING;
-                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         State = TurretState.ATTACKING.ToString()
                     });
 				}
@@ -97,9 +95,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             float damage = Damage * (millis / 1000.0f);
             Attacking.HealthPoints -= damage;
-            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage()
+            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
             {
-                ObjectId = Attacking.Id,
                 HealthPoints = Attacking.HealthPoints
             });
 
@@ -124,9 +121,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
@@ -143,9 +139,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }
