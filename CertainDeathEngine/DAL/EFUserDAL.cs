@@ -52,7 +52,7 @@ namespace CertainDeathEngine.DAL
 
         public IEnumerable<CertainDeathUser> GetAllUsers()
         {
-            return cdDBModel.Users.Include("FBUser").Include("HighScore").Select(x => x).ToList();
+            return cdDBModel.Users.Include("FBUser").Select(x => x).ToList();
         }
 
         public IEnumerable<MyAppUser> GetAllFbUsers()

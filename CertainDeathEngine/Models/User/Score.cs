@@ -37,7 +37,10 @@ namespace CertainDeathEngine.Models.User
             {
                 return ResourcesCollected.Sum(i => i.Value);
             }
-            set { int i = value; }
+            set
+            {
+                ResourcesCollected.Add(ResourceType.CORN, value);
+            }
         }
 
         public void AddResource(ResourceType type, int count)
