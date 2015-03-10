@@ -37,7 +37,7 @@
                 {{Title}}
             </div>
             <div class="price">
-                {{#each Prices}}
+                {{#each Costs}}
                 <div class="price-pair">
                     <div>{{this}}</div>
                     <img src="/Content/Images/{{@@key}}.png" />
@@ -58,46 +58,72 @@
         $(function(){
             var source = $("#building-item").html();
             var template = Handlebars.compile(source);
-            var data = {
+            var building_data = {
                 "BuildingData":[
                     {
-                        "Title" : "Steel building",
-                        "Type" : "AUTO_HARVESTER",
-                        "Prices" : {
+                        "Title" : "Turret",
+                        "Type" : "TURRET",
+                        "Costs" : {
                             "COAL" : 10,
                             "WOOD" : 30
                         },
-                        "Description" : "This is a description of the steel building."
+                        "Description" : "Defend your base with an autofiring turret!"
                     },
                     {
-                        "Title" : "Coal mine",
-                        "Type" : "WALL",
-                        "Prices" : {
+                        "Title" : "Coal Mine",
+                        "Type" : "AUTO_HARVESTER_MINE",
+                        "Costs" : {
+                            "COAL" : 10,
+                            "WOOD" : 30
+                        },
+                        "Description" : "Harvest all coal in a 1 square radius."
+                    },
+                    {
+                        "Title" : "Quarry",
+                        "Type" : "AUTO_HARVESTER_QUARRY",
+                        "Costs" : {
                             "CORN" : 2,
                             "STONE" : 100
                         },
-                        "Description" : "This is a description of the coal mine."
+                        "Description" : "Harvest all iron in a 1 square radius."
                     },
                     {
-                        "Title" : "Robber's den",
-                        "Type" : "FIRE_OF_LIFE",
-                        "Prices" : {
+                        "Title" : "Farm",
+                        "Type" : "AUTO_HARVESTER_FARM",
+                        "Costs" : {
                             "CORN" : 20
                         },
-                        "Description" : "This building is a place for robbers. They will steal health from nearby monsters."
+                        "Description" : "Harvest all corn in a 1 square radius."
                     },
                     {
-                        "Title" : "Stone Wall",
-                        "Type" : "TURRET",
-                        "Prices" : {
+                        "Title" : "Lumber Mill",
+                        "Type" : "AUTO_HARVESTER_LUMBER_MILL",
+                        "Costs" : {
                             "STONE" : 100
                         },
-                        "Description" : "This is a stone wall. Does nothing. Just a hunk of stone."
+                        "Description" : "Harvest all wood in a 1 square radius."
                     }
                 ]
             };
-            $("#shop-window .building-list").html(template(data));
+            $("#shop-window .building-list").html(template(building_data));
         });
+
+        function UpdateShopCosts(data){
+            var out = new Array();
+            for(var x in data){
+                var next = {};
+                next["Title"] = x.toString().replace(/_/g, " ");
+                next["Type"] = x;
+                next["Costs"] = data[x]["Costs"];
+                next["Description"] = next["Title"] + " does stuff for you!";
+                out.push(next);
+            }
+
+            var wrap = {"BuildingData" : out};
+            var source = $("#building-item").html();
+            var template = Handlebars.compile(source);
+            $("#shop-window .building-list").html(template(wrap));
+        }
 
     </script>
 

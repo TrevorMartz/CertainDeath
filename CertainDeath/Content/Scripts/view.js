@@ -19,7 +19,6 @@ View = (function () {
         this.width = screenWidth;
         this.height = screenHeight;
         this.subscribesTo = Array();
-        this.messages = Array();
     }
     Screen.prototype = {
         /**
@@ -40,7 +39,7 @@ View = (function () {
         },
 
         onmessage: function (obj){
-            messages.push(obj);
+
         },
 
         render: function () {
@@ -240,7 +239,7 @@ View = (function () {
 
                                     if (this.resources[i][j] === undefined || this.resources[i][j] === null) {
                                         var sprite2 = game.add.sprite(i * tileSize + this.boardX, j * tileSize + this.boardY,
-                                            "objects", msg[i][j].ResourceName);
+                                            "objects");
                                         sprite2.scale.setTo(tileSize / sprite2.width);
                                         this.resources[i][j] = sprite2;
                                     }
@@ -462,6 +461,7 @@ View = (function () {
         this.button.scale.setTo(width / this.button.width, height / this.button.height);
         this.button.input.useHandCursor = true;
         this.visible = true;
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
     }
 
     ButtonScreen.prototype = Object.create(Screen.prototype, {
@@ -475,6 +475,12 @@ View = (function () {
             value : function(){
                 Screen.prototype.update.call(this);
                 this.button.visible = this.visible;
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                UpdateShopCosts(data);
             }
         }
     });
@@ -529,7 +535,7 @@ View = (function () {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
         this.server = server;
-        this.subscribesTo = "BuildingPrices";
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
         this.visible = false;
     }
 
@@ -548,6 +554,12 @@ View = (function () {
             value: function () {
                 ScreenContainer.prototype.update.call(this);
                 // Do nothing.
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                UpdateShopCosts(data);
             }
         }
     });
