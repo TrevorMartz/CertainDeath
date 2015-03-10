@@ -17,10 +17,16 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public Cost()
         {
-            Costs = new Dictionary<ResourceType, int>();
+            if (Costs == null)
+            {
+                Costs = new Dictionary<ResourceType, int>();
+            }
             foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
             {
-                Costs.Add(type, 0);
+                if (!Costs.ContainsKey(type))
+                {
+                    Costs.Add(type, 0);
+                }
             }
         }
 
