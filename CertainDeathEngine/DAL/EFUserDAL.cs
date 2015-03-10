@@ -3,6 +3,7 @@ using CertainDeathEngine.DB;
 using CertainDeathEngine.Models.User;
 using log4net;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 
@@ -43,14 +44,25 @@ namespace CertainDeathEngine.DAL
             return null;
         }
 
+        public void UpdateGameUser(CertainDeathUser cdUser)
+        {
+            cdDBModel.Entry(cdUser).State = EntityState.Modified;
+            cdDBModel.SaveChanges();
+        }
+
         public IEnumerable<CertainDeathUser> GetAllUsers()
         {
-            return cdDBModel.Users.Include("FBUser").Include("HighScore").Select(x => x).ToList();
+            return cdDBModel.Users.Include("FBUser").Select(x => x).ToList();
         }
 
         public IEnumerable<MyAppUser> GetAllFbUsers()
         {
             return cdDBModel.FBUsers.Select(x => x);
+        }
+
+        public CertainDeathUser GetGameUser(int userid)
+        {
+            return (cdDBModel.Users.FirstOrDefault(x => x.Id == userid));
         }
 
         public CertainDeathUser GetGameUser(MyAppUser fbUser)
@@ -62,7 +74,7 @@ namespace CertainDeathEngine.DAL
         {
             try
             {
-                CertainDeathUser u = cdDBModel.Users.FirstOrDefault(x => x.Id == userId);
+                CertainDeathUser u = cdDBModel.Users.Include("FBUser").FirstOrDefault(x => x.Id == userId);
                 u.WorldId = worldId;
                 cdDBModel.SaveChanges();
             }

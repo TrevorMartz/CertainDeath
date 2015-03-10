@@ -1,11 +1,30 @@
-﻿@using Microsoft.AspNet.Facebook.Models
-@model CertainDeathEngine.Models.User.MyAppUser
+﻿@model CertainDeathEngine.Models.User.CertainDeathUser
 @{
     ViewBag.Title = "CERTAIN DEATH! Registration";
 }
 
 <article id="content">
-    <h2>Make a user</h2>
-        @* Here we pass in a facebook user.  we need to create a Certain Death user
-            to match.  Maybe let them pick a screen name or something - Blake *@
+    <h2>Welcome to Certain Death!</h2>
+    <h3>Register a user</h3>
+
+    @using (Html.BeginForm())
+    {
+        @*@Html.AntiForgeryToken()*@
+        <div>
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+
+            <div>
+                @Html.LabelFor(model => model.Username)
+                <div>
+                    @Html.EditorFor(model => model.Username)
+                    @Html.ValidationMessageFor(model => model.Username)
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Create" />
+            </div>
+        </div>
+    }
+
 </article>

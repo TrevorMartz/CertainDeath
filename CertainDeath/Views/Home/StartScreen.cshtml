@@ -1,0 +1,22 @@
+﻿@model CertainDeath.Models.StartScreenViewModel
+@{
+    ViewBag.Title = "StartScreen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<article id="content">
+    <h2>Welcome to Certain Death!</h2>
+    @if (Model.HowToPlay)
+    {
+        <div>@Html.ActionLink("How To Play", "HowToPlay", "Home")</div>
+    }
+    @if (Model.LoadGame)
+    {
+        <div>@Html.ActionLink("Load Game", "LoadGame", "Home", routeValues: new { userid = Model.UserId }, htmlAttributes: null)</div>
+    }
+    
+    @if (Model.NewGame)
+    {
+        <div>@Html.ActionLink("New Game", "NewGame", "Home", routeValues: new { userid = Model.UserId }, htmlAttributes: null)</div>
+    }
+</article>

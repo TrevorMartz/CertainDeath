@@ -1,9 +1,12 @@
-﻿using CertainDeathEngine;
+﻿using CertainDeath.Models;
+using CertainDeathEngine;
 using CertainDeathEngine.DAL;
 using CertainDeathEngine.Models.User;
 using log4net;
 using Microsoft.AspNet.Facebook;
 using Microsoft.AspNet.Facebook.Client;
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -18,7 +21,7 @@ namespace CertainDeath.Controllers
 
         public HomeController(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal)
         {
-            Log.Info("Created HomeController");
+            Log.Debug("Created HomeController");
             _gameDal = gameDal;
             _userDal = userDal;
             _statisticsDal = statisticsDal;
@@ -27,38 +30,68 @@ namespace CertainDeath.Controllers
         [FacebookAuthorize("email", "user_photos")]
         public async Task<ActionResult> Index(FacebookContext context)
         {
+            Log.Debug("Loading Index on HomeController");
             if (ModelState.IsValid)
             {
+                Log.Debug("Authenticating with Facebook");
                 var facebookUser = await context.Client.GetCurrentUserAsync<MyAppUser>();
+                Log.Debug("Found user: " + facebookUser.Email);
 
-                // If it is an ajax request then we give them a leader board -- moved to its own method
-                //if (Request.IsAjaxRequest())
-                //{
-                //    return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
-                //}
-
+                Log.Debug("Loading CDUser");
                 var certainDeathUser = _userDal.GetGameUser(facebookUser);
 
                 if (certainDeathUser == null)
                 {
-                    // TODO: return a registration page where they can pick a name or something
-                    //return View("GameRegistration", facebookUser);
-                    certainDeathUser = _userDal.CreateGameUser(facebookUser);
+                    Log.Debug("CDUser does not exist.  Redirecting to reigstration page");
+                    // They have authenicated with FaceBook, but they have never played our game
+                    // We need them to pick a username
+                    return GameRegistration(facebookUser);
                 }
 
+                Log.Debug("Found user with id: " + certainDeathUser.Id);
                 // We have a user, play the game
-                if (certainDeathUser.WorldId < 1)
-                {
-                    // we need to create them a game world
-                    Game game = (Game)_gameDal.CreateGame();
-                    _userDal.GiveGameUserAGameWorldId(certainDeathUser.Id, game.World.Id);
-                    
-                }
-                return View("Game", certainDeathUser);
+                return RedirectToAction("StartScreen", certainDeathUser);
             }
 
             // something was wrong
             return View("Error");
+        }
+
+        // Take a facebook user and make a CDUser
+        public ActionResult GameRegistration(MyAppUser fbUser)
+        {
+            if (fbUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CertainDeathUser certainDeathUser = _userDal.CreateGameUser(fbUser);
+            return View("GameRegistration", certainDeathUser);
+        }
+
+        // Save the CDUser
+        [HttpPost]
+        public ActionResult GameRegistration(CertainDeathUser cdUser)
+        {
+            if (ModelState.IsValid)
+            {
+                cdUser.CreateTime = Environment.TickCount;
+                cdUser.LastLoginTime = Environment.TickCount;
+                _userDal.UpdateGameUser(cdUser);
+                return RedirectToAction("Index");
+            }
+            return View("GameRegistration", cdUser);
+        }
+
+        // Load the start screen
+        public ActionResult StartScreen(CertainDeathUser cdUser)
+        {
+            StartScreenViewModel ssvm = new StartScreenViewModel(cdUser.Id);
+
+            if (cdUser.WorldId > 0)
+            {
+                ssvm.LoadGame = true;
+            }
+            return View("StartScreen", ssvm);
         }
 
         // This action will handle the redirects from FacebookAuthorizeFilter when
@@ -77,12 +110,30 @@ namespace CertainDeath.Controllers
 
         public ActionResult Leaderboard()
         {
-            return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
+                return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
         }
 
         public ActionResult HowToPlay()
         {
             return PartialView("_HowToPlay");
+        }
+
+        public ActionResult LoadGame(int userid)
+        {
+            CertainDeathUser cdUser = _userDal.GetGameUser(userid);
+            return View("Game", cdUser);
+        }
+
+        public ActionResult NewGame(int userid)
+        {
+
+            CertainDeathUser cdUser = _userDal.GetGameUser(userid);
+
+            // we need to create them a game world
+            Game game = (Game)_gameDal.CreateGame();
+            game.World.Score.UserId = cdUser.Id;
+            _userDal.GiveGameUserAGameWorldId(cdUser.Id, game.World.Id);
+            return View("Game", cdUser);
         }
     }
 }

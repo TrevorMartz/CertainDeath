@@ -10,10 +10,10 @@ namespace CertainDeathEngine
 		public static bool HasBeenInitialized { get; private set; }
         public static void InitAll()
         {
-            Log.Info("Initializing");
+            Log.Debug("Initializing");
 			if (!HasBeenInitialized)
 			{
-				RandomGen.Init();
+                RandomGen.InitUnseeded();
 				Tile.InitSize();
 				HasBeenInitialized = true;
 			}
