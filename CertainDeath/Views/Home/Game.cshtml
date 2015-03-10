@@ -55,59 +55,6 @@
     </script>
 
     <script>
-        $(function(){
-            var source = $("#building-item").html();
-            var template = Handlebars.compile(source);
-            var building_data = {
-                "BuildingData":[
-                    {
-                        "Title" : "Turret",
-                        "Type" : "TURRET",
-                        "Costs" : {
-                            "COAL" : 10,
-                            "WOOD" : 30
-                        },
-                        "Description" : "Defend your base with an autofiring turret!"
-                    },
-                    {
-                        "Title" : "Coal Mine",
-                        "Type" : "AUTO_HARVESTER_MINE",
-                        "Costs" : {
-                            "COAL" : 10,
-                            "WOOD" : 30
-                        },
-                        "Description" : "Harvest all coal in a 1 square radius."
-                    },
-                    {
-                        "Title" : "Quarry",
-                        "Type" : "AUTO_HARVESTER_QUARRY",
-                        "Costs" : {
-                            "CORN" : 2,
-                            "STONE" : 100
-                        },
-                        "Description" : "Harvest all iron in a 1 square radius."
-                    },
-                    {
-                        "Title" : "Farm",
-                        "Type" : "AUTO_HARVESTER_FARM",
-                        "Costs" : {
-                            "CORN" : 20
-                        },
-                        "Description" : "Harvest all corn in a 1 square radius."
-                    },
-                    {
-                        "Title" : "Lumber Mill",
-                        "Type" : "AUTO_HARVESTER_LUMBER_MILL",
-                        "Costs" : {
-                            "STONE" : 100
-                        },
-                        "Description" : "Harvest all wood in a 1 square radius."
-                    }
-                ]
-            };
-            $("#shop-window .building-list").html(template(building_data));
-        });
-
         function UpdateShopCosts(data){
             var out = new Array();
             for(var x in data){

@@ -239,7 +239,7 @@ View = (function () {
 
                                     if (this.resources[i][j] === undefined || this.resources[i][j] === null) {
                                         var sprite2 = game.add.sprite(i * tileSize + this.boardX, j * tileSize + this.boardY,
-                                            "objects");
+                                            "objects", msg[i][j].ResourceName);
                                         sprite2.scale.setTo(tileSize / sprite2.width);
                                         this.resources[i][j] = sprite2;
                                     }
@@ -448,7 +448,7 @@ View = (function () {
         }
     });
 
-    function ButtonScreen(game, x, y, width, height, group, key, callback) {
+    function ButtonScreen(game, x, y, width, height, group, key, callback, onmessagecallback) {
         Screen.call(this, x, y, width, height);
         this.game = game;
         this.button = this.game.add.button(x, y, group, callback);
@@ -457,6 +457,7 @@ View = (function () {
         this.button.scale.setTo(width / this.button.width, height / this.button.height);
         this.button.input.useHandCursor = true;
         this.visible = true;
+        this.onmessagecallback = onmessagecallback;
         this.subscribesTo = ["BuildingCostsForTheWorld"];
     }
 
@@ -476,7 +477,9 @@ View = (function () {
         onmessage: {
             value: function (data) {
                 ScreenContainer.prototype.onmessage.call(this, data);
-                UpdateShopCosts(data);
+                if (this.onmessagecallback)
+                    this.onmessagecallback(data);
+                //UpdateShopCosts(data);
             }
         }
     });
