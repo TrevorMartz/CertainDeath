@@ -250,51 +250,66 @@ View = (function () {
                             } // end for
                         } // end for
                     } else if (property === "CurrentTile.Monsters") {
+                    	this.UpdateMonsterPosition = function (id, xpos, ypos) {
+                    		var monster = this.monsters[msg[x].Id];
+                    		monster.sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + monster.sprite.width / 2 * (monster.direction.X === "LEFT" ? 1 : -1) + (monster.direction.X == undefined ? 0 : (monster.direction.X === "LEFT" ? 15 : -15)));
+                    		monster.sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - monster.sprite.height / 2 + (monster.direction.Y === "UP" ? 25 : 0));
+                    		this.monsters[msg[x].Id] = monster;
+                    	}
+
+                    	this.PlaceMonster = function (id, xpos, ypos, type, direction) {
+                    		var monster = {};
+                    		monster.name = type;
+                    		monster.direction = direction;
+                    		monster.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY, "monsters");
+                    		this.monsters[msg[x].Id] = monster;
+                    		this.UpdateMonsterPosition(id, xpos, ypos);
+                    	}
+						
                         var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
                         for (var x = 0; x < msg.length; ++x) {
+                        	var monster = this.monsters[msg[x].Id];
+                        	if (monster === undefined) {
+                        		monster = {};
+							}
                             var positions = msg[x].Position.split(",");
                             var xpos = parseFloat(positions[0]);
                             var ypos = parseFloat(positions[1]);
-                            var name = msg[x].Name;
-                            var direction = msg[x].Direction;
+                            monster.name = msg[x].Name;
+                            monster.direction = msg[x].Direction;
                             var status = msg[x].Status;
                             var newAnimation = false;
-
-                            var sprite = null;
 								// if monster exists
 								if (this.monsters[msg[x].Id] !== undefined) {
-									sprite = this.monsters[msg[x].Id];
-									sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + sprite.width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
-									sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - sprite.height / 2 + (direction.Y === "UP" ? 25 : 0));
+									//sprite = this.monsters[msg[x].Id];
+									this.UpdateMonsterPosition(msg[x].Id, xpos, ypos);
+									monster = this.monsters[msg[x].Id];
 									// if monster has changed state
-									if (sprite.animations.currentAnim.name !== status) {
-										sprite.animations.stop();
+									if (monster.sprite.animations.currentAnim.name !== status) {
+										monster.sprite.animations.stop();
 										newAnimation = true;
 									}
 								} else /*Monster does not exist yet*/ {
-                            		sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-										"monsters");
-                            		sprite.x = Math.round(sprite.x + sprite.width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
-                            		sprite.y = Math.round(sprite.y - sprite.height / 2 + (direction.Y ==="UP" ? 25 : 0));
-                            		this.monsters[msg[x].Id] = sprite;
+									this.PlaceMonster(msg[x].Id, xpos, ypos, monster.name, monster.direction);
+									monster = this.monsters[msg[x].Id];
                             		newAnimation = true;
 								}
 
 							if (newAnimation) {
-								if (direction.X === "LEFT") {
-									sprite.anchor.setTo(1, 0); 
-									sprite.scale.x = -2; //flipped
-									sprite.animations.add(status,
-									monsterMap[name + "/" + status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
-									5, true);
+								if (monster.direction.X === "LEFT") {
+									monster.sprite.anchor.setTo(1, 0);
+									monster.sprite.scale.x = -2; //flipped
+									monster.sprite.animations.add(status,
+									monsterMap[monster.name + "/" + status + "_" + (monster.direction.Y != "NONE" ? monster.direction.Y + "_" : "") + "RIGHT"],
+										5, true);
 								}
 								else {
-									sprite.scale.x = 2;
-									sprite.animations.add(status,
-									monsterMap[name + "/" + status + "_" + (direction.Name)],
+									monster.sprite.scale.x = 2;
+									monster.sprite.animations.add(status,
+									monsterMap[monster.name + "/" + status + "_" + (monster.direction.Name)],
 									5, true);
 								}
-								sprite.animations.play(status);
+								monster.sprite.animations.play(status);
 							} // end if newAnimation
                         } // end for each monster
                     } // end if monster property
@@ -304,7 +319,7 @@ View = (function () {
                     		var positions = msg[0].Position.split(",");
                     		var xpos = parseFloat(positions[0]);
                     		var ypos = parseFloat(positions[1]);
-                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY / 2,
 										"objects", "Fire");
                     	}
                     } // end if building property
