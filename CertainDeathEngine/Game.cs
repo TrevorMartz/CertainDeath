@@ -33,6 +33,7 @@ namespace CertainDeathEngine
             _worldScore = new Score { FireLevel = 1 };
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
+            //TODO: Adjust Monster Initial and Normal Spawn Size, Delay and Rate
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 150, SpawnSize = 1, Delay = 20000, Rate = 10000 };
             MonsterGenerator.Update(1);
         }
