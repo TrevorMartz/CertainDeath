@@ -27,22 +27,22 @@ namespace CertainDeathEngine.Factories
             switch(buildingType)
             {
                 case BuildingType.TURRET:
-                    building = new Turret(World.CurrentTile, position);
+                    building = new Turret(World.CurrentTile, position) { Id = GetNextId() };
                     break;
                 case BuildingType.WALL:
-                    building = new Wall(World.CurrentTile, position);
+                    building = new Wall(World.CurrentTile, position) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_MINE:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_MINE, World.Player);
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_MINE, World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_QUARRY:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_QUARRY, World.Player);
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_QUARRY, World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_FARM:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_FARM, World.Player);
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_FARM, World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL, World.Player);
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL, World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.FIRE_OF_LIFE: //fire of life does not have a case because it is only built once, in the constructor of the gameworld.
                     Log.Error("You cant build a second Fire of Life");
