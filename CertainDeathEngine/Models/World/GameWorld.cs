@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows;
 using CertainDeathEngine.Models.User;
+using CertainDeathEngine.Models.Resources;
 
 namespace CertainDeathEngine.Models
 {
@@ -25,16 +26,16 @@ namespace CertainDeathEngine.Models
                     BuildingType.FIRE_OF_LIFE, new FireOfLife(null).Cost
                 },
                 {
-                    BuildingType.AUTO_HARVESTER_MINE, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_MINE, null).Cost
+                    BuildingType.AUTO_HARVESTER_MINE, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_MINE, new Cost() { Costs = { { ResourceType.COAL, 10 }, { ResourceType.STONE, 25 } } }, null).Cost
                 },
                 {
-                    BuildingType.AUTO_HARVESTER_QUARRY, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_QUARRY, null).Cost
+                    BuildingType.AUTO_HARVESTER_QUARRY, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_QUARRY, new Cost() { Costs = { { ResourceType.IRON, 25 }, { ResourceType.COAL, 20 } } }, null).Cost
                 },
                 {
-                    BuildingType.AUTO_HARVESTER_FARM, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_FARM, null).Cost
+                    BuildingType.AUTO_HARVESTER_FARM, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_FARM, new Cost() { Costs = { { ResourceType.WOOD, 25 }, { ResourceType.COAL, 15 } } }, null).Cost
                 },
                 {
-                    BuildingType.AUTO_HARVESTER_LUMBER_MILL, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_LUMBER_MILL, null).Cost
+                    BuildingType.AUTO_HARVESTER_LUMBER_MILL, new AutoHarvester(null, new Point(0,0), BuildingType.AUTO_HARVESTER_LUMBER_MILL, new Cost() { Costs = { { ResourceType.STONE, 20 }, { ResourceType.IRON, 15 } } }, null).Cost
                 },
                 {
                     BuildingType.TURRET, new Turret(null, new Point(0,0)).Cost
