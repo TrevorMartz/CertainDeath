@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.NPC.Buildings;
 using Newtonsoft.Json;
 using log4net;
 
@@ -18,7 +20,9 @@ namespace CertainDeathEngine.Models
 		// The center point of the object in pixels
 		public virtual Point Position { get { return _Position; } set { _Position = value; CalculateCorners(); } }
 		public virtual int Height { get { return _Height; } set { _Width = value; CalculateCorners(); } }
-		public virtual int Width { get { return _Width; } set { _Height = value; CalculateCorners(); } }
+        public virtual int Width { get { return _Width; } set { _Height = value; CalculateCorners(); } }
+
+        public Tile Tile { get; protected set; }
 
 		// The 4 corners of the game object's rectangle:
 		// 0 top left, 1 top right, 2 bottom left, 3 bottom right
@@ -129,6 +133,21 @@ namespace CertainDeathEngine.Models
 			int row = (int)p.Y / Square.PIXEL_SIZE;
 			return new System.Drawing.Point(col, row);
 		}
+
+        public void Remove()
+        {
+            if (this.GetType() == typeof(FireOfLife))
+            {
+                this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage(this.Tile.World.Id));
+            }
+            else if (this.GetType() == typeof (Monster) || this is Monster)
+            {
+                this.Tile.World.Score.Kills++;
+            }
+
+            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
+            Tile.RemoveObject(this);
+        }
 
 
     }

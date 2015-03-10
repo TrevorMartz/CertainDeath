@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if(HealthPoints <= 0)
             {
-                RemoveBuilding();
+                Remove();
             }
         }
 
@@ -36,9 +36,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
@@ -55,9 +54,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }

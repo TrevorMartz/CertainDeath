@@ -23,7 +23,7 @@ namespace CertainDeathEngine
 
         UpdateManager()
         {
-            Log.Info("Creating Singlton UpdateManager");
+            Log.Debug("Creating Singlton UpdateManager");
             if (_threads == null)
                 _threads = new Dictionary<int, Thread>();
             else
@@ -34,7 +34,7 @@ namespace CertainDeathEngine
 
         public void AddGameThread(int worldId, Thread thread)
         {
-            Log.Info("Adding new game thread");
+            Log.Debug("Adding new game thread");
             lock (_threads)
             {
                 if (_threads.ContainsKey(worldId))

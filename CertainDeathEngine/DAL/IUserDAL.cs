@@ -7,9 +7,13 @@ namespace CertainDeathEngine.DAL
     {
         CertainDeathUser CreateGameUser(MyAppUser fbUser);
 
+        void UpdateGameUser(CertainDeathUser cdUser);
+
         IEnumerable<CertainDeathUser> GetAllUsers();
 
         IEnumerable<MyAppUser> GetAllFbUsers();
+
+        CertainDeathUser GetGameUser(int userid);
 
         CertainDeathUser GetGameUser(MyAppUser fbUser);
 

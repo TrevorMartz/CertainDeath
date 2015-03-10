@@ -1,5 +1,4 @@
-﻿@using CertainDeathEngine.Models.User
-@model IEnumerable<Score>
+﻿@model IEnumerable<CertainDeathEngine.Models.User.Score>
 
 @{
     ViewBag.Title = "LeaderBoard";
@@ -7,11 +6,39 @@
 
 <h2>LeaderBoard</h2>
 
-<ol class="leaders">
-	<li>Shayne: 722</li>
-	<li>Bos: 607</li>
-    @foreach (var score in Model)
-    {
-        <li>@score.ResourcesCollected</li>
-    }
-</ol>
+<section class="leaders">
+
+    <table>
+        <thead>
+        <tr>
+            <th>Player</th>
+            <th>World</th>
+            <th>Date</th>
+            <th>Kills</th>
+            <th>Buildings</th>
+            <th>Time Survived</th>
+            <th>Fire Level</th>
+            <th>Resources Collected</th>
+        </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var score in Model)
+            {
+                <tr>
+                    <td>@score.UserId</td>
+                    <td>@score.WorldId</td>
+                    <td>@score.SaveDate</td>
+                    <td>@score.Kills</td>
+                    <td>@score.Buildings</td>
+                    <td>@score.Survived</td>
+                    <td>@score.FireLevel</td>
+                    <td>@score.TotalResources</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</section>

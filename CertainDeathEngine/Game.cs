@@ -1,4 +1,5 @@
-﻿using CertainDeathEngine.Factories;
+﻿using CertainDeathEngine.DAL;
+using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC.Buildings;
 using CertainDeathEngine.Models.Resources;
@@ -7,8 +8,10 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine
 {
@@ -21,20 +24,19 @@ namespace CertainDeathEngine
         public MonsterGenerator MonsterGenerator;
         private readonly UpdateManager _updateManager;
         private readonly DateTime _worldCreation;
-        private readonly Score _worldScore;
+        private readonly IStatisticsDAL _statisticsDal = new EFStatisticsDAL();
 
         public Game(GameWorld world)
         {
-            Log.Info("Constructing Game for world " + world.Id);
+            Log.Debug("Constructing Game for world " + world.Id);
 
             Init.InitAll();
             World = world;
             _worldCreation = new DateTime();
-            _worldScore = new Score { FireLevel = 1 };
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
             //TODO: Adjust Monster Initial and Normal Spawn Size, Delay and Rate
-            MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 150, SpawnSize = 1, Delay = 20000, Rate = 10000 };
+            MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 5, SpawnSize = 1, Delay = 200, Rate = 10000 };
             MonsterGenerator.Update(1);
         }
 
@@ -58,9 +60,15 @@ namespace CertainDeathEngine
                 {
                     ResourceType type = res.Type;
                     int gathered = World.CurrentTile.Squares[(int)row, (int)col].GatherResource();
-                    World.Player.AddResource(type, gathered);
 
-                    _worldScore.AddResource(type, gathered);
+                    World.Player.AddResource(type, gathered);
+                    World.Score.AddResource(type, gathered);
+                    this.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.World.Player.Id)
+                    {
+                        ResourceType = type.ToString(),
+                        Amount = gathered
+                    });
+
                 }
             }
             return ToJSON();
@@ -139,12 +147,18 @@ namespace CertainDeathEngine
                     }
                 }
 
+                this.World.AddUpdateMessage(new PlaceBuildingUpdateMessage(building.Id)
+                {
+                    PosX = building.Position.X,
+                    PosY = building.Position.Y,
+                    Type = building.Type.ToString()
+                });
                 World.CurrentTile.AddObject(building);
             }
 
             // persist the building
 
-            _worldScore.Buildings++;
+            World.Score.Buildings++;
             return building;
         }
 
@@ -170,7 +184,8 @@ namespace CertainDeathEngine
 
         public void SaveScore()
         {
-            _worldScore.Survived = new DateTime() - _worldCreation;
+            World.Score.Survived = new DateTime() - _worldCreation;
+            _statisticsDal.SaveScore(World.Score);
         }
     }
 }

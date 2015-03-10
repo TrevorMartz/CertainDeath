@@ -23,7 +23,7 @@ namespace CertainDeathEngine
 
         public Updater(Game game)
         {
-            Log.Info(string.Format("Creating a new Updater thread: {0}", Thread.CurrentThread.ManagedThreadId));
+            Log.Debug(string.Format("Creating a new Updater thread: {0}", Thread.CurrentThread.ManagedThreadId));
             Running = false;
             _game = game;
         }
@@ -31,7 +31,7 @@ namespace CertainDeathEngine
 
         public void Run()
         {
-            Log.Info(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
+            Log.Debug(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
             Running = true;
             _updateCount = 1;
 

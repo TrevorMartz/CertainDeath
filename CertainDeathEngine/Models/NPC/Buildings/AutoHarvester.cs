@@ -34,7 +34,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             if (HealthPoints <= 0)
             {
-                RemoveBuilding();
+                Remove();
             }
             if (State == HarvesterState.GATHERING)
             {
@@ -57,15 +57,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Square s = FindGatherableSquare();
                     if (s != null)
                     {
-                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                         {
-                            ObjectId = this.Tile.World.Player.Id,
                             ResourceType = s.Resource.Type.ToString(),
                             Amount = toGather
                         });
-                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
                         {
-                            ObjectId = 0, // todo: does a square have an id?
                             Amount = toGather
                         });
                         ResourceType type = s.Resource.Type;
@@ -76,9 +74,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     else
                     {
                         State = HarvesterState.IDLE;
-                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage()
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                         {
-                            ObjectId = this.Id,
                             State = HarvesterState.IDLE.ToString()
                         });
                         return;
@@ -89,9 +86,19 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         private Square FindGatherableSquare()
         {
-            for (int row = (int)TilePosition.Y - GatherRange; row < TilePosition.Y + GatherRange; row++)
+            int row1 = (int)TilePosition.Y - GatherRange;
+            if(row1 < 0)
             {
-                for (int col = (int)TilePosition.X - GatherRange; col < TilePosition.X + GatherRange; col++)
+                row1 = 0;
+            }
+            int col1 = (int)TilePosition.X - GatherRange;
+            if(col1 < 0)
+            {
+                col1 = 0;
+            }
+            for (int row = row1; row < TilePosition.Y + GatherRange; row++)
+            {
+                for (int col = col1; col < TilePosition.X + GatherRange; col++)
                 {
                     Square s = Tile.Squares[row, col];
                     if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
@@ -124,9 +131,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 UpdateCost();
                 if (Tile != null)
                 {
-                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         NewLevel = Level
                     });
                 }
@@ -143,9 +149,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage()
+                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
                 {
-                    ObjectId = this.Id,
                     NewCost = Cost
                 });
             }

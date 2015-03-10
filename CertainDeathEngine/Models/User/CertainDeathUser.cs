@@ -16,6 +16,8 @@ namespace CertainDeathEngine.Models.User
         [Required]
         public MyAppUser FBUser { get; set; }
         public int WorldId { get; set; }
-        public Score HighScore { get; set; }
+        public string Username { get; set; }
+        public long CreateTime { get; set; }
+        public long LastLoginTime { get; set; }
     }
 }

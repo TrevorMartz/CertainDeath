@@ -19,7 +19,7 @@ namespace CertainDeathEngine.DAL
 
         public EFGameDAL()
         {
-            Log.Info("Constructing EFGameDal");
+            Log.Debug("Constructing EFGameDal");
             _cdDbModel = new CDDBModel();
             _worldGenerator = new GameWorldGenerator();
             SetNextWorldId();
@@ -32,7 +32,7 @@ namespace CertainDeathEngine.DAL
 
         public EngineInterface CreateGame()
         {
-            Log.Info("Creating new game");
+            Log.Debug("Creating new game");
             GameWorld world = CreateWorld();
 
             // World wasnt stored before, so do it now
@@ -45,7 +45,7 @@ namespace CertainDeathEngine.DAL
 
         public EngineInterface CreateGame(int worldId)
         {
-            Log.Info("Loading existing world: " + worldId);
+            Log.Debug("Loading existing world: " + worldId);
             GameWorld world = LoadWorld(worldId);
             if (world.HasEnded)
             {
@@ -57,7 +57,7 @@ namespace CertainDeathEngine.DAL
 
         public bool SaveGame(Game game)
         {
-            Log.Info("Saving game: " + game.World.Id);
+            Log.Debug("Saving game: " + game.World.Id);
             return SaveWorld(game.World);
         }
 
@@ -82,13 +82,13 @@ namespace CertainDeathEngine.DAL
 
         private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
         {
-            Log.Info("Starting an updater thread for world: " + world.Id);
+            Log.Debug("Starting an updater thread for world: " + world.Id);
             Game g = new Game(world);
 
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
             Thread updater = new Thread(u.Run);
-            Log.Info("Thread for world " + world.Id + " is thread num " + updater.ManagedThreadId);
+            Log.Debug("Thread for world " + world.Id + " is thread num " + updater.ManagedThreadId);
             updater.Name = "Updater thread for " + world.Id;
             UpdateManager.Instance.AddGameThread(world.Id, updater);
 
@@ -97,10 +97,10 @@ namespace CertainDeathEngine.DAL
 
         private bool SaveWorld(GameWorld world)
         {
-            Log.Info("Saving game world: " + world.Id);
+            Log.Debug("Saving game world: " + world.Id);
             if (_worldManager.HasWorld(world.Id))
             {
-                Log.Info("The WorldManager has the world with id " + world.Id);
+                Log.Debug("The WorldManager has the world with id " + world.Id);
                 try
                 {
                     // todo: update instead of replace the world?
@@ -120,7 +120,7 @@ namespace CertainDeathEngine.DAL
                     {
                         world.TimeLastSaved = Environment.TickCount;
                     }
-                    Log.Info("Successfully saved the world with id: " + world.Id);
+                    Log.Debug("Successfully saved the world with id: " + world.Id);
                     return true;
                 }
                 catch (Exception e)
@@ -138,14 +138,14 @@ namespace CertainDeathEngine.DAL
 
         private GameWorld LoadWorld(int worldId)
         {
-            Log.Info("Loading world with Id: " + worldId);
+            Log.Debug("Loading world with Id: " + worldId);
             GameWorld world = null;
 
             world = _worldManager.GetWorld(worldId);
 
             if (world != null)
             {
-                Log.Info("World with id " + world.Id + " was already running.  We just returned the instance");
+                Log.Debug("World with id " + world.Id + " was already running.  We just returned the instance");
                 return world;
             }
             else
@@ -154,11 +154,11 @@ namespace CertainDeathEngine.DAL
                 // otherwise we need to get it from the database
                 try
                 {
-                    Log.Info("Trying to get world with id " + worldId + " from the database");
+                    Log.Debug("Trying to get world with id " + worldId + " from the database");
                     GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.OrderByDescending(x => x.Worlds.LastSaveTime).FirstOrDefault(x => x.WorldId == worldId);
                     if (wrapperwrapper != null)
                     {
-                        Log.Info("Get world with id " + worldId + " and other of of " + wrapperwrapper.Id + " from the database");
+                        Log.Debug("Get world with id " + worldId + " and other of of " + wrapperwrapper.Id + " from the database");
                         world = wrapperwrapper.Worlds.World;
                     }
 
@@ -176,7 +176,7 @@ namespace CertainDeathEngine.DAL
                 }
 
                 // World wasnt stored before, so do it now
-                Log.Info("Attempting to store the world with id " + worldId + " in the WorldManager");
+                Log.Debug("Attempting to store the world with id " + worldId + " in the WorldManager");
                 _worldManager.KeepWorld(world);
 
                 // return the world
@@ -187,7 +187,7 @@ namespace CertainDeathEngine.DAL
         private GameWorld CreateWorld()
         {
             int worldId = GetNextId();
-            Log.Info("Creating a new world with id " + worldId);
+            Log.Debug("Creating a new world with id " + worldId);
             GameWorld newWorld = _worldGenerator.GenerateWorld(worldId);
             return newWorld;
         }

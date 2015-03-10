@@ -23,8 +23,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public BuildingType Type { get; protected set; }
 
-        public Tile Tile { get; protected set; }
-
         public Point TilePosition { get; set; }
 
         public Building(Tile tile, Point position)
@@ -39,15 +37,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public abstract void Update(long millis);
 
         public abstract void Upgrade();
-
-        public void RemoveBuilding()
-        {
-            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
-            {
-                ObjectId = this.Id
-            });
-            Tile.RemoveObject(this);
-        }
 
         public abstract void UpdateCost();
     }

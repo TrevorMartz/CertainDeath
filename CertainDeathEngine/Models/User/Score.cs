@@ -19,7 +19,7 @@ namespace CertainDeathEngine.Models.User
 
         public int UserId { get; set; }
         public int WorldId { get; set; }
-        public DateTime SaveDate { get; set; }
+        public long SaveDate { get; set; }
         public int Kills { get; set; }
         public int Buildings { get; set; }
         public Dictionary<ResourceType, int> ResourcesCollected { get; set; }
@@ -37,7 +37,10 @@ namespace CertainDeathEngine.Models.User
             {
                 return ResourcesCollected.Sum(i => i.Value);
             }
-            set { int i = value; }
+            set
+            {
+                ResourcesCollected.Add(ResourceType.CORN, value);
+            }
         }
 
         public void AddResource(ResourceType type, int count)

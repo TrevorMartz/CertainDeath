@@ -37,7 +37,7 @@
                 {{Title}}
             </div>
             <div class="price">
-                {{#each Prices}}
+                {{#each Costs}}
                 <div class="price-pair">
                     <div>{{this}}</div>
                     <img src="/Content/Images/{{@@key}}.png" />
@@ -55,49 +55,22 @@
     </script>
 
     <script>
-        $(function(){
+        function UpdateShopCosts(data){
+            var out = new Array();
+            for(var x in data){
+                var next = {};
+                next["Title"] = x.toString().replace(/_/g, " ");
+                next["Type"] = x;
+                next["Costs"] = data[x]["Costs"];
+                next["Description"] = next["Title"] + " does stuff for you!";
+                out.push(next);
+            }
+
+            var wrap = {"BuildingData" : out};
             var source = $("#building-item").html();
             var template = Handlebars.compile(source);
-            var data = {
-                "BuildingData":[
-                    {
-                        "Title" : "Steel building",
-                        "Type" : "AUTO_HARVESTER",
-                        "Prices" : {
-                            "COAL" : 10,
-                            "WOOD" : 30
-                        },
-                        "Description" : "This is a description of the steel building."
-                    },
-                    {
-                        "Title" : "Coal mine",
-                        "Type" : "WALL",
-                        "Prices" : {
-                            "CORN" : 2,
-                            "STONE" : 100
-                        },
-                        "Description" : "This is a description of the coal mine."
-                    },
-                    {
-                        "Title" : "Robber's den",
-                        "Type" : "FIRE_OF_LIFE",
-                        "Prices" : {
-                            "CORN" : 20
-                        },
-                        "Description" : "This building is a place for robbers. They will steal health from nearby monsters."
-                    },
-                    {
-                        "Title" : "Stone Wall",
-                        "Type" : "TURRET",
-                        "Prices" : {
-                            "STONE" : 100
-                        },
-                        "Description" : "This is a stone wall. Does nothing. Just a hunk of stone."
-                    }
-                ]
-            };
-            $("#shop-window .building-list").html(template(data));
-        });
+            $("#shop-window .building-list").html(template(wrap));
+        }
 
     </script>
 

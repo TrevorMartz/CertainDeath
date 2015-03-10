@@ -19,7 +19,6 @@ View = (function () {
         this.width = screenWidth;
         this.height = screenHeight;
         this.subscribesTo = Array();
-        this.messages = Array();
     }
     Screen.prototype = {
         /**
@@ -40,7 +39,7 @@ View = (function () {
         },
 
         onmessage: function (obj){
-            messages.push(obj);
+
         },
 
         render: function () {
@@ -265,41 +264,37 @@ View = (function () {
 								// if monster exists
 								if (this.monsters[msg[x].Id] !== undefined) {
 									sprite = this.monsters[msg[x].Id];
-									sprite[0].x = Math.round(xpos / 32 * tileSize + this.boardX + sprite[0].width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
-									sprite[0].y = Math.round(ypos / 32 * tileSize + this.boardY - sprite[0].height / 2 + (direction.Y === "UP" ? 25 : 0));
-									sprite[1].x = xpos / 32 * tileSize + this.boardX;
-									sprite[1].y = ypos / 32 * tileSize + this.boardY;
+									sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + sprite.width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
+									sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - sprite.height / 2 + (direction.Y === "UP" ? 25 : 0));
 									// if monster has changed state
-									if (sprite[0].animations.currentAnim.name !== status) {
-										sprite[0].animations.stop();
+									if (sprite.animations.currentAnim.name !== status) {
+										sprite.animations.stop();
 										newAnimation = true;
 									}
 								} else /*Monster does not exist yet*/ {
-                            		sprite = [game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
-										"monsters"), game.add.graphics(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY)];
-                            		sprite[0].x = Math.round(sprite[0].x + sprite[0].width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
-                            		sprite[0].Y = Math.round(sprite[0].Y - sprite[0].height / 2 + (direction.Y ==="UP" ? 25 : 0));
-                            		sprite[1].beginFill(0x000000, 0.5);
-                            		sprite[1].drawCircle(0, 0, 15);
+                            		sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY,
+										"monsters");
+                            		sprite.x = Math.round(sprite.x + sprite.width / 2 * (direction.X === "LEFT" ? 1 : -1) + (direction.X == undefined ? 0 : (direction.X === "LEFT" ? 15 : -15)));
+                            		sprite.y = Math.round(sprite.y - sprite.height / 2 + (direction.Y ==="UP" ? 25 : 0));
                             		this.monsters[msg[x].Id] = sprite;
                             		newAnimation = true;
 								}
 
 							if (newAnimation) {
 								if (direction.X === "LEFT") {
-									sprite[0].anchor.setTo(1, 0); 
-									sprite[0].scale.x = -2; //flipped
-									sprite[0].animations.add(status,
+									sprite.anchor.setTo(1, 0); 
+									sprite.scale.x = -2; //flipped
+									sprite.animations.add(status,
 									monsterMap[name + "/" + status + "_" + (direction.Y != "NONE" ? direction.Y + "_" : "") + "RIGHT"],
 									5, true);
 								}
 								else {
-									sprite[0].scale.x = 2;
-									sprite[0].animations.add(status,
+									sprite.scale.x = 2;
+									sprite.animations.add(status,
 									monsterMap[name + "/" + status + "_" + (direction.Name)],
 									5, true);
 								}
-								sprite[0].animations.play(status);
+								sprite.animations.play(status);
 							} // end if newAnimation
                         } // end for each monster
                     } // end if monster property
@@ -453,7 +448,7 @@ View = (function () {
         }
     });
 
-    function ButtonScreen(game, x, y, width, height, group, key, callback) {
+    function ButtonScreen(game, x, y, width, height, group, key, callback, onmessagecallback) {
         Screen.call(this, x, y, width, height);
         this.game = game;
         this.button = this.game.add.button(x, y, group, callback);
@@ -462,6 +457,8 @@ View = (function () {
         this.button.scale.setTo(width / this.button.width, height / this.button.height);
         this.button.input.useHandCursor = true;
         this.visible = true;
+        this.onmessagecallback = onmessagecallback;
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
     }
 
     ButtonScreen.prototype = Object.create(Screen.prototype, {
@@ -475,6 +472,14 @@ View = (function () {
             value : function(){
                 Screen.prototype.update.call(this);
                 this.button.visible = this.visible;
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                if (this.onmessagecallback)
+                    this.onmessagecallback(data);
+                //UpdateShopCosts(data);
             }
         }
     });
@@ -529,7 +534,7 @@ View = (function () {
         ScreenContainer.call(this, new Array(), x, y, width, height);
         this.game = game;
         this.server = server;
-        this.subscribesTo = "BuildingPrices";
+        this.subscribesTo = ["BuildingCostsForTheWorld"];
         this.visible = false;
     }
 
@@ -548,6 +553,12 @@ View = (function () {
             value: function () {
                 ScreenContainer.prototype.update.call(this);
                 // Do nothing.
+            }
+        },
+        onmessage: {
+            value: function (data) {
+                ScreenContainer.prototype.onmessage.call(this, data);
+                UpdateShopCosts(data);
             }
         }
     });

@@ -108,5 +108,17 @@ namespace CertainDeathEngine.DAL
         {
             throw new NotImplementedException();
         }
+
+
+        public void UpdateGameUser(CertainDeathUser cdUser)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public CertainDeathUser GetGameUser(int userid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

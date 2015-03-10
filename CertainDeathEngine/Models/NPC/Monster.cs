@@ -33,10 +33,6 @@ namespace CertainDeathEngine.Models.NPC
 		// Approximate direction, rounded to the nearest of the 8
 		public MonsterDirection Direction { get; private set; }
 
-		// Monster needs to know where they are so they
-		// can go towards the FireOfLife
-		public Tile Tile { get; private set; }
-
 		// Monster's damage per second
 		// This will be used when it is in contact with a building
 		// We can improve this later with attack speed and attack damage
@@ -115,9 +111,8 @@ namespace CertainDeathEngine.Models.NPC
 					// If we can sell buildings there could be a problem here
 					State = MonsterState.WALKING;
 
-                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         State = MonsterState.WALKING.ToString()
                     });
 					Attacking = null;
@@ -134,9 +129,8 @@ namespace CertainDeathEngine.Models.NPC
 				{
 					Attacking = colide;
                     State = MonsterState.ATTACKING;
-                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         State = MonsterState.ATTACKING.ToString()
                     });
 				}
@@ -247,14 +241,13 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
-            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage()
+            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
             {
-                ObjectId = Attacking.Id,
                 HealthPoints = Attacking.HealthPoints
             });
 			if (Attacking.HealthPoints <= 0)
 			{
-                Attacking.RemoveBuilding();
+                Attacking.Remove();
                 State = MonsterState.WALKING;
                 Attacking = null;
 			}
@@ -269,9 +262,8 @@ namespace CertainDeathEngine.Models.NPC
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
-            this.Tile.World.AddUpdateMessage(new MoveUpdateMessage()
+            this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
 		    {
-		        ObjectId = this.Id,
                 MoveX = Position.X,
                 MoveY = Position.Y
 		    });
@@ -313,23 +305,16 @@ namespace CertainDeathEngine.Models.NPC
                     // or he is trying to get to the fire of life and walked
                     // through a null tile. 
                     Tile.RemoveObject(this);
-                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
-                    {
-                        ObjectId = this.Id,
-                    });
+                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
                 }
                 else
                 {
                     Tile.RemoveObject(this);
-                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage()
-                    {
-                        ObjectId = this.Id,
-                    });
+                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
                     Tile = tile;
                     tile.AddObject(this);
-                    this.Tile.World.AddUpdateMessage(new MoveUpdateMessage()
+                    this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
                     {
-                        ObjectId = this.Id,
                         MoveX = Position.X,
                         MoveY = Position.Y
                     });
@@ -337,9 +322,7 @@ namespace CertainDeathEngine.Models.NPC
                         Position.X + positionChange.X,
                         Position.Y + positionChange.Y);
                     //todo: i dont know how to send a move update, so I will send a whole world update insteac
-                    this.Tile.World.AddUpdateMessage(new WorldUpdateMessage()
-                    {
-                    });
+                    this.Tile.World.AddUpdateMessage(new WorldUpdateMessage());
                 }
             }
 		}

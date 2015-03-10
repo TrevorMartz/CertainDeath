@@ -57,14 +57,16 @@ function create () {
     //View.current = new View.MainGameScreen(game, Server, 300, 30, game.width - 60, game.height - 60);
     //shop = new View.BuildingShop(game, Server, 40, 40, game.world.width - 80, game.world.height - 80);
     mgw = new View.MainGameScreen(game, Server, 30, 20 + 32 * 2, game.width - 60, game.height - 30 - 20 - 32 * 2);
+    var shop = new View.ButtonScreen(game, 20, 10, 64, 64, "objects", "ShopButton", openShop, UpdateShopCosts);
     var views = [
-        new View.ButtonScreen(game, 20, 10, 64, 64, "objects", "ShopButton", openShop),
+        shop,
         new View.InventoryBar(game, 100, 10, game.width - 20 - 100, 32*2),
         mgw
     ];
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
     Server.register(View.current);
+    Server.register(shop);
     View.current.screens.forEach(function (val) {
         Server.register(val);
     });
