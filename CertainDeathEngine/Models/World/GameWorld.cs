@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows;
 using CertainDeathEngine.Models.User;
+using System.Diagnostics;
 
 namespace CertainDeathEngine.Models
 {

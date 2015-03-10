@@ -31,7 +31,6 @@ namespace CertainDeathEngine
             _game = game;
         }
 
-
         public void Run()
         {
             Log.Debug(string.Format("Starting thread: {0}", Thread.CurrentThread.ManagedThreadId));
@@ -59,7 +58,6 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
-
             lock (_game.World)
             {
                 // update monsters
@@ -73,22 +71,9 @@ namespace CertainDeathEngine
                 }
             }
 
-            //lock (_game.World)
-            //{
-            //    // check clicks
-            //    foreach (Square s in _game.World.CurrentTile.Squares)
-            //    {
-            //        if (s.Resource != null)
-            //        {
-            //            // do some math to figure out the respawn rate
-
-            //        }
-            //    }
-            //}
-
-
             lock (_game.World)
             {
+                // process clicks
                 Queue<RowColumnPair> tempClicks;
                 lock (_game.World.SquareClicks)
                 {
@@ -96,21 +81,24 @@ namespace CertainDeathEngine
                     _game.World.SquareClicks.Clear();
                 }
 
-                foreach (var click in tempClicks)
+                if (tempClicks.Count > 0)
                 {
-                    Resource res = _game.World.CurrentTile.Squares[(int)click.Row, (int)click.Column].Resource;
-                    if (res != null)
+                    foreach (var click in tempClicks)
                     {
-                        ResourceType type = res.Type;
-                        int gathered = _game.World.CurrentTile.Squares[(int)click.Row, (int)click.Column].GatherResource();
-
-                        _game.World.Player.AddResource(type, gathered);
-                        _game.World.Score.AddResource(type, gathered);
-                        _game.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(_game.World.Player.Id)
+                        Square square = _game.World.CurrentTile.Squares[click.Column, click.Row];
+                        if (square.Resource != null)
                         {
-                            ResourceType = type.ToString(),
-                            Amount = gathered
-                        });
+                            ResourceType curType = square.Resource.Type;
+                            int gathered = square.GatherResource();
+
+                            _game.World.Player.AddResource(curType, gathered);
+                            _game.World.Score.AddResource(curType, gathered);
+                            _game.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(_game.World.Player.Id)
+                                                         {
+                                                             ResourceType = curType.ToString(),
+                                                             Amount = gathered
+                                                         });
+                        }
                     }
                 }
             }
