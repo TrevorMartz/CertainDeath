@@ -59,8 +59,8 @@ namespace CertainDeathEngine.Factories
                     building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL, cost, World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.FIRE_OF_LIFE: //fire of life does not have a case because it is only built once, in the constructor of the gameworld.
-                    Log.Error("You cant build a second Fire of Life");
-                    throw new Exception("You cant have another fire of life");
+                    Log.Error("You can't build a second Fire of Life");
+                    throw new Exception("You can't have another fire of life");
             }
             return building;
         }
