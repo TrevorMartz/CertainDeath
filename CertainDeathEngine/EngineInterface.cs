@@ -40,25 +40,6 @@ namespace CertainDeathEngine
 		 */
         void SquareClicked(RowColumnPair click);
 
-		/* Notify the game engine that a user has clicked on a monster. The monster wil take damage 
-		 * equal to the user's attack damage.
-		 * 
-		 * Returns a JSON string representing changes. 
-		 * JSON described in IncrementTimeAndReturnDelta method
-		 */
-		string MonsterClicked(int monsterid);
-
-		/* Instructs the game engine to move time forward millis number of milliseconds.
-		 * 
-		 * Parameter: milliseconds to increment time
-		 * 
-		 * Return: JSON string representing the changes that have occured over the elapsed time.
-		 * 
-		 * JSON: This has not been created yet and will not be needed until there is more of a game
-		 *		Such as movement, damage, picking up resources, etc.
-		 */
-		string IncrementTimeAndReturnDelta(int millis);
-
 		/* returns a JSON string representing the game state including: Squares, monsters, resources, and buildings.
 		 * 
 		 * Example:

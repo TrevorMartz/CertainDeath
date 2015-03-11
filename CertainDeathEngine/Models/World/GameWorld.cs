@@ -35,7 +35,7 @@ namespace CertainDeathEngine.Models
         public Queue<UpdateMessage> Updates;
 
         [NonSerialized]
-        public Queue<RowColumnPair> SquareClicks;
+        public List<RowColumnPair> SquareClicks;
 
         public long TimeLastSaved { get; set; }
         public long TimeLastQueried { get; set; }
@@ -59,14 +59,14 @@ namespace CertainDeathEngine.Models
         {
             // only for use with the json deserializer
             Updates = new Queue<UpdateMessage>();
-            SquareClicks = new Queue<RowColumnPair>();
+            SquareClicks = new List<RowColumnPair>();
         }
 
         public GameWorld(int worldId)
             : this(new Tile(0, 0, null), worldId)
         {
             Updates = new Queue<UpdateMessage>();
-            SquareClicks = new Queue<RowColumnPair>();
+            SquareClicks = new List<RowColumnPair>();
         }
 
 		public GameWorld(Tile t, int worldId)
@@ -79,7 +79,7 @@ namespace CertainDeathEngine.Models
 			Tiles = new List<Tile>();
 			Tiles.Add(t);
             Updates = new Queue<UpdateMessage>();
-            SquareClicks = new Queue<RowColumnPair>();
+            SquareClicks = new List<RowColumnPair>();
             Score = new Score
                 {
                     FireLevel = 1, WorldId = Id
@@ -99,7 +99,7 @@ namespace CertainDeathEngine.Models
 		        t.World = this;
             }
             Updates = new Queue<UpdateMessage>();
-            SquareClicks = new Queue<RowColumnPair>();
+            SquareClicks = new List<RowColumnPair>();
             tile.AddObject(new FireOfLife(tile));
             Score = new Score
             {
@@ -114,7 +114,7 @@ namespace CertainDeathEngine.Models
             lock (this)
             {
                 Updates = new Queue<UpdateMessage>();
-                SquareClicks = new Queue<RowColumnPair>();
+                SquareClicks = new List<RowColumnPair>();
             }
         }
 
@@ -130,7 +130,7 @@ namespace CertainDeathEngine.Models
         {
             lock (this.SquareClicks)
             {
-                SquareClicks.Enqueue(click);
+                SquareClicks.Add(click);
             }
         }
     }

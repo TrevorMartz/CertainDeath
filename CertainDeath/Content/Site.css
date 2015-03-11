@@ -3,7 +3,9 @@
     margin: 0;
     padding: 0;
 }
-
+h1, h2, h3, h4, h5 {
+    font-family: silkscreen;
+}
 header {
     overflow: hidden;
     height: 50px;
@@ -183,6 +185,11 @@ footer {
 #main_menu a:hover {
     color: #333;
     background: #CCC;
+}
+.instructions {
+    text-align: center;
+    align-content: center;
+    font-size: 12px;
 }
 
 @font-face {

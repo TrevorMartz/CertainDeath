@@ -55,17 +55,6 @@ namespace CertainDeathEngine
             World.AddClick(click);
         }
 
-        public string MonsterClicked(int monsterid)
-        {
-            //if monster died WorldScore.Kills++
-            throw new NotImplementedException();
-        }
-
-        public string IncrementTimeAndReturnDelta(int millis)
-        {
-            throw new NotImplementedException();
-        }
-
         public string MoveUp()
         {
             if (World.CurrentTile.HasAbove)
@@ -135,6 +124,20 @@ namespace CertainDeathEngine
                     Type = building.Type.ToString()
                 });
                 World.CurrentTile.AddObject(building);
+
+                // subtract the cost
+
+
+                Cost buildingCost = building.Cost;
+                foreach (var c in buildingCost.Costs)
+                {
+                    this.World.AddUpdateMessage(new RemoveResourceFromPlayerUpdateMessage(this.World.Player.Id)
+                                                {
+                                                    Amount = c.Value,
+                                                    ResourceType = c.Key.ToString()
+                                                });
+                    this.World.Player.RemoveResource(c.Key, c.Value);
+                }
             }
 
             // persist the building
