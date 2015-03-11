@@ -109,6 +109,18 @@ namespace CertainDeathEngine.Models.NPC
     }
 
     [JsonObject]
+    public class RemoveResourceFromPlayerUpdateMessage : UpdateMessage
+    {
+        public string ResourceType { get; set; }
+        public int Amount { get; set; }
+        public RemoveResourceFromPlayerUpdateMessage(int id)
+            : base(id)
+        {
+            UType = "RemoveResourceFromPlayer";
+        }
+    }
+
+    [JsonObject]
     public class RemoveResourceFromSquareUpdateMessage : UpdateMessage
     {
         public string Square { get; set; }
