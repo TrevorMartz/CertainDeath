@@ -51,6 +51,7 @@ namespace CertainDeathEngine.Models.NPC
     public class HealthUpdateMessage : UpdateMessage
     {
         public float HealthPoints { get; set; }
+        public float MaxHealthPoints { get; set; }
 
         public HealthUpdateMessage(int id) : base(id)
         {

@@ -95,7 +95,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Attacking.HealthPoints -= damage;
             this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
             {
-                HealthPoints = Attacking.HealthPoints
+                HealthPoints = Attacking.HealthPoints,
+                MaxHealthPoints = Attacking.MaxHealthPoints
             });
 
             if (Attacking.HealthPoints <= 0)

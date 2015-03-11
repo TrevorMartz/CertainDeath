@@ -198,8 +198,10 @@ View = (function () {
                     }
                 }
                 for (x in this.monsters) {
-                    if (this.monsters[x] && this.monsters[x].sprite.destroy)
+                    if (this.monsters[x] && this.monsters[x].sprite.destroy) {
                         this.monsters[x].sprite.destroy();
+                        this.monsters[x].g.destroy();
+                    }
                     delete this.monsters[x];
                 }
                 if (this._placeState) {
@@ -277,6 +279,7 @@ View = (function () {
                 		}
 
                 		if (status == "DYING") {
+                		    monster.g.destroy();
                 			monster.sprite.animations.play(status, 5, false, true);//.onComplete(new Signal(function () { monster.sprite.destroy() }));
                 		}
                 		else
@@ -415,8 +418,8 @@ View = (function () {
 
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 
-	  /*RemoveResource*/	} else if ("RemoveResourceFromSquare" === type) {
-
+	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
+                                //this.resources[]
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {
