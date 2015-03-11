@@ -64,6 +64,7 @@ function create () {
         shop,
         new View.InventoryBar(game, 84, 10, game.width - 20 - 84, 32*2)
     ];
+    mgw = nav.mainGameScreen;
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
     Server.register(View.current);
