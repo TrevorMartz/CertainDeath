@@ -184,3 +184,15 @@ footer {
     color: #333;
     background: #CCC;
 }
+
+@font-face {
+    font-family: 'silkscreen';
+    src: url('Fonts/slkscre/slkscr-webfont.eot');
+    src: url('Fonts/slkscre/slkscr-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/slkscre/slkscr-webfont.woff') format('woff'),
+         url('Fonts/slkscre/slkscr-webfont.ttf') format('truetype'),
+         url('Fonts/slkscre/slkscr-webfont.svg#silkscreen_expandednormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
