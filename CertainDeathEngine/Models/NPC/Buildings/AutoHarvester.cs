@@ -54,7 +54,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             {
                 while (toGather > 0)
                 {
-                    Square s = FindGatherableSquare();
+                    RowColumnPair rcp = FindGatherableSquare();
+                    Square s = Tile.Squares[rcp.Row, rcp.Column];
                     if (s != null)
                     {
                         this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
@@ -66,6 +67,14 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         {
                             Amount = toGather
                         });
+                        if (s.Resource != null)
+                        {
+                            Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                            {
+                                Row = rcp.Row.ToString(),
+                                Column = rcp.Column.ToString()
+                            });
+                        }
                         ResourceType type = s.Resource.Type;
                         int gathered = s.GatherResource(toGather);
                         toGather -= gathered;
@@ -84,7 +93,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             }
         }
 
-        private Square FindGatherableSquare()
+        private RowColumnPair FindGatherableSquare()
         {
             int row1 = (int)TilePosition.Y - GatherRange;
             if(row1 < 0)
@@ -103,7 +112,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Square s = Tile.Squares[row, col];
                     if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
                     {
-                        return s;
+                        return new RowColumnPair(row, col);
                     }
                 }
             }

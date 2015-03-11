@@ -44,7 +44,8 @@ namespace CertainDeathEngine.Models
                 }
                 else
                 {
-                    throw new Exception("Not enough resources");
+                    // todo: do this...
+                    //throw new Exception("Not enough resources");
                 }
             }
         }

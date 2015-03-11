@@ -142,6 +142,18 @@ namespace CertainDeathEngine.Models.NPC
     }
 
     [JsonObject]
+    public class TheSquareNoLongerHasAResourceUpdateMessage : UpdateMessage
+    {
+        public string Column { get; set; }
+        public string Row { get; set; }
+        public TheSquareNoLongerHasAResourceUpdateMessage(int id)
+            : base(id)
+        {
+            UType = "TheSquareNoLongerHasAResource";
+        }
+    }
+
+    [JsonObject]
     public class UpdateBuildingCostUpdateMessage : UpdateMessage
     {
         public Cost NewCost { get; set; }

@@ -47,6 +47,7 @@ namespace CertainDeathEngine.Models
                     if (Resource.Quantity == 0)
                     {
                         Resource = null;
+
                     }
                 }
                 return toReturn;
