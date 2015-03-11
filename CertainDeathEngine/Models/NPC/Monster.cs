@@ -2,6 +2,7 @@
 using log4net;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace CertainDeathEngine.Models.NPC
@@ -101,6 +102,25 @@ namespace CertainDeathEngine.Models.NPC
 		}
 		public void Update(long millis)
 		{
+            // check the clicks
+
+            var monsterSquare = new RowColumnPair(GameObject.ApproxSquare(Position));
+		    lock (Tile.World.SquareClicks)
+		    {
+		        bool toRemoveSomthing = Tile.World.SquareClicks.Contains(monsterSquare);
+
+		        if (toRemoveSomthing)
+		        {
+                    Tile.World.SquareClicks.Remove(monsterSquare);
+		            this.HealthPoints -= 1000;
+		        }
+		    }
+
+		    if (HealthPoints <= 0)
+		    {
+		        this.Remove();
+		    }
+
             //millis = millis * 1000;
             //Trace.WriteLine("Monster " + Id + " is updating");
 			if (State == MonsterState.ATTACKING)
