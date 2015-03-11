@@ -140,12 +140,20 @@ namespace CertainDeathEngine.Models
             {
                 this.Tile.World.AddUpdateMessage(new GameOverUpdateMessage(this.Tile.World.Id));
             }
-            else if (this.GetType() == typeof (Monster) || this is Monster)
+            
+			if (this.GetType() == typeof (Monster) || this is Monster)
             {
                 this.Tile.World.Score.Kills++;
+				this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
+				{
+					State = MonsterState.DYING.ToString()
+				}); // this will kill the monster after the death animation
             }
+			else
+			{
+				this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
+			}
 
-            this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
             Tile.RemoveObject(this);
         }
 

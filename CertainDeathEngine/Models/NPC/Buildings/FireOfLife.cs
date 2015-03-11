@@ -45,11 +45,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public override void UpdateCost()
         {
             Cost = new Cost();
-            Cost.SetCost(ResourceType.COAL, 10 * Level);
-            Cost.SetCost(ResourceType.CORN, 10 * Level);
-            Cost.SetCost(ResourceType.IRON, 10 * Level);
-            Cost.SetCost(ResourceType.STONE, 10 * Level);
-            Cost.SetCost(ResourceType.WOOD, 10 * Level);
+            //Cost.SetCost(ResourceType.COAL, 10 * Level);
+            //Cost.SetCost(ResourceType.CORN, 10 * Level);
+            //Cost.SetCost(ResourceType.IRON, 10 * Level);
+            //Cost.SetCost(ResourceType.STONE, 10 * Level);
+            //Cost.SetCost(ResourceType.WOOD, 10 * Level);
             if (Tile != null)
             {
                 this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)

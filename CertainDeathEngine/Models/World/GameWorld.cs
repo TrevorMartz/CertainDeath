@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Models
         public static Dictionary<BuildingType, Cost>
             BuildingCostsForTheWorld = new Dictionary<BuildingType, Cost>()
             {
-                { BuildingType.FIRE_OF_LIFE, new FireOfLife(null).Cost },
+                //{ BuildingType.FIRE_OF_LIFE, new FireOfLife(null).Cost },
                 { BuildingType.AUTO_HARVESTER_MINE, new Cost() { Costs = { { ResourceType.COAL, 10 }, { ResourceType.STONE, 25 } } } },
                 { BuildingType.AUTO_HARVESTER_QUARRY, new Cost() { Costs = { { ResourceType.IRON, 25 }, { ResourceType.COAL, 20 } } } },
                 { BuildingType.AUTO_HARVESTER_FARM, new Cost() { Costs = { { ResourceType.WOOD, 25 }, { ResourceType.COAL, 15 } } } },

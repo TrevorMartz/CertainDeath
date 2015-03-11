@@ -99,6 +99,8 @@ namespace CertainDeathEngine.Models.NPC
         public double PosX { get; set; }
         public double PosY { get; set; }
         public string Type { get; set; }
+		public MonsterDirection Direction { get; set; }
+		public string State { get; set; }
 
         public PlaceMonsterUpdateMessage(int id) : base(id)
         {

@@ -136,7 +136,7 @@ namespace CertainDeath.Controllers
                         if (tempUpdates.Count > 0)
                         {
                             StringBuilder sb = new StringBuilder();
-                            sb.Append("\"updates\":[");
+                            sb.Append("{\"updates\":[");
                             foreach (UpdateMessage m in tempUpdates)
                             {
                                 if (m.GetType() == typeof(GameOverUpdateMessage) || m is GameOverUpdateMessage)
@@ -155,12 +155,12 @@ namespace CertainDeath.Controllers
                                 sb.Append(",");
                             }
                             sb.Remove(sb.Length - 1, 1);
-                            sb.Append("]");
+                            sb.Append("]}");
 
                             jsonString = sb.ToString();
 
                             // comment the next line out
-                            sendAll = true;
+                            //sendAll = true;
 
                             if (sendAll)
                             {
