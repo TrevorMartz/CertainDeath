@@ -84,21 +84,23 @@ namespace CertainDeath.Controllers
                 else if (result["event"] == "moveTile")
                 {
                     string direction = result["direction"];
+                    string output = "";
                     switch (direction)
                     {
                         case "up":
-                            GameInstance.MoveUp();
+                            output = GameInstance.MoveUp();
                             break;
                         case "down":
-                            GameInstance.MoveDown();
+                            output = GameInstance.MoveDown();
                             break;
                         case "left":
-                            GameInstance.MoveLeft();
+                            output = GameInstance.MoveLeft();
                             break;
                         case "right":
-                            GameInstance.MoveRight();
+                            output = GameInstance.MoveRight();
                             break;
                     }
+                    Send(output);
                 }
             }
 

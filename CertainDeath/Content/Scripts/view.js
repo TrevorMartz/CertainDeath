@@ -184,8 +184,9 @@ View = (function () {
             value: function () {
                 for (var x = 0; x < this.tiles.length; ++x) {
                     for (var y = 0; y < this.tiles[x].length; ++y) {
-                        if(this.tiles[x][y] && this.tiles[x][y].destroy)
+                        if (this.tiles[x][y] && this.tiles[x][y].destroy) {
                             this.tiles[x][y].destroy();
+                        }
                         delete this.tiles[x][y];
                     }
                 }
@@ -196,10 +197,18 @@ View = (function () {
                         delete this.resources[x][y];
                     }
                 }
+                for (x in this.monsters) {
+                    if (this.monsters[x] && this.monsters[x].sprite.destroy)
+                        this.monsters[x].sprite.destroy();
+                    delete this.monsters[x];
+                }
                 if (this._placeState) {
                     this._placeState.sprite.destroy();
                     delete this._placeState;
                 }
+
+                if (this.fireOfLife.sprite && this.fireOfLife.sprite.destroy)
+                    this.fireOfLife.sprite.destroy();
             }
         },
         onmessage: {
@@ -255,6 +264,7 @@ View = (function () {
                             } // end for
                         } // end for
                     } else if (property === "CurrentTile.Monsters") {
+                        // FIXME plsss
                     	this.UpdateMonsterPosition = function (id, xpos, ypos) {
                     		var monster = this.monsters[msg[x].Id];
                     		monster.sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + monster.sprite.width / 2 * (monster.direction.X === "LEFT" ? 1 : -1) + (monster.direction.X == undefined ? 0 : (monster.direction.X === "LEFT" ? 15 : -15)));
@@ -324,6 +334,8 @@ View = (function () {
                     		var positions = msg[0].Position.split(",");
                     		var xpos = parseFloat(positions[0]);
                     		var ypos = parseFloat(positions[1]);
+                    		if (this.fireOfLife.sprite && this.fireOfLife.sprite.destroy)
+                    		    this.fireOfLife.sprite.destroy();
                     		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY / 2,
 										"objects", "Fire");
                     	}
@@ -638,7 +650,7 @@ View = (function () {
                 sprite = this.game.add.sprite(0, 0);
                 sprite.addChild(g);
                 sprite.inputEnabled = true;
-                sprite.events.onInputDown.add(this.onclick, { value: "top", context: this });
+                sprite.events.onInputDown.add(this.onclick, { value: "up", context: this });
                 sprite.input.useHandCursor = true;
                 this.disposables.push(g);
                 this.disposables.push(sprite);
@@ -652,7 +664,7 @@ View = (function () {
                 sprite = this.game.add.sprite(0, 0);
                 sprite.addChild(g);
                 sprite.inputEnabled = true;
-                sprite.events.onInputDown.add(this.onclick, { value: "bottom", context: this });
+                sprite.events.onInputDown.add(this.onclick, { value: "down", context: this });
                 sprite.input.useHandCursor = true;
                 this.disposables.push(g);
                 this.disposables.push(sprite);
@@ -685,8 +697,14 @@ View = (function () {
         onclick: {
             value: function (click) {
                 this.context.mainGameScreen.destroy();
-                this.context.mainGameScreen = new MainGameScreen(this.context.game, this.context.server, this.context.x + 35, this.context.y + 35, this.context.width - 75, this.context.height - 75)
-                alert(this.value);
+                delete this.context.mainGameScreen;
+                this.context.mainGameScreen = new MainGameScreen(this.context.game, this.context.server, this.context.x + 35, this.context.y + 35, this.context.width - 75, this.context.height - 75);
+                this.context.server.register(this.context.mainGameScreen);
+
+                this.context.server.send(JSON.stringify({
+                    event: "moveTile",
+                    direction: this.value
+                }));
             }
         }
     });
