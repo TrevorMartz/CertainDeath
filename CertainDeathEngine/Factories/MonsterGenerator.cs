@@ -65,9 +65,10 @@ namespace CertainDeathEngine.Factories
 			// left (0, y)
 			// right (Tile.TOTAL_PIXELS, y)
             Monster m;
+			Tile randTile;
             lock (World)
             {
-                Tile randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
+                randTile = World.Tiles[RandomGen.Random.Next(World.Tiles.Count())];
                 int squareIndex = RandomGen.Random.Next(Tile.SQUARES);
 
                 Point Position = new Point(
@@ -84,12 +85,15 @@ namespace CertainDeathEngine.Factories
                 };
                 randTile.AddObject(m);
             }
-            this.World.AddUpdateMessage(new PlaceMonsterUpdateMessage(m.Id)
-            {
-                PosX = m.Position.X,
-                PosY = m.Position.Y,
-                Type = m.Type
-            });
+			if(randTile == World.CurrentTile)
+				this.World.AddUpdateMessage(new PlaceMonsterUpdateMessage(m.Id)
+				{
+					PosX = m.Position.X,
+					PosY = m.Position.Y,
+					Type = m.Name,
+					Direction = m.Direction,
+					State = m.Status
+				});
 			return m;
 		}
 

@@ -19,7 +19,7 @@ var monsterMap;
 
 function makeMonsterMap() {
 	monsterMap = {};
-	var actions = ["WALKING_", "ATTACKING_", "DYING_"];
+	var actions = ["WALKING_", "ATTACKING_", "DYING"];
 	var directions = ["DOWN", "DOWN_RIGHT", "RIGHT", "UP_RIGHT", "UP", "UP_LEFT", "LEFT", "DOWN_LEFT"];
 	var monsters = ["BASAL_GOLEM", "BANSHEE", "BRIGAND", "CLERIC", "PEASANT", "DRUID", "FURY", "GARGOYLE",
 		"GHOUL", "GNOME", "STONE_GOLEM", "GORGON", "GRIFFEN", "RANGER", "WARRIOR", "WIZARD", "WOLF", "ZOMBIE"];
@@ -36,7 +36,7 @@ function makeMonsterMap() {
 		}
 		var animationArray = [];
 		for (var i = 0; i < 8; i++) {
-			animationArray[i] = monster + "_" + actions[2] + i;
+			animationArray[i] = monster + "/" + actions[2] + i;
 		}
 		monsterMap[monster + "/" + actions[2]] = animationArray;
 	}
@@ -107,7 +107,8 @@ Server = (function () {
     function unregister(listener){
         throw new Error("Not yet implemented.");
     }
-
+	
+    var first = true;
     function onmessage(message) {
         var obj = JSON.parse(message.data);
         for (var x = 0; x < listeners.length; ++x) {

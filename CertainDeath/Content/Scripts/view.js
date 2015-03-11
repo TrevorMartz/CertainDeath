@@ -121,7 +121,7 @@ View = (function () {
         this.squaresHigh = 20;
         this.boardX = 0;
         this.boardY = 0;
-        this.subscribesTo = ["CurrentTile.Squares", "CurrentTile.Monsters", "CurrentTile.Buildings"];
+        this.subscribesTo = ["CurrentTile.Squares", "CurrentTile.Monsters", "CurrentTile.Buildings", "updates"];
         
         // Private variable?
         this._placeState = null;
@@ -198,11 +198,62 @@ View = (function () {
             }
         },
         onmessage: {
-            value: function (msg, property) {
-                if (msg != 'undefined') {
+        	value: function (msg, property) {
+            	if (msg != 'undefined') {
+            		var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
 
-                    if (property === "CurrentTile.Squares") {
-                        var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
+                	this.UpdateMonsterPosition = function (id, xpos, ypos) {
+                		var monster = this.monsters[id];
+                		monster.sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + monster.sprite.width / 2 * (monster.direction.X === "LEFT" ? 1 : -1) + (monster.direction.X == undefined ? 0 : (monster.direction.X === "LEFT" ? 15 : -15)));
+                		monster.sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - monster.sprite.height / 2 + (monster.direction.Y === "UP" ? 25 : 0));
+                		this.monsters[id] = monster;
+                	}
+
+                	this.PlaceMonster = function (id, xpos, ypos, type, direction, status) {
+                		var monster = {};
+                		monster.name = type;
+                		monster.direction = direction;
+                		monster.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY, "monsters");
+                		monster.status = status;
+                		this.monsters[id] = monster;
+                		this.UpdateMonsterPosition(id, xpos, ypos);
+                		this.UpdateMonsterStatus(id, status);
+                	}
+
+                	this.RemoveMonster = function (id) {
+                		var monster = this.monsters[id];
+                		monster.sprite.destroy();
+                	}
+
+                	this.UpdateMonsterStatus = function (id, status) {
+                		var monster = this.monsters[id];
+
+                		if (monster.status !== status) {
+                			monster.sprite.animations.stop();
+                		}
+
+                		monster.status = status;
+                		if (monster.direction.X === "LEFT") {
+                			monster.sprite.anchor.setTo(1, 0);
+                			monster.sprite.scale.x = -2; //flipped
+                			monster.sprite.animations.add(status,
+								monsterMap[monster.name + "/" + status + (status == "DYING" ? "" : "_" + (monster.direction.Y != "NONE" ? monster.direction.Y + "_" : "") + "RIGHT")],
+								5, true);
+                		}
+                		else {
+                			monster.sprite.scale.x = 2;
+                			monster.sprite.animations.add(status,
+								monsterMap[monster.name + "/" + status + (status == "DYING" ? "" : "_" + (monster.direction.Name))], 5, true);
+                		}
+
+                		if (status == "DYING") {
+                			monster.sprite.animations.play(status, 5, false, true);//.onComplete(new Signal(function () { monster.sprite.destroy() }));
+                		}
+                		else
+                			monster.sprite.animations.play(status);
+                	}
+
+/*Squares*/        if (property === "CurrentTile.Squares") {
 
                         // Make the board snap to a good scale so that the images still look crisp
                         if (tileSize > 64)
@@ -249,24 +300,8 @@ View = (function () {
                                 }
                             } // end for
                         } // end for
-                    } else if (property === "CurrentTile.Monsters") {
-                    	this.UpdateMonsterPosition = function (id, xpos, ypos) {
-                    		var monster = this.monsters[msg[x].Id];
-                    		monster.sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + monster.sprite.width / 2 * (monster.direction.X === "LEFT" ? 1 : -1) + (monster.direction.X == undefined ? 0 : (monster.direction.X === "LEFT" ? 15 : -15)));
-                    		monster.sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - monster.sprite.height / 2 + (monster.direction.Y === "UP" ? 25 : 0));
-                    		this.monsters[msg[x].Id] = monster;
-                    	}
-
-                    	this.PlaceMonster = function (id, xpos, ypos, type, direction) {
-                    		var monster = {};
-                    		monster.name = type;
-                    		monster.direction = direction;
-                    		monster.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY, "monsters");
-                    		this.monsters[msg[x].Id] = monster;
-                    		this.UpdateMonsterPosition(id, xpos, ypos);
-                    	}
+/*Monsters*/        } else if (property === "CurrentTile.Monsters") {
 						
-                        var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
                         for (var x = 0; x < msg.length; ++x) {
                         	var monster = this.monsters[msg[x].Id];
                         	if (monster === undefined) {
@@ -279,50 +314,84 @@ View = (function () {
                             monster.direction = msg[x].Direction;
                             var status = msg[x].Status;
                             var newAnimation = false;
-								// if monster exists
-								if (this.monsters[msg[x].Id] !== undefined) {
-									//sprite = this.monsters[msg[x].Id];
-									this.UpdateMonsterPosition(msg[x].Id, xpos, ypos);
-									monster = this.monsters[msg[x].Id];
-									// if monster has changed state
-									if (monster.sprite.animations.currentAnim.name !== status) {
-										monster.sprite.animations.stop();
-										newAnimation = true;
-									}
-								} else /*Monster does not exist yet*/ {
-									this.PlaceMonster(msg[x].Id, xpos, ypos, monster.name, monster.direction);
-									monster = this.monsters[msg[x].Id];
-                            		newAnimation = true;
+
+							// if monster exists
+							if (this.monsters[msg[x].Id] != undefined) {
+								this.UpdateMonsterPosition(msg[x].Id, xpos, ypos);
+								monster = this.monsters[msg[x].Id];
+
+								// if monster has changed state
+								if (monster.sprite.animations.currentAnim.name !== status) {
+									newAnimation = true;
 								}
 
+							}
+							else /*Monster does not exist yet*/ {
+								this.PlaceMonster(msg[x].Id, xpos, ypos, monster.name, monster.direction);
+                            	newAnimation = true;
+							}
+
 							if (newAnimation) {
-								if (monster.direction.X === "LEFT") {
-									monster.sprite.anchor.setTo(1, 0);
-									monster.sprite.scale.x = -2; //flipped
-									monster.sprite.animations.add(status,
-									monsterMap[monster.name + "/" + status + "_" + (monster.direction.Y != "NONE" ? monster.direction.Y + "_" : "") + "RIGHT"],
-										5, true);
-								}
-								else {
-									monster.sprite.scale.x = 2;
-									monster.sprite.animations.add(status,
-									monsterMap[monster.name + "/" + status + "_" + (monster.direction.Name)],
-									5, true);
-								}
-								monster.sprite.animations.play(status);
-							} // end if newAnimation
+								this.UpdateMonsterStatus(msg[x].Id, status);
+							}
+
                         } // end for each monster
                     } // end if monster property
-                    else if (property === "CurrentTile.Buildings") {
+/*Buildings*/         else if (property === "CurrentTile.Buildings") {
+						// this is not right and needs to be changed. this was just to get something on the screen
                     	if (msg[0] !== undefined) {
-                    		var tileSize = Math.min(this.height / this.squaresHigh, this.width / this.squaresWide);
                     		var positions = msg[0].Position.split(",");
                     		var xpos = parseFloat(positions[0]);
                     		var ypos = parseFloat(positions[1]);
-                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY / 2,
+                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY * 3 / 4,
 										"objects", "Fire");
                     	}
                     } // end if building property
+/*updates*/		  else if (property === "updates") {
+                    	for (var x = 0; x < msg.length; ++x) {
+                    		var update = msg[x];
+                    		var type = update.UType;
+                    		var id = update.ObjectId;
+
+	  /*PlaceMonster*/     	if ("PlaceMonster" === type) {
+	                   			if (this.monsters[id] == undefined) 
+	  								this.PlaceMonster(id, update.PosX, update.PosY, update.Type, update.Direction, update.State);
+	  /*Move*/  			} else if ("Move" === type) {
+                    			if(this.monsters[id] != undefined) {
+                    				this.UpdateMonsterPosition(id, update.MoveX, update.MoveY);
+                    			}
+	  /*MonsterState*/  	} else if ("MonsterState" === type) {
+                    			this.UpdateMonsterStatus(id, update.State);
+	  /*Remove*/  			} else if ("Remove" === type) {
+	                   			if (this.monsters[id] !== "undefined") {
+                    				this.RemoveMonster(id);
+                    			}
+                    			else {
+									// remove building
+                    			}
+	  /*Health*/			} else if ("Health" === type) {
+
+	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
+
+	  /*GameOver*/  		} else if ("GameOver" === type) {
+                    			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
+                    			alert("Game Over");
+	  /*BuildingState*/		} else if ("BuildingState" === type) {
+
+	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
+
+	  /*RemoveResource*/	} else if ("RemoveResourceFromSquare" === type) {
+
+	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
+
+	  /*Upgrade*/    		} else if ("Upgrade" === type) {
+
+	  /*World*/   			} else if ("World" === type) {
+
+                    		}
+
+                    	}
+                    }
                 } // end if
             } // end func
         },

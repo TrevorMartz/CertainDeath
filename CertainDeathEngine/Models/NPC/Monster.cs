@@ -262,11 +262,13 @@ namespace CertainDeathEngine.Models.NPC
 			Position = new Point(
 				Position.X + distance.X,
 				Position.Y + distance.Y);
-            this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
-		    {
-                MoveX = Position.X,
-                MoveY = Position.Y
-		    });
+
+			if(Tile == Tile.World.CurrentTile)
+				this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
+				{
+					MoveX = Position.X,
+					MoveY = Position.Y
+				});
 
 			// If they have moved to another tile,
 			if (Position.X < 0 || Position.X >= Tile.TOTAL_PIXELS ||
@@ -310,19 +312,30 @@ namespace CertainDeathEngine.Models.NPC
                 else
                 {
                     Tile.RemoveObject(this);
-                    this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
+					if(this.Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new RemoveUpdateMessage(this.Id));
                     Tile = tile;
                     tile.AddObject(this);
-                    this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
-                    {
-                        MoveX = Position.X,
-                        MoveY = Position.Y
-                    });
                     Position = new Point(
                         Position.X + positionChange.X,
                         Position.Y + positionChange.Y);
+					if (this.Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new PlaceMonsterUpdateMessage(Id)
+						{
+							PosX = Position.X,
+							PosY = Position.Y,
+							Type = Name,
+							Direction = Direction,
+							State = Status
+						});
+
+					//this.Tile.World.AddUpdateMessage(new MoveUpdateMessage(this.Id)
+					//{
+					//	MoveX = Position.X,
+					//	MoveY = Position.Y
+					//});
                     //todo: i dont know how to send a move update, so I will send a whole world update insteac
-                    this.Tile.World.AddUpdateMessage(new WorldUpdateMessage());
+                    //this.Tile.World.AddUpdateMessage(new WorldUpdateMessage());
                 }
             }
 		}
