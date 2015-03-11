@@ -113,7 +113,7 @@ namespace CertainDeathEngine.Models.NPC
 		        {
                     Tile.World.SquareClicks.Remove(monsterSquare);
                     this.HealthPoints -= 1000;
-                    this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
+                    this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(this.Id)
                     {
                         HealthPoints = this.HealthPoints
                     });
