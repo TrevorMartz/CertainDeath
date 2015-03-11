@@ -267,6 +267,13 @@ View = (function () {
                 			monster.sprite.animations.play(status);
                 	}
 
+                	this.PlaceBuilding = function (id, xpos, ypos, type) {
+
+                		var sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY / 2,
+									"objects", "Fire");
+                		this.buildings[i] = sprite;
+                	}
+
 /*Squares*/        if (property === "CurrentTile.Squares") {
 
                         // Make the board snap to a good scale so that the images still look crisp
@@ -354,14 +361,7 @@ View = (function () {
 /*Buildings*/         else if (property === "CurrentTile.Buildings") {
 						// this is not right and needs to be changed. this was just to get something on the screen
                     	if (msg[0] !== undefined) {
-                    		var positions = msg[0].Position.split(",");
-                    		var xpos = parseFloat(positions[0]);
-                    		var ypos = parseFloat(positions[1]);
-
-                    		if (this.fireOfLife.sprite && this.fireOfLife.sprite.destroy)
-                    		    this.fireOfLife.sprite.destroy();
-                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY * 3 / 4,
-										"objects", "Fire");
+                    		
                     	}
                     } // end if building property
 /*updates*/		  else if (property === "updates") {
@@ -389,7 +389,7 @@ View = (function () {
 	  /*Health*/			} else if ("Health" === type) {
 
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
-                                //this.resources[update["ResourceType"]]
+	                            //this.resources[update["ResourceType"]] += update["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			alert("Game Over");
@@ -406,7 +406,6 @@ View = (function () {
 	  /*World*/   			} else if ("World" === type) {
 
                     		}
-
                     	}
                     }
                 } // end if
@@ -495,7 +494,7 @@ View = (function () {
         };
         this.game = game;
         this.resourceTypes = ["COAL", "IRON", "WOOD", "CORN", "STONE"];
-        this.subscribesTo = ["Player.Resources"];
+        this.subscribesTo = ["Player.Resources", "updates"];
         this.sprites = Array();
         this.resourceText = Array();
     }
@@ -543,8 +542,16 @@ View = (function () {
             }
         },
         onmessage: {
-            value: function (msg) {
-                this.values = msg;
+            value: function (msg, prop) {
+                if (prop == "updates") {
+                    for (var x in msg) {
+                        if (msg[x].UType && msg[x].UType == "AddResourceToPlayer") {
+                            this.values[msg[x].ResourceType] += msg[x].Amount;
+                        }
+                    }
+                } else {
+                    this.values = msg;
+                }
             }
         }
     });
