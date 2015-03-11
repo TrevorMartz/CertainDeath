@@ -389,7 +389,7 @@ View = (function () {
 	  /*Health*/			} else if ("Health" === type) {
 
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
-
+                                //this.resources[update["ResourceType"]]
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			alert("Game Over");
