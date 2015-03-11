@@ -30,7 +30,7 @@ namespace CertainDeathEngine.DAL
             return Interlocked.Increment(ref _nextWorldId);
         }
 
-        public EngineInterface CreateGame()
+        public Game CreateGame()
         {
             Log.Debug("Creating new game");
             GameWorld world = CreateWorld();
@@ -43,7 +43,7 @@ namespace CertainDeathEngine.DAL
             return GetGameAndStartUpdateThread(world);
         }
 
-        public EngineInterface CreateGame(int worldId)
+        public Game CreateGame(int worldId)
         {
             Log.Debug("Loading existing world: " + worldId);
             GameWorld world = LoadWorld(worldId);
@@ -80,7 +80,7 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
+        private Game GetGameAndStartUpdateThread(GameWorld world)
         {
             Log.Debug("Starting an updater thread for world: " + world.Id);
 
