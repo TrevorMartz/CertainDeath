@@ -182,14 +182,19 @@ View = (function () {
         },
         destroy: {
             value: function () {
-                //FIXME: I think the foreach here will not behave as expected
                 for (var x = 0; x < this.tiles.length; ++x) {
-                    if(this.tiles[x].destroy)
-                        this.tiles[x].destroy();
+                    for (var y = 0; y < this.tiles[x].length; ++y) {
+                        if(this.tiles[x][y] && this.tiles[x][y].destroy)
+                            this.tiles[x][y].destroy();
+                        delete this.tiles[x][y];
+                    }
                 }
                 for (var x = 0; x < this.resources.length; ++x) {
-                    if(this.resources[x].destroy)
-                        this.resources[x].destroy();
+                    for (var y = 0; y < this.resources.length; ++y) {
+                        if(this.resources[x][y] && this.resources[x][y].destroy)
+                            this.resources[x][y].destroy();
+                        delete this.resources[x][y];
+                    }
                 }
                 if (this._placeState) {
                     this._placeState.sprite.destroy();
@@ -563,6 +568,114 @@ View = (function () {
         }
     });
 
+    function TileNavigator(game, server, x, y, width, height) {
+        Screen.call(this, x, y, width, height);
+        this.subscribesTo = ["UNKNOWN"];
+        this.game = game;
+        this.server = server;
+        this.mainGameScreen = new MainGameScreen(game, server, x + 35, y + 35, width - 75, height - 75);
+        this.server.register(this.mainGameScreen);
+    }
+
+    TileNavigator.prototype = Object.create(Screen.prototype, {
+        create: {
+            value: function () {
+                this.disposables = [];
+
+                Screen.prototype.create.call(this);
+                this.mainGameScreen.create();
+                var sprite;
+                var g = this.game.add.graphics(this.x, this.y);
+                g.beginFill(0xFF9900);
+                g.moveTo(0, this.height / 2);
+                g.lineTo(30, this.height / 2 + 30);
+                g.lineTo(30, this.height / 2 - 30);
+                g.lineTo(0, this.height / 2);
+                g.endFill();
+                sprite = this.game.add.sprite(0, 0);
+                sprite.addChild(g);
+                sprite.inputEnabled = true;
+                sprite.events.onInputDown.add(this.onclick, { value: "left", context: this });
+                sprite.input.useHandCursor = true;
+                this.disposables.push(g);
+                this.disposables.push(sprite);
+
+                g.beginFill(0xFF9900);
+                g.moveTo(this.width, this.height / 2);
+                g.lineTo(this.width - 30, this.height / 2 + 30);
+                g.lineTo(this.width - 30, this.height / 2 - 30);
+                g.lineTo(this.width, this.height / 2);
+                g.endFill();
+                sprite = this.game.add.sprite(0, 0);
+                sprite.addChild(g);
+                sprite.inputEnabled = true;
+                sprite.events.onInputDown.add(this.onclick, { value: "right", context: this });
+                sprite.input.useHandCursor = true;
+                this.disposables.push(g);
+                this.disposables.push(sprite);
+
+                g = this.game.add.graphics(this.x, this.y);
+                g.beginFill(0xFF9900);
+                g.moveTo(this.width / 2, 0);
+                g.lineTo(this.width / 2 + 30, 30);
+                g.lineTo(this.width / 2 - 30, 30);
+                g.lineTo(this.width / 2, 0);
+                sprite = this.game.add.sprite(0, 0);
+                sprite.addChild(g);
+                sprite.inputEnabled = true;
+                sprite.events.onInputDown.add(this.onclick, { value: "top", context: this });
+                sprite.input.useHandCursor = true;
+                this.disposables.push(g);
+                this.disposables.push(sprite);
+
+                g = this.game.add.graphics(this.x, this.y);
+                g.beginFill(0xFF9900);
+                g.moveTo(this.width / 2, this.height);
+                g.lineTo(this.width / 2 + 30, this.height - 30);
+                g.lineTo(this.width / 2 - 30, this.height - 30);
+                g.lineTo(this.width / 2, this.height);
+                sprite = this.game.add.sprite(0, 0);
+                sprite.addChild(g);
+                sprite.inputEnabled = true;
+                sprite.events.onInputDown.add(this.onclick, { value: "bottom", context: this });
+                sprite.input.useHandCursor = true;
+                this.disposables.push(g);
+                this.disposables.push(sprite);
+
+            }
+        },
+        update: {
+            value: function () {
+                Screen.prototype.update.call(this);
+                this.mainGameScreen.update();
+            }
+        },
+        destroy: {
+            value: function () {
+                Screen.prototype.destroy(this);
+                this.mainGameScreen.destroy();
+                this.g.destroy();
+                if (this.disposables) {
+                    for (var x = 0; x < this.disposables.length; ++x) {
+                        this.disposables[x].destroy();
+                    }
+                }
+            }
+        },
+        onmessage: {
+            value: function (msg) {
+                // TODO
+            }
+        },
+        onclick: {
+            value: function (click) {
+                this.context.mainGameScreen.destroy();
+                this.context.mainGameScreen = new MainGameScreen(this.context.game, this.context.server, this.context.x + 35, this.context.y + 35, this.context.width - 75, this.context.height - 75)
+                alert(this.value);
+            }
+        }
+    });
+
     return {
         MainGameScreen: MainGameScreen,
         LoadingScreen: LoadingScreen,
@@ -572,6 +685,7 @@ View = (function () {
         ButtonScreen: ButtonScreen,
         Screen: Screen,
         TextScreen: TextScreen,
+        TileNavigator: TileNavigator,
         current: new Screen(0, 0, 100, 100)
     }
 })();
