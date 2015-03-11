@@ -220,6 +220,8 @@ View = (function () {
                 		var monster = this.monsters[id];
                 		monster.sprite.x = Math.round(xpos / 32 * tileSize + this.boardX + monster.sprite.width / 2 * (monster.direction.X === "LEFT" ? 1 : -1) + (monster.direction.X == undefined ? 0 : (monster.direction.X === "LEFT" ? 15 : -15)));
                 		monster.sprite.y = Math.round(ypos / 32 * tileSize + this.boardY - monster.sprite.height / 2 + (monster.direction.Y === "UP" ? 25 : 0));
+                		monster.g.x = monster.sprite.x;
+                		monster.g.y = monster.sprite.y;
                 		this.monsters[id] = monster;
                 	}
 
@@ -229,6 +231,20 @@ View = (function () {
                 		monster.direction = direction;
                 		monster.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX, ypos / 32 * tileSize + this.boardY, "monsters");
                 		monster.status = status;
+                		monster.x = xpos;
+                		monster.y = ypos;
+                		monster.g = game.add.graphics(xpos, ypos - 7);
+
+                		monster.drawHealth = function (max, current) {
+                		    monster.g.clear();
+                		    monster.g.beginFill(0xFFFFFF);
+                		    monster.g.drawRect(0, 0, this.sprite.width, 5);
+                		    monster.g.endFill();
+                		    monster.g.beginFill(0xFF0000);
+                		    monster.g.drawRect(1, 1, (this.sprite.width - 2) * (current/max), 3);
+                		    monster.g.endFill();
+                		}
+                		monster.drawHealth(1,1);
                 		this.monsters[id] = monster;
                 		this.UpdateMonsterPosition(id, xpos, ypos);
                 		this.UpdateMonsterStatus(id, status);
@@ -387,7 +403,9 @@ View = (function () {
 									// remove building
                     			}
 	  /*Health*/			} else if ("Health" === type) {
-
+	                          if (this.monsters[id]) {
+	                              this.monsters[id].drawHealth(update.HealthPoints, update.MaxHealthPoints);
+	                          }
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
 	                            //this.resources[update["ResourceType"]] += update["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
