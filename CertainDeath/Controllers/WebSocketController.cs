@@ -122,7 +122,7 @@ namespace CertainDeath.Controllers
                 {
                     try
                     {
-                        Thread.Sleep(32);
+                        Thread.Sleep(32); // was 32 lets try every second instead
                         Queue<UpdateMessage> tempUpdates;
                         lock (((Game) GameInstance).World.Updates)
                         {
