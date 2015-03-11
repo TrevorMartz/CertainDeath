@@ -37,40 +37,59 @@ namespace CertainDeathEngine
             Log.Debug("Adding new game thread");
             lock (_threads)
             {
+                Log.Debug("inside the threads lock");
                 if (_threads.ContainsKey(worldId))
                 {
+                    Log.Debug("update thread for world is already running.");
                     if (_threads[worldId].IsAlive)
                     {
+                        Log.Debug("returning cause it is alive");
                         // thread is already there and running
                         return;
                     }
                     else
                     {
+                        Log.Debug("Updater thread exists but is not alive, aborting bad thread " + _threads[worldId].ManagedThreadId);
                         _threads[worldId].Abort();
+                        Log.Debug("Keeping new thread");
                         _threads[worldId] = thread;
                     }
                 }
                 else
                 {
+                    Log.Debug("Keeping new thread");
                     _threads[worldId] = thread;
                 }
+                Log.Debug("starting the thread");
                 _threads[worldId].Start();
             }
         }
 
         public void RemoveGameThread(int worldId)
         {
+            Log.Debug("Removing game thread");
             lock (_threads)
             {
+                Log.Debug("inside the threads lock");
                 if (_threads.ContainsKey(worldId))
                 {
+                    Log.Debug("update thread for world is already running. aborting the thread "+ _threads[worldId].ManagedThreadId);
                     _threads[worldId].Abort();
+                    Log.Debug("removing the thread from the collection.");
                     _threads.Remove(worldId);
                 }
                 else
                 {
-                    // it wasnt there.
+                    Log.Debug("There is no thread to remove.");
                 }
+            }
+        }
+
+        public bool HasWorld(int worldId)
+        {
+            lock (_threads)
+            {
+                return (_threads.ContainsKey(worldId));
             }
         }
 

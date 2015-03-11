@@ -18,7 +18,9 @@ namespace CertainDeathEngine
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly IGameDAL _gameDal = new EFGameDAL();
+        // Tick count should be 16 for 60 FPS but this is a web game so IDK
         const int FRAME_TICK_COUNT = 16;
+        //const int FRAME_TICK_COUNT = 200;
         public bool Running;
         private readonly Game _game;
         private int _lastTimeInMillis;
@@ -38,7 +40,12 @@ namespace CertainDeathEngine
             _updateCount = 1;
 
             _lastTimeInMillis = GetCurrentTime() - FRAME_TICK_COUNT - FRAME_TICK_COUNT;
-            while (Running && (_lastTimeInMillis - _game.World.TimeLastQueried) > 3 * 60 * 100 * 1000) // three minutes
+            Log.Debug("Update thread started at " + _lastTimeInMillis);
+
+            // Here we can stop the updater after the world has not been queried.
+            // This may not be needed since we are using websockets and know when a disconnect occurs
+
+            while (Running)// && (_lastTimeInMillis - _game.World.TimeLastQueried) > 3 * 60 * 100 * 1000) // three minutes  
             {
                 while (GetCurrentTime() < _lastTimeInMillis + FRAME_TICK_COUNT)
                 {
@@ -58,8 +65,10 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
+            //Log.Debug("Process delta time for world " + this._game.World.Id);
             lock (_game.World)
             {
+                //Log.Debug("Got world lock - for monsters");
                 // update monsters
                 foreach (Tile t in _game.World.Tiles)
                 {
@@ -73,6 +82,7 @@ namespace CertainDeathEngine
 
             lock (_game.World)
             {
+                //Log.Debug("Got world lock - for clicks");
                 // process clicks
                 Queue<RowColumnPair> tempClicks;
                 lock (_game.World.SquareClicks)
@@ -104,11 +114,13 @@ namespace CertainDeathEngine
             }
 
             // add spawns
+            //Log.Debug("Running monster generator");
             _game.MonsterGenerator.Update(delta);
 
             // save everything
             if ((_updateCount % 1000) == 0) // about one minute
             {
+                //Log.Debug("Saving the world");
                 _gameDal.SaveGame(_game);
             }
         }

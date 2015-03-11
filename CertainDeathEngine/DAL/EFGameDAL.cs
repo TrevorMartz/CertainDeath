@@ -83,6 +83,14 @@ namespace CertainDeathEngine.DAL
         private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
         {
             Log.Debug("Starting an updater thread for world: " + world.Id);
+
+            if (UpdateManager.Instance.HasWorld(world.Id))
+            {
+                Log.Debug("Updater is already running.  Ill return that");
+                return new Game(world);
+            }
+
+            Log.Debug("Really starting the thread now");
             Game g = new Game(world);
 
             // TODO: move the thread spawn to a better location
