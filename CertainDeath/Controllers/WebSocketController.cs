@@ -1,7 +1,6 @@
 ﻿using CertainDeathEngine;
 using CertainDeathEngine.DAL;
 using Microsoft.Web.WebSockets;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -45,23 +44,21 @@ namespace CertainDeath.Controllers
 
         public class GameWebSocketHandler : WebSocketHandler
         {
-            private IGameDAL _gameDal;
             private IUserDAL _userDal;
             private IStatisticsDAL _statisticsDal;
             protected int GameWorldId;
-            protected EngineInterface GameInstance;
+            protected Game GameInstance;
             private Thread _thisEndOfTheWebSocketTread;
-            private bool Running;
+            private bool _running;
 
             public GameWebSocketHandler(IGameDAL gameDal, IUserDAL userDal, IStatisticsDAL statisticsDal, int worldId)
             {
                 Log.Debug("Created GameWebSocketHandler for world " + worldId);
-                _gameDal = gameDal;
                 _userDal = userDal;
                 _statisticsDal = statisticsDal;
-                this.GameWorldId = worldId;
-                this.GameInstance = _gameDal.CreateGame(GameWorldId);
-                Running = false;
+                GameWorldId = worldId;
+                GameInstance = gameDal.CreateGame(GameWorldId);
+                _running = false;
             }
 
             public override void OnMessage(string message)
@@ -106,7 +103,7 @@ namespace CertainDeath.Controllers
 
             public override void OnOpen()
             {
-                Running = true;
+                _running = true;
                 _thisEndOfTheWebSocketTread = new Thread(SendUpdates);
                 _thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
                 _thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
@@ -118,20 +115,21 @@ namespace CertainDeath.Controllers
                 Log.Debug("Sending whole world");
                 string jsonString = GameInstance.ToJSON();
                 Send(jsonString);
-                while (WebSocketContext.IsClientConnected && Running)
+
+                while (WebSocketContext.IsClientConnected && _running)
                 {
                     try
                     {
-                        Thread.Sleep(32); // was 32 lets try every second instead
+                        // Sleep for 32 millis, about 30 FPS
+                        Thread.Sleep(32);
                         Queue<UpdateMessage> tempUpdates;
-                        lock (((Game) GameInstance).World.Updates)
+                        lock (GameInstance.World.Updates)
                         {
-                            tempUpdates = new Queue<UpdateMessage>(((Game) GameInstance).World.Updates);
-                            ((Game) GameInstance).World.Updates.Clear();
+                            tempUpdates = new Queue<UpdateMessage>(GameInstance.World.Updates);
+                            GameInstance.World.Updates.Clear();
                         }
 
                         bool sendAll = false;
-                        //Trace.WriteLine("update count: " + tempUpdates.Count);
                         Log.Debug("there are " + tempUpdates.Count + " updates");
                         if (tempUpdates.Count > 0)
                         {
@@ -141,7 +139,7 @@ namespace CertainDeath.Controllers
                             {
                                 if (m.GetType() == typeof(GameOverUpdateMessage) || m is GameOverUpdateMessage)
                                 {
-                                    Running = false;
+                                    _running = false;
                                     GameInstance.GameOver();
                                 }
                                 if (m.GetType() != typeof(WorldUpdateMessage) || !(m is WorldUpdateMessage))
@@ -158,10 +156,7 @@ namespace CertainDeath.Controllers
                             sb.Append("]}");
 
                             jsonString = sb.ToString();
-
-                            // comment the next line out
-                            //sendAll = true;
-
+                            
                             if (sendAll)
                             {
                                 jsonString = GameInstance.ToJSON();
@@ -169,13 +164,12 @@ namespace CertainDeath.Controllers
 
                             // send it
                             Log.Debug(jsonString);
-                            //Trace.WriteLine(jsonString);
                             Send(jsonString);
-                        } // if tempUpdates > 0
+                        }
                     }
                     catch (Exception e)
                     {
-                        Log.Error("Error on the listening thread: " + e.Message);
+                        Log.Error("Error on the listening thread: ", e);
                     }
                 }
                 UpdateManager.Instance.RemoveGameThread(GameWorldId);
@@ -183,7 +177,7 @@ namespace CertainDeath.Controllers
 
             public override void OnClose()
             {
-                Running = false;
+                _running = false;
                 //_thisEndOfTheWebSocketTread.Abort();
                 Log.Debug("thisEndOfTheWebSocketTread for world " + GameWorldId + " is aborting");
                 Log.Debug("Connection closed");
