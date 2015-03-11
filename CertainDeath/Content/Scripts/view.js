@@ -389,7 +389,7 @@ View = (function () {
 	  /*Health*/			} else if ("Health" === type) {
 
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
-                                //this.resources[update["ResourceType"]]
+	                            //this.resources[update["ResourceType"]] += update["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			alert("Game Over");
@@ -495,7 +495,7 @@ View = (function () {
         };
         this.game = game;
         this.resourceTypes = ["COAL", "IRON", "WOOD", "CORN", "STONE"];
-        this.subscribesTo = ["Player.Resources"];
+        this.subscribesTo = ["Player.Resources", "updates"];
         this.sprites = Array();
         this.resourceText = Array();
     }
@@ -543,8 +543,16 @@ View = (function () {
             }
         },
         onmessage: {
-            value: function (msg) {
-                this.values = msg;
+            value: function (msg, prop) {
+                if (prop == "updates") {
+                    for (var x in msg) {
+                        if (msg[x].UType && msg[x].UType == "AddResourceToPlayer") {
+                            this.values[msg[x].ResourceType] += msg[x].Amount;
+                        }
+                    }
+                } else {
+                    this.values = msg;
+                }
             }
         }
     });
