@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using CertainDeathEngine.Models.NPC.Buildings;
 using System;
 using System.Collections.Generic;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeath.Controllers
@@ -70,7 +71,7 @@ namespace CertainDeath.Controllers
 
                 if (result["event"] == "click")
                 {
-                    GameInstance.SquareClicked((float)result.x, (float)result.y);
+                    GameInstance.SquareClicked(new RowColumnPair((int)(float)result.y, (int)(float)result.x));
                 }
                 else if (result["event"] == "placeBuilding")
                 {
@@ -128,6 +129,7 @@ namespace CertainDeath.Controllers
                         }
 
                         bool sendAll = false;
+                        //Trace.WriteLine("update count: " + tempUpdates.Count);
                         Log.Debug("there are " + tempUpdates.Count + " updates");
                         if (tempUpdates.Count > 0)
                         {
@@ -165,7 +167,7 @@ namespace CertainDeath.Controllers
 
                             // send it
                             Log.Debug(jsonString);
-                            Trace.WriteLine(jsonString);
+                            //Trace.WriteLine(jsonString);
                             Send(jsonString);
                         } // if tempUpdates > 0
                     }

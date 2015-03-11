@@ -27,7 +27,7 @@ namespace CertainDeath.Controllers
             _statisticsDal = statisticsDal;
         }
 
-        [FacebookAuthorize("email", "user_photos")]
+        [FacebookAuthorize("user_photos")]
         public async Task<ActionResult> Index(FacebookContext context)
         {
             Log.Debug("Loading Index on HomeController");
@@ -35,7 +35,7 @@ namespace CertainDeath.Controllers
             {
                 Log.Debug("Authenticating with Facebook");
                 var facebookUser = await context.Client.GetCurrentUserAsync<MyAppUser>();
-                Log.Debug("Found user: " + facebookUser.Email);
+                Log.Debug("Found user: " + facebookUser.Id + " - " + facebookUser.Name);
 
                 Log.Debug("Loading CDUser");
                 var certainDeathUser = _userDal.GetGameUser(facebookUser);

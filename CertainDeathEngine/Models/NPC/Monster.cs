@@ -86,7 +86,7 @@ namespace CertainDeathEngine.Models.NPC
 
 		public Monster(Tile t, Point starting, Point goal, int speed, MonsterName name = MonsterName.STONE_GOLEM)
 		{
-			MaxHealthPoints = 1;
+			MaxHealthPoints = (new Random().Next(3)+1) * 50;
 			HealthPoints = MaxHealthPoints;
 			Tile = t;
 			Position = starting;

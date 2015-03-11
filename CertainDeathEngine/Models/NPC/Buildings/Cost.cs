@@ -13,15 +13,21 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     public class Cost
     {
         [JsonProperty]
-        public Dictionary<ResourceType, int> Costs { get; private set; }
+        public Dictionary<ResourceType, int> Costs { get; set; }
 
         public Cost()
         {
-            Costs = new Dictionary<ResourceType, int>();
-            foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
+            if (Costs == null)
             {
-                Costs.Add(type, 0);
+                Costs = new Dictionary<ResourceType, int>();
             }
+            //foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
+            //{
+            //    if (!Costs.ContainsKey(type))
+            //    {
+            //        Costs.Add(type, 0);
+            //    }
+            //}
         }
 
         public void SetCost(ResourceType type, int cost)

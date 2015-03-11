@@ -22,7 +22,7 @@ namespace CertainDeathEngine.DAL
 
         public CertainDeathUser CreateGameUser(MyAppUser fbUser)
         {
-            if (_users.Count(x => x.FBUser.Email.Equals(fbUser.Email)) == 0)
+            if (_users.Count(x => x.FBUser.Id.Equals(fbUser.Id)) == 0)
             {
                 CertainDeathUser newUser = new CertainDeathUser() { FBUser = fbUser, WorldId = -1 };
                 _users.Add(newUser);

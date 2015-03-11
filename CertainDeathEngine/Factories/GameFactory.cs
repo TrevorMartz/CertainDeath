@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC.Buildings;
+using CertainDeathEngine.Models.Resources;
 using log4net;
 using System;
 using System.Windows;
@@ -24,6 +25,7 @@ namespace CertainDeathEngine.Factories
         {
             Log.Debug("Trying to build a building of type : " + buildingType + " at position: " + position);
             Building building = null;
+            Cost cost = null;
             switch(buildingType)
             {
                 case BuildingType.TURRET:
@@ -33,20 +35,25 @@ namespace CertainDeathEngine.Factories
                     building = new Wall(World.CurrentTile, position) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_MINE:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_MINE, World.Player) { Id = GetNextId() };
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_MINE, 
+                        GameWorld.BuildingCostsForTheWorld[BuildingType.AUTO_HARVESTER_MINE], World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_QUARRY:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_QUARRY, World.Player) { Id = GetNextId() };
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_QUARRY,
+                        GameWorld.BuildingCostsForTheWorld[BuildingType.AUTO_HARVESTER_QUARRY], World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_FARM:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_FARM, World.Player) { Id = GetNextId() };
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_FARM,
+                        GameWorld.BuildingCostsForTheWorld[BuildingType.AUTO_HARVESTER_FARM], World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
-                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL, World.Player) { Id = GetNextId() };
+                    cost = new Cost();
+                    building = new AutoHarvester(World.CurrentTile, position, BuildingType.AUTO_HARVESTER_LUMBER_MILL,
+                        GameWorld.BuildingCostsForTheWorld[BuildingType.AUTO_HARVESTER_LUMBER_MILL], World.Player) { Id = GetNextId() };
                     break;
                 case BuildingType.FIRE_OF_LIFE: //fire of life does not have a case because it is only built once, in the constructor of the gameworld.
-                    Log.Error("You cant build a second Fire of Life");
-                    throw new Exception("You cant have another fire of life");
+                    Log.Error("You can't build a second Fire of Life");
+                    throw new Exception("You can't have another fire of life");
             }
             return building;
         }
