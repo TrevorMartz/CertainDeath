@@ -3,42 +3,45 @@
 @{
     ViewBag.Title = "LeaderBoard";
 }
+@Styles.Render("~/Content/css")
 
-<h2>LeaderBoard</h2>
+<div id="content">
+    <h2>LeaderBoard</h2>
 
-<section class="leaders">
+    <section class="leaders">
 
-    <table>
-        <thead>
-        <tr>
-            <th>Player</th>
-            <th>World</th>
-            <th>Date</th>
-            <th>Kills</th>
-            <th>Buildings</th>
-            <th>Time Survived</th>
-            <th>Fire Level</th>
-            <th>Resources Collected</th>
-        </tr>
-
-        </thead>
-        <tbody>
-            @foreach (var score in Model)
-            {
+        <table>
+            <thead>
                 <tr>
-                    <td>@score.UserId</td>
-                    <td>@score.WorldId</td>
-                    <td>@score.SaveDate</td>
-                    <td>@score.Kills</td>
-                    <td>@score.Buildings</td>
-                    <td>@score.Survived</td>
-                    <td>@score.FireLevel</td>
-                    <td>@score.TotalResources</td>
+                    <th>Player</th>
+                    <th>World</th>
+                    <th>Date</th>
+                    <th>Kills</th>
+                    <th>Buildings</th>
+                    <th>Time Survived</th>
+                    <th>Fire Level</th>
+                    <th>Resources Collected</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+
+            </thead>
+            <tbody>
+                @foreach (var score in Model)
+                {
+                    <tr>
+                        <td>@score.UserId</td>
+                        <td>@score.WorldId</td>
+                        <td>@score.SaveDate</td>
+                        <td>@score.Kills</td>
+                        <td>@score.Buildings</td>
+                        <td>@score.Survived</td>
+                        <td>@score.FireLevel</td>
+                        <td>@score.TotalResources</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
 
 
-</section>
+    </section>
+</div>
