@@ -73,6 +73,7 @@ namespace CertainDeathEngine.Models
 		    t.World = this;
             HasEnded = false;
             Player = new Player();
+            
 			this.CurrentTile = t;
 			this.Id = worldId;
 			Tiles = new List<Tile>();
