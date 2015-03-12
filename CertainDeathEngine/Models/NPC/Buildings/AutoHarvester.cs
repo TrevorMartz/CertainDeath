@@ -58,7 +58,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     if (rcp != null)
                     {
                         Square s = Tile.Squares[rcp.Row, rcp.Column];
-                        if (s != null)
+                        if (s != null && s.Resource != null)
                         {
                             this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                                                              {
@@ -69,18 +69,19 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                                              {
                                                                  Amount = toGather
                                                              });
-                            if (s.Resource != null)
-                            {
-                                Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
-                                                            {
-                                                                Row = rcp.Row.ToString(),
-                                                                Column = rcp.Column.ToString()
-                                                            });
-                            }
+                            
                             ResourceType type = s.Resource.Type;
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
                             Player.AddResource(type, gathered);
+                            if (s.Resource == null)
+                            {
+                                Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                                {
+                                    Row = rcp.Row.ToString(),
+                                    Column = rcp.Column.ToString()
+                                });
+                            }
                         }}
                         else
                         {
