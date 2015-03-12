@@ -120,7 +120,7 @@ namespace CertainDeathEngine
 
             // add spawns
             //Log.Debug("Running monster generator");
-            _game.MonsterGenerator.Update(delta * delta);
+            _game.MonsterGenerator.Update((int)Math.Pow(delta, 1.01));
 
             // save everything
             if ((_updateCount % 1000) == 0) // about one minute
