@@ -284,6 +284,7 @@
     <Content Include="Views\Home\_HomePage.cshtml" />
     <Content Include="Views\Home\StartScreen.cshtml" />
     <Content Include="Views\Shared\_HowToPlay.cshtml" />
+    <Content Include="Views\Shared\_GameOver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
