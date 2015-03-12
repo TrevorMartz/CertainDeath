@@ -362,8 +362,8 @@ View = (function () {
                 		this.buildings[id].sprite.anchor.setTo(0.5, 0.5);
 						if (!this.buildings[id].sprite.offset) {
 							this.buildings[id].sprite.offset = true;
-							this.buildings[id].sprite.x += this.buildings[id].width / 2;
-							this.buildings[id].sprite.y += this.buildings[id].height/2;
+							this.buildings[id].sprite.x += this.buildings[id].sprite.width / 2;
+							this.buildings[id].sprite.y += this.buildings[id].sprite.height/2;
 						}
 						this.buildings[id].sprite.angle = rotation;
                 	}
@@ -680,6 +680,9 @@ View = (function () {
                         if (msg[x].UType && msg[x].UType == "AddResourceToPlayer") {
                             this.values[msg[x].ResourceType] += msg[x].Amount;
                         }
+                        else if(msg[x].UType && msg[x].UType == "RemoveResourceFromPlayer") {
+                        	this.values[msg[x].ResourceType] -= msg[x].Amount;
+						}
                     }
                 } else {
                     this.values = msg;
