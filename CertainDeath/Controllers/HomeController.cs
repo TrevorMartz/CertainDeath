@@ -110,7 +110,7 @@ namespace CertainDeath.Controllers
 
         public ActionResult Leaderboard()
         {
-                return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
+            return PartialView("_LeaderBoard", _statisticsDal.GetHighScores(10));
         }
 
         public ActionResult HowToPlay()

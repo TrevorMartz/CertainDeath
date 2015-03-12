@@ -54,56 +54,58 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             {
                 while (toGather > 0)
                 {
-                    Square s = FindGatherableSquare();
-                    if (s != null)
+                    RowColumnPair rcp = FindGatherableSquare();
+                    if (rcp != null)
                     {
-                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                        Square s = Tile.Squares[rcp.Row, rcp.Column];
+                        if (s != null)
                         {
-                            ResourceType = s.Resource.Type.ToString(),
-                            Amount = toGather
-                        });
-                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
+                            this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                                                             {
+                                                                 ResourceType = s.Resource.Type.ToString(),
+                                                                 Amount = toGather
+                                                             });
+                            this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
+                                                             {
+                                                                 Amount = toGather
+                                                             });
+                            if (s.Resource != null)
+                            {
+                                Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                                                            {
+                                                                Row = rcp.Row.ToString(),
+                                                                Column = rcp.Column.ToString()
+                                                            });
+                            }
+                            ResourceType type = s.Resource.Type;
+                            int gathered = s.GatherResource(toGather);
+                            toGather -= gathered;
+                            Player.AddResource(type, gathered);
+                        }}
+                        else
                         {
-                            Amount = toGather
-                        });
-                        ResourceType type = s.Resource.Type;
-                        int gathered = s.GatherResource(toGather);
-                        toGather -= gathered;
-                        Player.AddResource(type, gathered);
-                    }
-                    else
-                    {
-                        State = HarvesterState.IDLE;
-                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                        {
-                            State = HarvesterState.IDLE.ToString()
-                        });
-                        return;
-                    }
+                            State = HarvesterState.IDLE;
+                            this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+                                                             {
+                                                                 State = HarvesterState.IDLE.ToString()
+                                                             });
+                            return;
+                        }
+                    
                 }
             }
         }
 
-        private Square FindGatherableSquare()
+        private RowColumnPair FindGatherableSquare()
         {
-            int row1 = (int)TilePosition.Y - GatherRange;
-            if(row1 < 0)
+            for (int row = Math.Max(0, (int)TilePosition.Y); row < Math.Min((int)TilePosition.Y + GatherRange, 20); row++)
             {
-                row1 = 0;
-            }
-            int col1 = (int)TilePosition.X - GatherRange;
-            if(col1 < 0)
-            {
-                col1 = 0;
-            }
-            for (int row = row1; row < TilePosition.Y + GatherRange; row++)
-            {
-                for (int col = col1; col < TilePosition.X + GatherRange; col++)
+                for (int col = Math.Max(0,(int)TilePosition.X); col < Math.Min((int)TilePosition.X + GatherRange, 20); col++)
                 {
                     Square s = Tile.Squares[row, col];
                     if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
                     {
-                        return s;
+                        return new RowColumnPair(row, col);
                     }
                 }
             }

@@ -29,13 +29,13 @@ namespace CertainDeathEngine.DAL
             return Interlocked.Increment(ref _nextWorldId);
         }
 
-        public EngineInterface CreateGame()
+        public Game CreateGame()
         {
             GameWorld world = CreateWorld();
             return GetGameAndStartUpdateThread(world);
         }
 
-        public EngineInterface CreateGame(int worldId)
+        public Game CreateGame(int worldId)
         {
             GameWorld world = LoadWorld(worldId);
             if (world.HasEnded)
@@ -68,7 +68,7 @@ namespace CertainDeathEngine.DAL
             }
         }
 
-        private EngineInterface GetGameAndStartUpdateThread(GameWorld world)
+        private Game GetGameAndStartUpdateThread(GameWorld world)
         {
             Game g = new Game(world);
 

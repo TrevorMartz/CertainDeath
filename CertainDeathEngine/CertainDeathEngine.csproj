@@ -97,7 +97,6 @@
     <Compile Include="DAL\BasicGameDAL.cs" />
     <Compile Include="DAL\IGameDAL.cs" />
     <Compile Include="DAL\IUserDAL.cs" />
-    <Compile Include="EngineInterface.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Models\GameObject.cs" />

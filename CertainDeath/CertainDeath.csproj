@@ -190,11 +190,9 @@
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\AUTO_HARVESTER_FARM.png" />
     <Content Include="Content\Images\GRASS1.png" />
     <Content Include="Content\Images\GRASS3.png" />
-    <Content Include="Content\Images\GunTurret.png" />
-    <Content Include="Content\Images\Lumbermill.png" />
-    <Content Include="Content\Images\Mine.png" />
     <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
@@ -203,9 +201,7 @@
     <Content Include="Content\Images\GRASS2.png" />
     <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
-    <Content Include="Content\Images\Quarry.png" />
     <Content Include="Content\Images\SAND.png" />
-    <Content Include="Content\Images\SAND1.png" />
     <Content Include="Content\Images\Shop.gif" />
     <Content Include="Content\Images\ShopButton.gif" />
     <Content Include="Content\Images\ShopButton.png" />
@@ -215,9 +211,12 @@
     <Content Include="Content\Images\GRASS_old.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\spritesheet2.png" />
+    <Content Include="Content\Images\spritesheet3.png" />
     <Content Include="Content\Images\STONE.png" />
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
+    <Content Include="Content\Images\TURRET.png" />
+    <Content Include="Content\Images\WALL.png" />
     <Content Include="Content\Images\WOOD.png" />
     <Content Include="Content\Scripts\dom-ui-linkup.js" />
     <Content Include="Content\Scripts\game.js" />
@@ -242,6 +241,7 @@
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.ttf" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.woff" />
     <Content Include="Content\Images\monsters.json" />
+    <Content Include="Content\Images\spritesheet3.json" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -279,9 +279,9 @@
     <Content Include="Views\Admin\_AdminUpdateThreads.cshtml" />
     <Content Include="Views\Admin\_AdminUsers.cshtml" />
     <Content Include="Views\Admin\_AdminUserView.cshtml" />
-    <Content Include="Views\Home\_HowToPlay.cshtml" />
     <Content Include="Views\Home\_HomePage.cshtml" />
     <Content Include="Views\Home\StartScreen.cshtml" />
+    <Content Include="Views\Shared\_HowToPlay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

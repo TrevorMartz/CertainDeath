@@ -44,7 +44,7 @@ function makeMonsterMap() {
 
 function preload () {
     // download all sprites
-    game.load.atlas("objects", "/Content/Images/spritesheet2.png", "/Content/Images/spritesheet2.json");
+    game.load.atlasJSONHash("objects", "/Content/Images/spritesheet3.png", "/Content/Images/spritesheet3.json");
     //game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
     game.load.atlasJSONHash("monsters", "/Content/Images/monsters.png", "/Content/Images/monsters.json");
 	//server = new Server("", onerror, onclose);
@@ -64,6 +64,7 @@ function create () {
         shop,
         new View.InventoryBar(game, 84, 10, game.width - 20 - 84, 32*2)
     ];
+    mgw = nav.mainGameScreen;
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
     Server.register(View.current);

@@ -1,15 +1,12 @@
-﻿using CertainDeathEngine.Models;
+﻿using CertainDeathEngine.DAL;
+using CertainDeathEngine.Models;
 using CertainDeathEngine.Models.NPC;
+using CertainDeathEngine.Models.Resources;
 using log4net;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using CertainDeathEngine.DAL;
-using CertainDeathEngine.Models.Resources;
-using System.Windows;
 
 namespace CertainDeathEngine
 {
@@ -18,9 +15,8 @@ namespace CertainDeathEngine
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly IGameDAL _gameDal = new EFGameDAL();
-        // Tick count should be 16 for 60 FPS but this is a web game so IDK
+        // Tick count should be 16 for 60 FPS
         const int FRAME_TICK_COUNT = 16;
-        //const int FRAME_TICK_COUNT = 200;
         public bool Running;
         private readonly Game _game;
         private int _lastTimeInMillis;
@@ -108,6 +104,15 @@ namespace CertainDeathEngine
                                                              ResourceType = curType.ToString(),
                                                              Amount = gathered
                                                          });
+
+                            if (square.Resource != null)
+                            {
+                                _game.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                                {
+                                    Row = click.Row.ToString(),
+                                    Column = click.Column.ToString()
+                                });
+                            }
                         }
                     }
                 }

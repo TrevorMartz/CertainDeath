@@ -115,6 +115,7 @@ View = (function () {
         this.tiles = new Array();
         this.resources = new Array();
         this.monsters = new Array();
+        this.buildings = new Array();
         this.fireOfLife = {};
         this._pointerDown = false;
         this.squaresWide = 20;
@@ -267,6 +268,25 @@ View = (function () {
                 			monster.sprite.animations.play(status);
                 	}
 
+                	this.PlaceBuilding = function (id, xpos, ypos, type) {
+                		var sprite;
+                		if (type == "FIRE_OF_LIFE") {
+                			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8, "objects");
+                			sprite.animations.add("fire", ["FIRE1", "FIRE2", "FIRE3", "FIRE4"], 5, true);
+                			sprite.animations.play("fire");
+                		} else {
+                			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
+										"objects", type);
+                		}
+                		this.buildings[id] = sprite;
+                	}
+
+                	this.RemoveBuilding = function (id) {
+                		var building = this.buildings[id];
+						if(building)
+                			building.destroy();
+					}
+
 /*Squares*/        if (property === "CurrentTile.Squares") {
 
                         // Make the board snap to a good scale so that the images still look crisp
@@ -354,14 +374,7 @@ View = (function () {
 /*Buildings*/         else if (property === "CurrentTile.Buildings") {
 						// this is not right and needs to be changed. this was just to get something on the screen
                     	if (msg[0] !== undefined) {
-                    		var positions = msg[0].Position.split(",");
-                    		var xpos = parseFloat(positions[0]);
-                    		var ypos = parseFloat(positions[1]);
-
-                    		if (this.fireOfLife.sprite && this.fireOfLife.sprite.destroy)
-                    		    this.fireOfLife.sprite.destroy();
-                    		this.fireOfLife.sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX / 2, ypos / 32 * tileSize + this.boardY * 3 / 4,
-										"objects", "Fire");
+                    		
                     	}
                     } // end if building property
 /*updates*/		  else if (property === "updates") {
@@ -380,11 +393,11 @@ View = (function () {
 	  /*MonsterState*/  	} else if ("MonsterState" === type) {
                     			this.UpdateMonsterStatus(id, update.State);
 	  /*Remove*/  			} else if ("Remove" === type) {
-	                   			if (this.monsters[id] !== "undefined") {
+	                   			if (this.monsters[id] != undefined) {
                     				this.RemoveMonster(id);
                     			}
                     			else {
-									// remove building
+	                   				this.RemoveBuilding(id);
                     			}
 	  /*Health*/			} else if ("Health" === type) {
 
@@ -396,7 +409,7 @@ View = (function () {
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
 
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
-
+	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
 	  /*RemoveResource*/	} else if ("RemoveResourceFromSquare" === type) {
 
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
@@ -406,7 +419,6 @@ View = (function () {
 	  /*World*/   			} else if ("World" === type) {
 
                     		}
-
                     	}
                     }
                 } // end if
@@ -417,9 +429,9 @@ View = (function () {
              * @param type = the name of the type of building to be placed
              */
             value: function (type) {
-                console.log(type + " being placed.");
+            	//console.log(type + " being placed.");
                 this._placeState = {};
-                this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", "Fire"); //type);
+                this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", type);
                 this._placeState.type = type;
             }
         }
@@ -755,7 +767,8 @@ View = (function () {
             }
         },
         destroy: {
-            value: function () {
+        	value: function () {
+        		console.log("DESTROYING");
                 Screen.prototype.destroy(this);
                 this.mainGameScreen.destroy();
                 this.g.destroy();

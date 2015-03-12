@@ -1,21 +1,18 @@
 ﻿using CertainDeathEngine.DAL;
 using CertainDeathEngine.Factories;
 using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.NPC.Buildings;
-using CertainDeathEngine.Models.Resources;
-using CertainDeathEngine.Models.User;
 using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using CertainDeathEngine.Models.NPC;
 
 namespace CertainDeathEngine
 {
-    public class Game : EngineInterface
+    public class Game
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -37,64 +34,6 @@ namespace CertainDeathEngine
             BuildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 5, SpawnSize = 1, Delay = 600, Rate = 10000 };
             MonsterGenerator.Update(1);
-        }
-
-        public string ToJSON()
-        {
-            string jsonString;
-            lock (World)
-            {
-                jsonString = JsonConvert.SerializeObject(World);
-
-            }
-            return jsonString;
-        }
-
-        public void SquareClicked(RowColumnPair click)
-        {
-            World.AddClick(click);
-        }
-
-        public string MoveUp()
-        {
-            if (World.CurrentTile.HasAbove)
-            {
-                World.CurrentTile = World.CurrentTile.Above;
-            }
-            return ToJSON();
-        }
-
-        public string MoveDown()
-        {
-            if (World.CurrentTile.HasBelow)
-            {
-                World.CurrentTile = World.CurrentTile.Below;
-            }
-            return ToJSON();
-        }
-
-        public string MoveLeft()
-        {
-            if (World.CurrentTile.HasLeft)
-            {
-                World.CurrentTile = World.CurrentTile.Left;
-            }
-            return ToJSON();
-        }
-
-        public string MoveRight()
-        {
-            if (World.CurrentTile.HasRight)
-            {
-                World.CurrentTile = World.CurrentTile.Right;
-            }
-            return ToJSON();
-        }
-
-
-        public IEnumerable<BuildingType> GetBuildableBuildingsList()
-        {
-            return Enum.GetValues(typeof (BuildingType)).Cast<BuildingType>().ToList();
         }
 
         public Building BuildBuildingAtSquare(int row, int column, BuildingType buildingType)
@@ -132,10 +71,10 @@ namespace CertainDeathEngine
                 foreach (var c in buildingCost.Costs)
                 {
                     this.World.AddUpdateMessage(new RemoveResourceFromPlayerUpdateMessage(this.World.Player.Id)
-                                                {
-                                                    Amount = c.Value,
-                                                    ResourceType = c.Key.ToString()
-                                                });
+                    {
+                        Amount = c.Value,
+                        ResourceType = c.Key.ToString()
+                    });
                     this.World.Player.RemoveResource(c.Key, c.Value);
                 }
             }
@@ -146,19 +85,6 @@ namespace CertainDeathEngine
             return building;
         }
 
-        //Need to add a method for upgrading Fire Level
-        //  WorldScore.FireLevel++;
-
-        public void SaveWorld()
-        {
-
-            //if (worldManager.HasWorld(World.Id)) {
-            //    worldManager.KeepWorld(World);
-            //} else {
-            //    throw new Exception("The world manager is missing the world"); :'(
-            //}
-        }
-
         public void GameOver()
         {
             SaveScore();
@@ -166,10 +92,89 @@ namespace CertainDeathEngine
             _updateManager.RemoveGameThread(World.Id);
         }
 
+        public IEnumerable<BuildingType> GetBuildableBuildingsList()
+        {
+            return Enum.GetValues(typeof(BuildingType)).Cast<BuildingType>().ToList();
+        }
+
+        /* Changed the current tile to be the tile directly above the current current tile.
+		 * If there is no above tile, does nothing.
+		 * Returns ToJSON
+		 */
+        public string MoveUp()
+        {
+            if (World.CurrentTile.HasAbove)
+            {
+                World.CurrentTile = World.CurrentTile.Above;
+            }
+            return ToJSON();
+        }
+
+        /* Changed the current tile to be the tile directly below the current current tile.
+		 * If there is no below tile, does nothing.
+		 * Returns ToJSON
+		 */
+        public string MoveDown()
+        {
+            if (World.CurrentTile.HasBelow)
+            {
+                World.CurrentTile = World.CurrentTile.Below;
+            }
+            return ToJSON();
+        }
+
+        /* Changed the current tile to be the tile directly to the left of the current current tile.
+         * If there is no left tile, does nothing.
+         * Returns ToJSON
+         */
+        public string MoveLeft()
+        {
+            if (World.CurrentTile.HasLeft)
+            {
+                World.CurrentTile = World.CurrentTile.Left;
+            }
+            return ToJSON();
+        }
+
+        /* Changed the current tile to be the tile directly to the right of the current current tile.
+         * If there is no right tile, does nothing.
+         * Returns ToJSON
+         */
+        public string MoveRight()
+        {
+            if (World.CurrentTile.HasRight)
+            {
+                World.CurrentTile = World.CurrentTile.Right;
+            }
+            return ToJSON();
+        }
+
         public void SaveScore()
         {
             World.Score.Survived = new DateTime() - _worldCreation;
             _statisticsDal.SaveScore(World.Score);
+        }
+
+        /* Notify the game engine that a user has clicked on a sqaure. If there is a resource on that 
+         * square the resource will be added to the user's inventory. Otherwise nothing will happen.
+         * 
+         * Returns a JSON string representing changes. 
+         * JSON described in IncrementTimeAndReturnDelta method
+         */
+        public void SquareClicked(RowColumnPair click)
+        {
+            World.AddClick(click);
+        }
+
+        public string ToJSON()
+        {
+            string jsonString;
+            lock (World)
+            {
+                jsonString = JsonConvert.SerializeObject(World);
+
+            }
+            return jsonString;
         }
     }
 }

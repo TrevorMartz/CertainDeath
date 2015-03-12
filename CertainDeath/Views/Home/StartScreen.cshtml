@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<article id="main_menu">
+<article class="main_menu" id="content">
     <h2>Welcome to Certain Death!</h2>
     @if (Model.HowToPlay)
     {
-        <div>@Html.ActionLink("How To Play", "HowToPlay", "Home")</div>
+        <div>@Ajax.ActionLink("How To Play", "HowToPlay", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })</div>
     }
 @if (Model.NewGame)
 {
