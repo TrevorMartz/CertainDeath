@@ -216,6 +216,7 @@
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
     <Content Include="Content\Images\TURRET.png" />
+    <Content Include="Content\Images\turrets.png" />
     <Content Include="Content\Images\WALL.png" />
     <Content Include="Content\Images\WOOD.png" />
     <Content Include="Content\Scripts\dom-ui-linkup.js" />
@@ -242,6 +243,7 @@
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.woff" />
     <Content Include="Content\Images\monsters.json" />
     <Content Include="Content\Images\spritesheet3.json" />
+    <Content Include="Content\Images\turrets.json" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
