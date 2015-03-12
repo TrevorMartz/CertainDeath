@@ -274,9 +274,6 @@ View = (function () {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8, "objects");
                 			sprite.animations.add("fire", ["FIRE1", "FIRE2", "FIRE3", "FIRE4"], 5, true);
                 			sprite.animations.play("fire");
-                		} else if (type == "AUTO_HARVESTER_FARM" || type == "WALL") {// no farm or wall in images
-                			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
-										"objects", "FIRE1");
                 		} else {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
 										"objects", type);
@@ -433,15 +430,8 @@ View = (function () {
              */
             value: function (type) {
             	//console.log(type + " being placed.");
-            	var fileName;
-            	if (type == "FIRE_OF_LIFE" || type == "AUTO_HARVESTER_FARM" || type == "WALL") {// no farm or wall in images
-            		fileName = "FIRE1";
-            	}
-            	else {
-            		fileName = type;
-				}
                 this._placeState = {};
-                this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", fileName);
+                this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", type);
                 this._placeState.type = type;
             }
         }

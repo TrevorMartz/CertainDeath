@@ -190,6 +190,7 @@
     <Content Include="Content\Images\COAL.png" />
     <Content Include="Content\Images\CORN.png" />
     <Content Include="Content\Images\DIRT_old2.png" />
+    <Content Include="Content\Images\AUTO_HARVESTER_FARM.png" />
     <Content Include="Content\Images\GRASS1.png" />
     <Content Include="Content\Images\GRASS3.png" />
     <Content Include="Content\Images\monsters.png" />
@@ -214,6 +215,8 @@
     <Content Include="Content\Images\STONE.png" />
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
+    <Content Include="Content\Images\TURRET.png" />
+    <Content Include="Content\Images\WALL.png" />
     <Content Include="Content\Images\WOOD.png" />
     <Content Include="Content\Scripts\dom-ui-linkup.js" />
     <Content Include="Content\Scripts\game.js" />

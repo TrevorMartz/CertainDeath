@@ -1,6 +1,6 @@
 {"frames": {
 
-"AUTO_HARVESTER_LUMBER_MILL":
+"AUTO_HARVESTER_FARM":
 {
 	"frame": {"x":2,"y":2,"w":32,"h":32},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32}
 },
-"AUTO_HARVESTER_MINE":
+"AUTO_HARVESTER_LUMBER_MILL":
 {
 	"frame": {"x":36,"y":2,"w":32,"h":32},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32}
 },
-"AUTO_HARVESTER_QUARRY":
+"AUTO_HARVESTER_MINE":
 {
 	"frame": {"x":70,"y":2,"w":32,"h":32},
 	"rotated": false,
@@ -24,9 +24,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32}
 },
+"AUTO_HARVESTER_QUARRY":
+{
+	"frame": {"x":104,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
 "COAL":
 {
-	"frame": {"x":2,"y":36,"w":32,"h":32},
+	"frame": {"x":138,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -34,7 +42,7 @@
 },
 "CORN":
 {
-	"frame": {"x":36,"y":36,"w":32,"h":32},
+	"frame": {"x":172,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -42,7 +50,7 @@
 },
 "DIRT":
 {
-	"frame": {"x":70,"y":36,"w":32,"h":32},
+	"frame": {"x":206,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -50,7 +58,7 @@
 },
 "FIRE1":
 {
-	"frame": {"x":2,"y":70,"w":32,"h":32},
+	"frame": {"x":240,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -58,7 +66,7 @@
 },
 "FIRE2":
 {
-	"frame": {"x":36,"y":70,"w":32,"h":32},
+	"frame": {"x":274,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -66,7 +74,7 @@
 },
 "FIRE3":
 {
-	"frame": {"x":2,"y":70,"w":32,"h":32},
+	"frame": {"x":240,"y":2,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -74,7 +82,7 @@
 },
 "FIRE4":
 {
-	"frame": {"x":70,"y":70,"w":32,"h":32},
+	"frame": {"x":2,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -82,7 +90,7 @@
 },
 "GRASS":
 {
-	"frame": {"x":2,"y":104,"w":32,"h":32},
+	"frame": {"x":36,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -90,7 +98,7 @@
 },
 "IRON":
 {
-	"frame": {"x":36,"y":104,"w":32,"h":32},
+	"frame": {"x":70,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -98,7 +106,7 @@
 },
 "SAND":
 {
-	"frame": {"x":70,"y":104,"w":32,"h":32},
+	"frame": {"x":104,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -106,7 +114,7 @@
 },
 "STONE":
 {
-	"frame": {"x":2,"y":138,"w":32,"h":32},
+	"frame": {"x":138,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -114,7 +122,7 @@
 },
 "ShopButton":
 {
-	"frame": {"x":36,"y":138,"w":64,"h":64},
+	"frame": {"x":172,"y":36,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -122,7 +130,15 @@
 },
 "TURRET":
 {
-	"frame": {"x":2,"y":204,"w":32,"h":32},
+	"frame": {"x":238,"y":36,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+"WALL":
+{
+	"frame": {"x":272,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -130,7 +146,7 @@
 },
 "WOOD":
 {
-	"frame": {"x":36,"y":204,"w":32,"h":32},
+	"frame": {"x":306,"y":36,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -141,8 +157,8 @@
 	"version": "1.0",
 	"image": "spritesheet3.png",
 	"format": "RGBA8888",
-	"size": {"w":104,"h":238},
+	"size": {"w":340,"h":102},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ecfc2f5c5482e8fbf6e0470de24f0899:61532904e675f01ebb19304128f7e2dc:690a5915457cf10c505d982c8a31dfdc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5f89adfb5ceb349cc8688983d87717c1:e4f49e596354ec255e9c02f518f33689:690a5915457cf10c505d982c8a31dfdc$"
 }
 }
