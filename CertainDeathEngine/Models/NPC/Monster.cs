@@ -104,6 +104,7 @@ namespace CertainDeathEngine.Models.NPC
 		{
             // check the clicks
 
+            var monsterSquare = new RowColumnPair(GameObject.ApproxSquare(Position));
 			var monsterSquares = this.CornerApproxSquares();
 		    lock (Tile.World.SquareClicks)
 		    {
