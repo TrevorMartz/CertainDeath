@@ -124,8 +124,9 @@ namespace CertainDeathEngine.Models.NPC
     [JsonObject]
     public class RemoveResourceFromSquareUpdateMessage : UpdateMessage
     {
-        public string Square { get; set; }
         public int Amount { get; set; }
+        public string Column { get; set; }
+        public string Row { get; set; }
         public RemoveResourceFromSquareUpdateMessage(int id) : base(id)
         {
             UType = "RemoveResourceFromSquare";

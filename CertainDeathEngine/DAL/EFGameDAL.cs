@@ -55,6 +55,14 @@ namespace CertainDeathEngine.DAL
             return GetGameAndStartUpdateThread(world);
         }
 
+        public bool HasNotEndedVersionOfWorld(int worldId)
+        {
+            return _cdDbModel.Worlds
+                             .Where(x => x.Worlds.HasEnded != true)
+                             .OrderByDescending(x => x.Worlds.LastSaveTime)
+                             .FirstOrDefault(x => x.WorldId == worldId) != null;
+        }
+
         public bool SaveGame(Game game)
         {
             Log.Debug("Saving game: " + game.World.Id);
@@ -163,7 +171,10 @@ namespace CertainDeathEngine.DAL
                 try
                 {
                     Log.Debug("Trying to get world with id " + worldId + " from the database");
-                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds.OrderByDescending(x => x.Worlds.LastSaveTime).FirstOrDefault(x => x.WorldId == worldId);
+                    GameWorldWrapperWrapper wrapperwrapper = _cdDbModel.Worlds
+                        .Where(x=>x.Worlds.HasEnded != true)
+                        .OrderByDescending(x => x.Worlds.LastSaveTime)
+                        .FirstOrDefault(x => x.WorldId == worldId);
                     if (wrapperwrapper != null)
                     {
                         Log.Debug("Get world with id " + worldId + " and other of of " + wrapperwrapper.Id + " from the database");

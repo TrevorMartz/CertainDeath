@@ -100,7 +100,16 @@ namespace CertainDeathEngine.Models
             }
             Updates = new Queue<UpdateMessage>();
             SquareClicks = new List<RowColumnPair>();
-            tile.AddObject(new FireOfLife(tile));
+
+			var fireOfLife = new FireOfLife(tile);
+			tile.AddObject(fireOfLife);
+			AddUpdateMessage(new PlaceBuildingUpdateMessage(fireOfLife.Id)
+			{
+				PosX = fireOfLife.Position.X,
+				PosY = fireOfLife.Position.Y,
+				Type = fireOfLife.Type.ToString()
+			});
+
             Score = new Score
             {
                 FireLevel = 1,

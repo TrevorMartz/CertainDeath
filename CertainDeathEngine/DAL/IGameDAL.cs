@@ -6,6 +6,7 @@ namespace CertainDeathEngine.DAL
     {
         Game CreateGame();
         Game CreateGame(int worldId);
+        bool HasNotEndedVersionOfWorld(int worldId);
         bool SaveGame(Game game);
     }
 }

@@ -19,7 +19,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public AutoHarvester(Tile tile, Point position, BuildingType type, Cost cost, Player p)
             : base(tile, position)
         {
-            
+
             Type = type;
             Cost = cost;
             State = HarvesterState.GATHERING;
@@ -42,7 +42,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 if (TimeSinceGather >= 1000)
                 {
                     long timeToGather = (TimeSinceGather / 1000);
-                    Gather((int)(HarvestRate * timeToGather));
+                    int toGather = (int) (HarvestRate*timeToGather);
+                    Gather(toGather);
                     TimeSinceGather -= timeToGather * 1000;
                 }
             }
@@ -55,62 +56,65 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 while (toGather > 0)
                 {
                     RowColumnPair rcp = FindGatherableSquare();
-                    Square s = Tile.Squares[rcp.Row, rcp.Column];
-                    if (s != null)
+                    if (rcp != null)
                     {
-                        this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                        Square s = Tile.Squares[rcp.Row, rcp.Column];
+                        if (s != null)
                         {
-                            ResourceType = s.Resource.Type.ToString(),
-                            Amount = toGather
-                        });
-                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
-                        {
-                            Amount = toGather
-                        });
-                        if (s.Resource != null)
-                        {
-                            Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                            this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                                                             {
+                                                                 ResourceType = s.Resource.Type.ToString(),
+                                                                 Amount = toGather
+                                                             });
+                            this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+                                                             {
+                                                                 Amount = toGather,
+                                                                 Row = rcp.Row.ToString(),
+                                                                 Column = rcp.Column.ToString()
+                                                             });
+                            if (s.Resource != null)
                             {
-                                Row = rcp.Row.ToString(),
-                                Column = rcp.Column.ToString()
-                            });
+                                Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                                                            {
+                                                                Row = rcp.Row.ToString(),
+                                                                Column = rcp.Column.ToString()
+                                                            });
+                            }
+                            ResourceType type = s.Resource.Type;
+                            int gathered = s.GatherResource(toGather);
+                            toGather -= gathered;
+                            Player.AddResource(type, gathered);
                         }
-                        ResourceType type = s.Resource.Type;
-                        int gathered = s.GatherResource(toGather);
-                        toGather -= gathered;
-                        Player.AddResource(type, gathered);
                     }
                     else
                     {
                         State = HarvesterState.IDLE;
                         this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                        {
-                            State = HarvesterState.IDLE.ToString()
-                        });
+                                                         {
+                                                             State = HarvesterState.IDLE.ToString()
+                                                         });
                         return;
                     }
+
                 }
             }
         }
 
         private RowColumnPair FindGatherableSquare()
         {
-            int row1 = (int)TilePosition.Y - GatherRange;
-            if(row1 < 0)
+            int posrow = (int)TilePosition.Y;
+            int poscol = (int)TilePosition.X;
+            int minrow = Math.Max(0, (int) TilePosition.Y - GatherRange);
+            int maxrow = Math.Min((int) TilePosition.Y + GatherRange, 20);
+            int mincol = Math.Max(0, (int) TilePosition.X - GatherRange);
+            int maxcol = Math.Min((int) TilePosition.X + GatherRange, 20);
+
+            for (int row = minrow; row < maxrow; row++)
             {
-                row1 = 0;
-            }
-            int col1 = (int)TilePosition.X - GatherRange;
-            if(col1 < 0)
-            {
-                col1 = 0;
-            }
-            for (int row = row1; row < TilePosition.Y + GatherRange; row++)
-            {
-                for (int col = col1; col < TilePosition.X + GatherRange; col++)
+                for (int col = mincol; col < maxcol; col++)
                 {
                     Square s = Tile.Squares[row, col];
-                    if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
+                    if (s != null && s.Resource != null && TypeMatches(s.Resource.Type))
                     {
                         return new RowColumnPair(row, col);
                     }

@@ -159,5 +159,11 @@ namespace CertainDeathEngine.DAL
             GameWorld newWorld = _worldGenerator.GenerateWorld(worldId);
             return newWorld;
         }
+
+
+        public bool HasNotEndedVersionOfWorld(int worldId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
