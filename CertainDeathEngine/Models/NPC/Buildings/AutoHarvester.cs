@@ -138,7 +138,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 //TODO: Adjust Health Levels, Gather Range, Harvest Rate and Cost
                 Level++;
                 HarvestRate = Level * 2;
-                MaxHealthPoints = 10 * Level;
+                MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
                 GatherRange = Level * 5;
                 UpdateCost();
