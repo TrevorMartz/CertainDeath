@@ -198,13 +198,20 @@ View = (function () {
                         delete this.resources[x][y];
                     }
                 }
-                for (x in this.monsters) {
+                for (var x in this.monsters) {
                     if (this.monsters[x] && this.monsters[x].sprite.destroy) {
                         this.monsters[x].sprite.destroy();
                         this.monsters[x].g.destroy();
                     }
                     delete this.monsters[x];
                 }
+				for (var x in this.buildings) {
+                    if (this.buildings[x]&& this.buildings[x].destroy) {
+                        this.buildings[x].destroy();
+					}
+                    delete this.buildings[x];
+				}
+
                 if (this._placeState) {
                     this._placeState.sprite.destroy();
                     delete this._placeState;
@@ -356,7 +363,6 @@ View = (function () {
                             } // end for
                         } // end for
 /*Monsters*/        } else if (property === "CurrentTile.Monsters") {
-						
                         for (var x = 0; x < msg.length; ++x) {
                         	var monster = this.monsters[msg[x].Id];
                         	if (monster === undefined) {
@@ -391,12 +397,17 @@ View = (function () {
 							}
 
                         } // end for each monster
-                    } // end if monster property
-/*Buildings*/         else if (property === "CurrentTile.Buildings") {
-						// this is not right and needs to be changed. this was just to get something on the screen
-                    	if (msg[0] !== undefined) {
-                    		
-                    	}
+                    } else if (property === "CurrentTile.Buildings") {
+                        for (var x = 0; x < msg.length; ++x) {
+							var building = this.buildings[msg[x].Id];
+                        	if (building === undefined) {
+								var positions = msg[x].Position.split(",");
+								var xpos = parseFloat(positions[0]);
+								var ypos = parseFloat(positions[1]);
+								var type = msg[x].Typename;
+                        		this.PlaceBuilding(id, xpos, ypos, type);
+                        	}
+						}
                     } // end if building property
 /*updates*/		  else if (property === "updates") {
                     	for (var x = 0; x < msg.length; ++x) {
