@@ -97,6 +97,20 @@ namespace CertainDeathEngine
             return Enum.GetValues(typeof(BuildingType)).Cast<BuildingType>().ToList();
         }
 
+        private string SendBuildigUpdatesBecauseWeChangedSomething()
+        {
+            foreach (var b in World.CurrentTile.Buildings)
+            {
+                World.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
+                {
+                    PosX = b.Position.X,
+                    PosY = b.Position.Y,
+                    Type = b.Type.ToString()
+                });
+            }
+            return ToJSON();
+        }
+
         /* Changed the current tile to be the tile directly above the current current tile.
 		 * If there is no above tile, does nothing.
 		 * Returns ToJSON
@@ -107,7 +121,7 @@ namespace CertainDeathEngine
             {
                 World.CurrentTile = World.CurrentTile.Above;
             }
-            return ToJSON();
+            return SendBuildigUpdatesBecauseWeChangedSomething();
         }
 
         /* Changed the current tile to be the tile directly below the current current tile.
@@ -120,7 +134,7 @@ namespace CertainDeathEngine
             {
                 World.CurrentTile = World.CurrentTile.Below;
             }
-            return ToJSON();
+            return SendBuildigUpdatesBecauseWeChangedSomething();
         }
 
         /* Changed the current tile to be the tile directly to the left of the current current tile.
@@ -133,7 +147,7 @@ namespace CertainDeathEngine
             {
                 World.CurrentTile = World.CurrentTile.Left;
             }
-            return ToJSON();
+            return SendBuildigUpdatesBecauseWeChangedSomething();
         }
 
         /* Changed the current tile to be the tile directly to the right of the current current tile.
@@ -146,7 +160,7 @@ namespace CertainDeathEngine
             {
                 World.CurrentTile = World.CurrentTile.Right;
             }
-            return ToJSON();
+            return SendBuildigUpdatesBecauseWeChangedSomething();
         }
 
         public void SaveScore()
