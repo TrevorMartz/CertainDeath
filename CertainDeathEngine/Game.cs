@@ -42,8 +42,17 @@ namespace CertainDeathEngine
             Building building;
             lock (World)
             {
-                // check if it is a good location
                 building = BuildingFactory.BuildBuilding(buildingType, new Point(column, row));
+                //check to see if you can afford
+                foreach(var v in building.Cost.Costs)
+                {
+                    if(World.Player.GetResourceCount(v.Key) < v.Value)
+                    {
+                        return null;
+                    }
+                }
+                
+                // check if it is a good location
                 System.Drawing.Point[] cornersAsSquareGrid = building.CornerApproxSquares();
                 for (int row2 = cornersAsSquareGrid[0].Y; row2 <= cornersAsSquareGrid[2].Y; row2++)
                 {
@@ -55,7 +64,6 @@ namespace CertainDeathEngine
                         }
                     }
                 }
-
                 this.World.AddUpdateMessage(new PlaceBuildingUpdateMessage(building.Id)
                 {
                     PosX = building.Position.X,
@@ -63,9 +71,6 @@ namespace CertainDeathEngine
                     Type = building.Type.ToString()
                 });
                 World.CurrentTile.AddObject(building);
-
-                // subtract the cost
-
 
                 Cost buildingCost = building.Cost;
                 foreach (var c in buildingCost.Costs)

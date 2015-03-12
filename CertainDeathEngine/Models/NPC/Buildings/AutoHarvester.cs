@@ -141,7 +141,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
                 GatherRange = Level * 5;
-                UpdateCost();
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
@@ -149,23 +148,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         NewLevel = Level
                     });
                 }
-            }
-        }
-
-        public override void UpdateCost() //TODO: Adjust this if we get to it...
-        {
-            Cost = new Cost();
-            Cost.SetCost(ResourceType.COAL, 10 * Level);
-            Cost.SetCost(ResourceType.CORN, 10 * Level);
-            Cost.SetCost(ResourceType.IRON, 10 * Level);
-            Cost.SetCost(ResourceType.STONE, 10 * Level);
-            Cost.SetCost(ResourceType.WOOD, 10 * Level);
-            if (Tile != null)
-            {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
-                {
-                    NewCost = Cost
-                });
             }
         }
     }
