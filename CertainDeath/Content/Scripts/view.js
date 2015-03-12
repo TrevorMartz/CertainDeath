@@ -429,7 +429,15 @@ View = (function () {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			window.location = "https://g.certaindeathgame.com:44300";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
-
+	                            if (this.buildings[id] && update["Rotation"]) {
+	                                this.buildings[id].anchor.setTo(0.5, 0.5);
+	                                if (!this.buildings[id].offset) {
+	                                    this.buildings[id].offset = true;
+	                                    this.buildings[id].x += this.buildings[id].width/2;
+	                                    this.buildings[id].y += this.buildings[id].height/2;
+	                                }
+	                                this.buildings[id].angle = update["Rotation"];
+	                            }
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
 	      /*RemoveResource*/} else if ("TheSquareNoLongerHasAResource" === type) {

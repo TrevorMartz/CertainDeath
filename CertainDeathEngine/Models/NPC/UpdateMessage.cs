@@ -21,6 +21,7 @@ namespace CertainDeathEngine.Models.NPC
     public class BuildingStateChangeUpdateMessage : UpdateMessage
     {
         public string State { get; set; }
+        public double Rotation { get; set; }
         public BuildingStateChangeUpdateMessage(int id) : base(id)
         {
             UType = "BuildingState";
