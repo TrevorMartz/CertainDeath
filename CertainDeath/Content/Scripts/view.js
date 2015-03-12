@@ -298,39 +298,41 @@ View = (function () {
                 	}
 
                 	this.PlaceBuilding = function (id, xpos, ypos, type) {
-                		var sprite;
-                		if (type == "FIRE_OF_LIFE") {
-                			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8, "objects");
-                			sprite.animations.add("fire", ["FIRE1", "FIRE2", "FIRE3", "FIRE4"], 5, true);
-                			sprite.animations.play("fire");
-                		} else if (type == "TURRET") {
-                			sprite = game.add.sprite(
-								xpos / 32 * tileSize + this.boardX * 7 / 8 - 3.5 * tileSize,
-								ypos / 32 * tileSize +this.boardY * 7 / 8 -3.5 * tileSize,
-								"turrets", "TURRET");
-                		} else {
-                			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
-										"objects", type);
+                		if (!this.buildings[id]) {
+                			var sprite;
+                			if (type == "FIRE_OF_LIFE") {
+                				sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8, "objects");
+                				sprite.animations.add("fire", ["FIRE1", "FIRE2", "FIRE3", "FIRE4"], 5, true);
+                				sprite.animations.play("fire");
+                			} else if (type == "TURRET") {
+                				sprite = game.add.sprite(
+									xpos / 32 * tileSize + this.boardX * 7 / 8 - 3.5 * tileSize,
+									ypos / 32 * tileSize +this.boardY * 7 / 8 -3.5 * tileSize,
+									"turrets", "TURRET");
+                			} else {
+                				sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
+											"objects", type);
+                			}
+                			var building = {
+                				"sprite": sprite,
+                				"HealthPoints": 1,
+                				"MaxHealthPoints": 1,
+								"id" : id,
+                				"g" : game.add.graphics(sprite.x + sprite.width/2 - 16, sprite.y + sprite.height/2 - 16 -7)
+                			}
+                			this.buildings[id] = building;
+                			this.drawHealth.call(building, 1, 1);
                 		}
-                		var building = {
-                		    "sprite": sprite,
-                		    "HealthPoints": 1,
-                		    "MaxHealthPoints": 1,
-                            "id" : id,
-                		    "g" : game.add.graphics(sprite.x + sprite.width/2 - 16, sprite.y + sprite.height/2 - 16 -7)
-                		}
-                		this.buildings[id] = building;
-                		this.drawHealth.call(building, 1, 1);
                 	}
 
                 	this.RemoveBuilding = function (id) {
                 		var building = this.buildings[id];
                 		if (building) {
-                            if(building.sprite)
+                            if (building.sprite)
                                 building.sprite.destroy();
                             if (building.g)
                                 building.g.destroy();
-                		}
+                                }
                 		delete this.buildings[id];
                 	}
 
@@ -339,8 +341,8 @@ View = (function () {
 							this.TurretAttack(id);
 						}
 	                    else if (state == "WAITING") {
-	                        if (this.buildings[id].animations) {
-	                            this.buildings[id].animations.stop("attack", true);
+	                        if (this.buildings[id].sprite.animations) {
+	                        	this.buildings[id].sprite.animations.stop("attack", true);
 							}
 	                    }
                 		else {
@@ -353,13 +355,13 @@ View = (function () {
                 	}
 
                 	this.TurretRotate = function (id, rotation) {
-                		this.buildings[id].anchor.setTo(0.5, 0.5);
-						if (!this.buildings[id].offset) {
-							this.buildings[id].offset = true;
-							this.buildings[id].x += this.buildings[id].width/2;
-							this.buildings[id].y += this.buildings[id].height/2;
+                		this.buildings[id].sprite.anchor.setTo(0.5, 0.5);
+						if (!this.buildings[id].sprite.offset) {
+							this.buildings[id].sprite.offset = true;
+							this.buildings[id].sprite.x += this.buildings[id].width / 2;
+							this.buildings[id].sprite.y += this.buildings[id].height/2;
 						}
-						this.buildings[id].angle = rotation;
+						this.buildings[id].sprite.angle = rotation;
                 	}
 
                 	this.TurretAttack = function (id) {

@@ -46,7 +46,7 @@ namespace CertainDeathEngine.Factories
 				_time -= Delay;
 			}
 			if(!_delaying && _time > Rate) {
-				int monsters = (int)(_time / Rate * elapsed / 1000);
+				int monsters = (int)(_time / Rate);// * elapsed / 1000);
 				for (int i = 0; i < monsters; i++)
 					SpawnMonsters(SpawnSize);
 				_time -= monsters * Rate;
