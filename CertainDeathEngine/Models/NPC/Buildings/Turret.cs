@@ -31,7 +31,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 		[JsonProperty]
 		public double Rotation { get; private set; }
         
-		public Turret(Tile tile, Point pos) : base(tile, pos)
+		public Turret(Tile tile, Point pos, Cost cost) : base(tile, pos, cost)
 		{
             Type = BuildingType.TURRET;
             State = TurretState.WAITING;
