@@ -25,15 +25,22 @@
 
             </thead>
             <tbody>
-                @foreach (var score in Model)
+                @foreach (CertainDeathEngine.Models.User.Score score in Model)
                 {
+                    double secs = score.Survived.TotalSeconds;
+                    int minutes = (int)(secs / 60);
+                    secs -= minutes * 60;
+                    int hours = (int)(minutes / 60);
+                    minutes -= hours * 60;
+
+                    DateTime saveDate = new DateTime(score.SaveDate);
                     <tr>
                         <td>@score.UserId</td>
                         <td>@score.WorldId</td>
-                        <td>@score.SaveDate</td>
+                        <td>@saveDate</td>
                         <td>@score.Kills</td>
                         <td>@score.Buildings</td>
-                        <td>@score.Survived</td>
+                        <td>@hours:@minutes:@secs</td>
                         <td>@score.FireLevel</td>
                         <td>@score.TotalResources</td>
                     </tr>
