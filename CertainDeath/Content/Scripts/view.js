@@ -320,7 +320,35 @@ View = (function () {
                 			building.destroy();
                 	}
 
-                	this.TurretAttack = function (id, rotation) {
+                	this.BuildingState = function (id, state, rotation) {
+						if (state == "ATTACKING") {
+							this.TurretAttack(id);
+						}
+	                    else if (state == "WAITING") {
+	                        if (this.buildings[id].animations) {
+	                            this.buildings[id].animations.stop("attack", true);
+							}
+	                    }
+                		else {
+										// something about autoharvesters
+						}
+
+						if (this.buildings[id] && rotation) {
+							this.TurretRotate(id, rotation);
+						}	
+                	}
+
+                	this.TurretRotate = function (id, rotation) {
+                		this.buildings[id].anchor.setTo(0.5, 0.5);
+						if (!this.buildings[id].offset) {
+							this.buildings[id].offset = true;
+							this.buildings[id].x += this.buildings[id].width/2;
+							this.buildings[id].y += this.buildings[id].height/2;
+						}
+						this.buildings[id].angle = rotation;
+                	}
+
+                	this.TurretAttack = function (id) {
                 		var building = this.buildings[id];
                 		building.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
                 			15, true);
@@ -411,14 +439,18 @@ View = (function () {
                         } // end for each monster
                     } else if (property === "CurrentTile.Buildings") {
                         for (var x = 0; x < msg.length; ++x) {
-							var building = this.buildings[msg[x].Id];
+                        	var building = this.buildings[msg[x].Id];
+							debugger;
                         	if (building === undefined) {
 								var positions = msg[x].Position.split(",");
 								var xpos = parseFloat(positions[0]);
 								var ypos = parseFloat(positions[1]);
 								var type = msg[x].Typename;
-                        		this.PlaceBuilding(id, xpos, ypos, type);
+								this.PlaceBuilding(msg[x].Id, xpos, ypos, type);
                         	}
+                        	if (msg[x].Typename == "TURRET") {
+                        		this.BuildingState(msg[x].Id, msg[x].StateName, msg[x].Rotation);
+							}
 						}
                     } // end if building property
 /*updates*/		  else if (property === "updates") {
@@ -452,30 +484,10 @@ View = (function () {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			window.location = "https://g.certaindeathgame.com:44300";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
-	                            if (this.buildings[id]&& update["Rotation"]) {
-	                            	if (update.State == "ATTACKING") {
-										this.TurretAttack(id);
-	                            	}
-	                            	else if (update.State == "WAITING") {
-	                            		if (this.buildings[id].animations) {
-	                            			this.buildings[id].animations.stop("attack", true);
-	                            		}
-	                            	}
-	                            	else {
-										// something about autoharvesters
-									}
-
-	                                this.buildings[id].anchor.setTo(0.5, 0.5);
-	                                if (!this.buildings[id].offset) {
-	                                    this.buildings[id].offset = true;
-	                                    this.buildings[id].x += this.buildings[id].width/2;
-	                                    this.buildings[id].y += this.buildings[id].height/2;
-	                                }
-	                                this.buildings[id].angle = update["Rotation"];
-	                            }
+	  							this.BuildingState(id, update.State, update.Rotation);
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
-	      /*RemoveResource*/} else if ("TheSquareNoLongerHasAResource" === type) {
+	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
 	                            this.resources[update["Column"]][update["Row"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
