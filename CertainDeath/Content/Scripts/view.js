@@ -206,8 +206,8 @@ View = (function () {
                     delete this.monsters[x];
                 }
 				for (var x in this.buildings) {
-                    if (this.buildings[x]&& this.buildings[x].destroy) {
-                        this.buildings[x].destroy();
+                    if (this.buildings[x]&& this.buildings[x].sprite) {
+                        this.buildings[x].sprite.destroy();
 					}
                     delete this.buildings[x];
 				}
@@ -245,19 +245,20 @@ View = (function () {
                 		monster.y = ypos;
                 		monster.g = game.add.graphics(xpos, ypos - 7);
 
-                		monster.drawHealth = function (current, max) {
-                		    monster.g.clear();
-                		    monster.g.beginFill(0xFFFFFF);
-                		    monster.g.drawRect(0, 0, tileSize, 5);
-                		    monster.g.endFill();
-                		    monster.g.beginFill(0xFF0000);
-                		    monster.g.drawRect(1, 1, (tileSize - 2) * (current/max), 3);
-                		    monster.g.endFill();
-                		}
-                		monster.drawHealth(1,1);
+                		this.drawHealth.call(monster, 1, 1);
                 		this.monsters[id] = monster;
                 		this.UpdateMonsterPosition(id, xpos, ypos);
                 		this.UpdateMonsterStatus(id, status);
+                	}
+
+                	this.drawHealth = function (current, max) {
+                	    this.g.clear();
+                	    this.g.beginFill(0xFFFFFF);
+                	    this.g.drawRect(0, 0, tileSize, 5);
+                	    this.g.endFill();
+                	    this.g.beginFill(0xFF0000);
+                	    this.g.drawRect(1, 1, (tileSize - 2) * (current/max), 3);
+                	    this.g.endFill();
                 	}
 
                 	this.RemoveMonster = function (id) {
@@ -311,20 +312,33 @@ View = (function () {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
 										"objects", type);
                 		}
-                		this.buildings[id] = sprite;
+                		var building = {
+                		    "sprite": sprite,
+                		    "HealthPoints": 1,
+                		    "MaxHealthPoints": 1,
+                            "id" : id,
+                		    "g" : game.add.graphics(sprite.x + sprite.width/2 - 16, sprite.y + sprite.height/2 - 16 -7)
+                		}
+                		this.buildings[id] = building;
+                		this.drawHealth.call(building, 1, 1);
                 	}
 
                 	this.RemoveBuilding = function (id) {
                 		var building = this.buildings[id];
-						if(building)
-                			building.destroy();
+                		if (building) {
+                            if(building.sprite)
+                                building.sprite.destroy();
+                            if (building.g)
+                                building.g.destroy();
+                		}
+                		delete this.buildings[id];
                 	}
 
                 	this.TurretAttack = function (id, rotation) {
                 		var building = this.buildings[id];
-                		building.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
+                		building.sprite.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
                 			15, true);
-                		building.animations.play("attack");
+                		building.sprite.animations.play("attack");
                 	}
 
 /*Squares*/        if (property === "CurrentTile.Squares") {
@@ -444,7 +458,9 @@ View = (function () {
                     			}
 	  /*Health*/			} else if ("Health" === type) {
 	                          if (this.monsters[id]) {
-	                              this.monsters[id].drawHealth(update.HealthPoints, update.MaxHealthPoints);
+	                              this.drawHealth.call(this.monsters[id], update.HealthPoints, update.MaxHealthPoints);
+	                          } else if (this.buildings[id]) {
+	                              this.drawHealth.call(this.buildings[id], update.HealthPoints, update.MaxHealthPoints);
 	                          }
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
 	                            //this.resources[update["ResourceType"]] += update["Amount"];
@@ -457,21 +473,21 @@ View = (function () {
 										this.TurretAttack(id);
 	                            	}
 	                            	else if (update.State == "WAITING") {
-	                            		if (this.buildings[id].animations) {
-	                            			this.buildings[id].animations.stop("attack", true);
+	                            		if (this.buildings[id].sprite.animations) {
+	                            			this.buildings[id].sprite.animations.stop("attack", true);
 	                            		}
 	                            	}
 	                            	else {
 										// something about autoharvesters
 									}
 
-	                                this.buildings[id].anchor.setTo(0.5, 0.5);
+	                                this.buildings[id].sprite.anchor.setTo(0.5, 0.5);
 	                                if (!this.buildings[id].offset) {
 	                                    this.buildings[id].offset = true;
-	                                    this.buildings[id].x += this.buildings[id].width/2;
-	                                    this.buildings[id].y += this.buildings[id].height/2;
+	                                    this.buildings[id].sprite.x += this.buildings[id].sprite.width/2;
+	                                    this.buildings[id].sprite.y += this.buildings[id].sprite.height/2;
 	                                }
-	                                this.buildings[id].angle = update["Rotation"];
+	                                this.buildings[id].sprite.angle = update["Rotation"];
 	                            }
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
