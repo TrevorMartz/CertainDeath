@@ -105,7 +105,7 @@ namespace CertainDeathEngine
                                                              Amount = gathered
                                                          });
 
-                            if (square.Resource != null)
+                            if (square.Resource == null)
                             {
                                 _game.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
                                 {

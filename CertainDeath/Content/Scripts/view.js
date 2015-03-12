@@ -416,8 +416,7 @@ View = (function () {
 	  /*Remove*/  			} else if ("Remove" === type) {
 	                   			if (this.monsters[id] != undefined) {
                     				this.RemoveMonster(id);
-                    			}
-                    			else {
+                    			}else {
 	                   				this.RemoveBuilding(id);
                     			}
 	  /*Health*/			} else if ("Health" === type) {
@@ -433,8 +432,8 @@ View = (function () {
 
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
-	  /*RemoveResource*/	} else if ("RemoveResourceFromSquare" === type) {
-
+	      /*RemoveResource*/} else if ("TheSquareNoLongerHasAResource" === type) {
+	                            this.resources[update["Column"]][update["Row"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {
@@ -793,9 +792,11 @@ View = (function () {
         destroy: {
         	value: function () {
         		console.log("DESTROYING");
-                Screen.prototype.destroy(this);
-                this.mainGameScreen.destroy();
-                this.g.destroy();
+        		Screen.prototype.destroy(this);
+                if(this.mainGameScreen)
+                    this.mainGameScreen.destroy();
+                if(this.g)
+                    this.g.destroy();
                 if (this.disposables) {
                     for (var x = 0; x < this.disposables.length; ++x) {
                         this.disposables[x].destroy();

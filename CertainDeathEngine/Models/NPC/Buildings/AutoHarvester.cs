@@ -72,7 +72,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                                                  Row = rcp.Row.ToString(),
                                                                  Column = rcp.Column.ToString()
                                                              });
-                            if (s.Resource != null)
+                            ResourceType type = s.Resource.Type;
+                            int gathered = s.GatherResource(toGather);
+                            toGather -= gathered;
+                            Player.AddResource(type, gathered);
+                            if (s.Resource != null && s.Resource.Quantity <= 0)
                             {
                                 Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
                                                             {
@@ -80,10 +84,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                                                 Column = rcp.Column.ToString()
                                                             });
                             }
-                            ResourceType type = s.Resource.Type;
-                            int gathered = s.GatherResource(toGather);
-                            toGather -= gathered;
-                            Player.AddResource(type, gathered);
                         }
                     }
                     else
