@@ -73,6 +73,15 @@ namespace CertainDeathEngine.Models
 		    t.World = this;
             HasEnded = false;
             Player = new Player();
+            foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
+            {
+                Player.AddResource(type, 1000);
+                this.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Player.Id)
+                {
+                    ResourceType = type.ToString(),
+                    Amount = 1000
+                });
+            }
 			this.CurrentTile = t;
 			this.Id = worldId;
 			Tiles = new List<Tile>();
@@ -90,6 +99,15 @@ namespace CertainDeathEngine.Models
 		    tile.World = this;
             HasEnded = false;
             Player = new Player();
+            foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
+            {
+                Player.AddResource(type, 1000);
+                this.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Player.Id)
+                {
+                    ResourceType = type.ToString(),
+                    Amount = 1000
+                });
+            }
             this.CurrentTile = tile;
 			this.Id = worldId;
 			Tiles = tiles.Cast<Tile>().ToList();
