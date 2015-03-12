@@ -5,9 +5,9 @@ $(function () {
     });
 
     $("#shop-window").on("click", ".purchase-button", function () {
-        if (mgw) {
+        if (mgw && mgw.mainGameScreen) {
             $("#shop-window").hide();
-            mgw.placeBuilding($(this).parent().attr("id"));
+            mgw.mainGameScreen.placeBuilding($(this).parent().attr("id"));
         }
     });
 });
