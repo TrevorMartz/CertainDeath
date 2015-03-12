@@ -47,6 +47,7 @@ function preload () {
     game.load.atlasJSONHash("objects", "/Content/Images/spritesheet3.png", "/Content/Images/spritesheet3.json");
     //game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
     game.load.atlasJSONHash("monsters", "/Content/Images/monsters.png", "/Content/Images/monsters.json");
+	game.load.atlasJSONHash("turrets", "/Content/Images/turrets.png", "/Content/Images/turrets.json");
 	//server = new Server("", onerror, onclose);
 }
 
@@ -64,7 +65,7 @@ function create () {
         shop,
         new View.InventoryBar(game, 84, 10, game.width - 20 - 84, 32*2)
     ];
-    mgw = nav.mainGameScreen;
+    mgw = nav;
     View.current = new View.ScreenContainer(views, 0, 0, game.width, game.height);
     View.current.create();
     Server.register(View.current);
@@ -108,13 +109,17 @@ Server = (function () {
     }
 
     function unregister(listener){
-        throw new Error("Not yet implemented.");
+        for (var x in listeners) {
+            if (listeners[x] === listener) {
+                delete listeners[x];
+            }
+        }
     }
 	
     var first = true;
     function onmessage(message) {
         var obj = JSON.parse(message.data);
-        for (var x = 0; x < listeners.length; ++x) {
+        for (x in listeners) {
             for (var y = 0; y < listeners[x].subscribesTo.length; y++) {
                 var subs = listeners[x].subscribesTo[y].split('.');
                 var prop = obj;
@@ -159,6 +164,7 @@ Server = (function () {
     return {
         open: open,
         register: register,
+        unregister: unregister,
         close: close,
         send: send
     }

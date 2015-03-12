@@ -23,6 +23,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         // The monster the turret is attacking
         private Monster Attacking { get; set; }
+
+        // Rotation of the turret
+        public double Rotation { get; private set; }
         
 		public Turret(Tile tile, Point pos) : base(tile, pos)
 		{
@@ -48,7 +51,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     State = TurretState.WAITING;
                     this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                     {
-                        State = TurretState.WAITING.ToString()
+                        State = TurretState.WAITING.ToString(),
+                        Rotation = Rotation
                     });
 					Attacking = null;
 				}
@@ -66,7 +70,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     State = TurretState.ATTACKING;
                     this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
                     {
-                        State = TurretState.ATTACKING.ToString()
+                        State = TurretState.ATTACKING.ToString(),
+                        Rotation = this.Rotation
                     });
 				}
 			}
@@ -86,7 +91,16 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     }
                 }
             }
+            if(monsterToReturn != null)
+                Rotation = FindRotation(Position, monsterToReturn.Position);
             return monsterToReturn;
+        }
+
+        private double FindRotation(Point me, Point b)
+        {
+            var angle = Math.Atan2(b.Y - me.Y, b.X - me.X) % (2*Math.PI);
+            angle = angle * (180 / Math.PI);
+            return angle;
         }
 
         private void Attack(long millis)
@@ -95,7 +109,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             Attacking.HealthPoints -= damage;
             this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
             {
-                HealthPoints = Attacking.HealthPoints
+                HealthPoints = Attacking.HealthPoints,
+                MaxHealthPoints = Attacking.MaxHealthPoints
             });
 
             if (Attacking.HealthPoints <= 0)
@@ -143,6 +158,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 });
             }
         }
+
     }
 
     public enum TurretState

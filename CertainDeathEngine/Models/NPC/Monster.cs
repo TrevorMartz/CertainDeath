@@ -105,17 +105,23 @@ namespace CertainDeathEngine.Models.NPC
             // check the clicks
 
             var monsterSquare = new RowColumnPair(GameObject.ApproxSquare(Position));
+			var monsterSquares = this.CornerApproxSquares();
 		    lock (Tile.World.SquareClicks)
 		    {
-		        bool toRemoveSomthing = Tile.World.SquareClicks.Contains(monsterSquare);
-
+				bool toRemoveSomthing = false;
+				foreach (var square in monsterSquares)
+				{
+					var pair = new RowColumnPair(square);
+					if (Tile.World.SquareClicks.Contains(pair)) toRemoveSomthing = true;
+				}
 		        if (toRemoveSomthing)
 		        {
                     Tile.World.SquareClicks.Remove(monsterSquare);
-                    this.HealthPoints -= 1000;
+                    this.HealthPoints -= 10;
                     this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(this.Id)
                     {
-                        HealthPoints = this.HealthPoints
+                        HealthPoints = this.HealthPoints,
+                        MaxHealthPoints = this.MaxHealthPoints
                     });
 
 		        }
@@ -268,7 +274,8 @@ namespace CertainDeathEngine.Models.NPC
 			Attacking.HealthPoints -= damage;
             this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
             {
-                HealthPoints = Attacking.HealthPoints
+                HealthPoints = Attacking.HealthPoints,
+                MaxHealthPoints = Attacking.MaxHealthPoints
             });
 			if (Attacking.HealthPoints <= 0)
 			{

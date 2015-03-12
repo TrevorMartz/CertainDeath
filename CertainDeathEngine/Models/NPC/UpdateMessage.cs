@@ -21,6 +21,7 @@ namespace CertainDeathEngine.Models.NPC
     public class BuildingStateChangeUpdateMessage : UpdateMessage
     {
         public string State { get; set; }
+        public double Rotation { get; set; }
         public BuildingStateChangeUpdateMessage(int id) : base(id)
         {
             UType = "BuildingState";
@@ -51,6 +52,7 @@ namespace CertainDeathEngine.Models.NPC
     public class HealthUpdateMessage : UpdateMessage
     {
         public float HealthPoints { get; set; }
+        public float MaxHealthPoints { get; set; }
 
         public HealthUpdateMessage(int id) : base(id)
         {
@@ -123,8 +125,9 @@ namespace CertainDeathEngine.Models.NPC
     [JsonObject]
     public class RemoveResourceFromSquareUpdateMessage : UpdateMessage
     {
-        public string Square { get; set; }
         public int Amount { get; set; }
+        public string Column { get; set; }
+        public string Row { get; set; }
         public RemoveResourceFromSquareUpdateMessage(int id) : base(id)
         {
             UType = "RemoveResourceFromSquare";

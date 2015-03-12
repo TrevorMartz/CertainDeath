@@ -118,6 +118,11 @@ namespace CertainDeath.Controllers
             return PartialView("_HowToPlay");
         }
 
+        public ActionResult GameOver()
+        {
+            return PartialView("_GameOver");
+        }
+
         public ActionResult LoadGame(int userid)
         {
             CertainDeathUser cdUser = _userDal.GetGameUser(userid);

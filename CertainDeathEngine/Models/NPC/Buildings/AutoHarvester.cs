@@ -19,7 +19,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public AutoHarvester(Tile tile, Point position, BuildingType type, Cost cost, Player p)
             : base(tile, position)
         {
-            
+
             Type = type;
             Cost = cost;
             State = HarvesterState.GATHERING;
@@ -42,7 +42,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 if (TimeSinceGather >= 1000)
                 {
                     long timeToGather = (TimeSinceGather / 1000);
-                    Gather((int)(HarvestRate * timeToGather));
+                    int toGather = (int)(HarvestRate * timeToGather);
+                    Gather(toGather);
                     TimeSinceGather -= timeToGather * 1000;
                 }
             }
@@ -65,11 +66,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                                                  ResourceType = s.Resource.Type.ToString(),
                                                                  Amount = toGather
                                                              });
-                            this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0) // todo: does a square have an id?
+                            this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
                                                              {
-                                                                 Amount = toGather
+                                                                 Amount = toGather,
+                                                                 Row = rcp.Row.ToString(),
+                                                                 Column = rcp.Column.ToString()
                                                              });
-                            
+
                             ResourceType type = s.Resource.Type;
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
@@ -82,29 +85,36 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                     Column = rcp.Column.ToString()
                                 });
                             }
-                        }}
-                        else
-                        {
-                            State = HarvesterState.IDLE;
-                            this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                                                             {
-                                                                 State = HarvesterState.IDLE.ToString()
-                                                             });
-                            return;
                         }
-                    
+                    }
+                    else
+                    {
+                        State = HarvesterState.IDLE;
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+                                                            {
+                                                                State = HarvesterState.IDLE.ToString()
+                                                            });
+                        return;
+                    }
                 }
             }
         }
 
         private RowColumnPair FindGatherableSquare()
         {
-            for (int row = Math.Max(0, (int)TilePosition.Y); row < Math.Min((int)TilePosition.Y + GatherRange, 20); row++)
+            int posrow = (int)TilePosition.Y;
+            int poscol = (int)TilePosition.X;
+            int minrow = Math.Max(0, (int)TilePosition.Y - GatherRange);
+            int maxrow = Math.Min((int)TilePosition.Y + GatherRange, 20);
+            int mincol = Math.Max(0, (int)TilePosition.X - GatherRange);
+            int maxcol = Math.Min((int)TilePosition.X + GatherRange, 20);
+
+            for (int row = minrow; row < maxrow; row++)
             {
-                for (int col = Math.Max(0,(int)TilePosition.X); col < Math.Min((int)TilePosition.X + GatherRange, 20); col++)
+                for (int col = mincol; col < maxcol; col++)
                 {
                     Square s = Tile.Squares[row, col];
-                    if(s != null && s.Resource != null && TypeMatches(s.Resource.Type))
+                    if (s != null && s.Resource != null && TypeMatches(s.Resource.Type))
                     {
                         return new RowColumnPair(row, col);
                     }
@@ -128,7 +138,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 //TODO: Adjust Health Levels, Gather Range, Harvest Rate and Cost
                 Level++;
                 HarvestRate = Level * 2;
-                MaxHealthPoints = 10 * Level;
+                MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
                 GatherRange = Level * 5;
                 UpdateCost();
