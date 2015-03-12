@@ -33,7 +33,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 Level++;
                 MaxHealthPoints = 300 * Level;
                 HealthPoints = MaxHealthPoints;
-                UpdateCost();
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
@@ -41,23 +40,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         NewLevel = Level
                     });
                 }
-            }
-        }
-
-        public override void UpdateCost()
-        {
-            Cost = new Cost();
-            Cost.SetCost(ResourceType.COAL, 10 * Level);
-            Cost.SetCost(ResourceType.CORN, 10 * Level);
-            Cost.SetCost(ResourceType.IRON, 10 * Level);
-            Cost.SetCost(ResourceType.STONE, 10 * Level);
-            Cost.SetCost(ResourceType.WOOD, 10 * Level);
-            if (Tile != null)
-            {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
-                {
-                    NewCost = Cost
-                });
             }
         }
     }

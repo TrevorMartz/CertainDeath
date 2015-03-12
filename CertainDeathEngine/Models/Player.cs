@@ -42,11 +42,6 @@ namespace CertainDeathEngine.Models
                 {
                     Resources[type] -= count;
                 }
-                else
-                {
-                    // todo: do this...
-                    //throw new Exception("Not enough resources");
-                }
             }
         }
 

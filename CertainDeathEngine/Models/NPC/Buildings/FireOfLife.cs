@@ -42,7 +42,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             }
         }
 
-        public override void UpdateCost()
+        public void UpdateCost()
         {
             Cost = new Cost();
             //Cost.SetCost(ResourceType.COAL, 10 * Level);

@@ -67,7 +67,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			}
 			else if (State == TurretState.WAITING)
 			{
-				Monster monsterToAttack = FindClosestAttackableMonster(millis);
+				Monster monsterToAttack = FindClosestAttackableMonster();
                 if (monsterToAttack != null)
 				{
 					Attacking = monsterToAttack;
@@ -81,7 +81,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 			}
         }
 
-        private Monster FindClosestAttackableMonster(long millis)
+        private Monster FindClosestAttackableMonster()
         {
             Monster monsterToReturn = null;
             lock (Tile.World)
@@ -106,22 +106,28 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             angle = angle * (180 / Math.PI);
             return angle;
         }
-
+        public long TimeSinceDamage { get; set; }
         private void Attack(long millis)
         {
-            float damage = Damage * (millis / 1000.0f);
-            Attacking.HealthPoints -= damage;
-            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
+            TimeSinceDamage += millis;
+            if (TimeSinceDamage >= 1000)
             {
-                HealthPoints = Attacking.HealthPoints,
-                MaxHealthPoints = Attacking.MaxHealthPoints
-            });
+                long timeToDamage = (TimeSinceDamage / 1000);
+                float damage = Damage * timeToDamage;
+                Attacking.HealthPoints -= damage;
+                TimeSinceDamage -= timeToDamage * 1000;
+                this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
+                {
+                    HealthPoints = Attacking.HealthPoints,
+                    MaxHealthPoints = Attacking.MaxHealthPoints
+                });
 
-            if (Attacking.HealthPoints <= 0)
-            {
-                Attacking.Remove();
-                State = TurretState.WAITING;
-                Attacking = null;
+                if (Attacking.HealthPoints <= 0)
+                {
+                    Attacking.Remove();
+                    State = TurretState.WAITING;
+                    Attacking = null;
+                }
             }
         }
 
@@ -135,7 +141,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 HealthPoints = MaxHealthPoints;
                 Range = Square.PIXEL_SIZE * 1 + Level;
 				Damage = Level * 10;
-                UpdateCost();
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
@@ -145,24 +150,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 }
             }
         }
-
-        public override void UpdateCost()
-        {
-            Cost = new Cost();
-            Cost.SetCost(ResourceType.COAL, 10 * Level);
-            Cost.SetCost(ResourceType.CORN, 10 * Level);
-            Cost.SetCost(ResourceType.IRON, 10 * Level);
-            Cost.SetCost(ResourceType.STONE, 10 * Level);
-            Cost.SetCost(ResourceType.WOOD, 10 * Level);
-            if (Tile != null)
-            {
-                this.Tile.World.AddUpdateMessage(new UpdateBuildingCostUpdateMessage(this.Id)
-                {
-                    NewCost = Cost
-                });
-            }
-        }
-
     }
 
     public enum TurretState

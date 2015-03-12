@@ -37,7 +37,5 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public abstract void Update(long millis);
 
         public abstract void Upgrade();
-
-        public abstract void UpdateCost();
     }
 }
