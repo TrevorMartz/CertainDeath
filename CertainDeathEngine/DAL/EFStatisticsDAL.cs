@@ -32,7 +32,7 @@ namespace CertainDeathEngine.DAL
         public IEnumerable<Score> GetHighScores(int qty)
         {
             //High score will be determined by time survived. The rest are just stats.
-            return _cdDbModel.Scores.OrderBy(x => x.Survived).Take(qty).ToList();
+            return _cdDbModel.Scores.OrderBy(x => x.ResourcesCollected).Take(qty).ToList();
         }
     }
 }

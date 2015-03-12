@@ -18,6 +18,9 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         // Turret's damage per second
         public float Damage { get; set; }
 
+		[JsonProperty]	
+		public string StateName { get { return Enum.GetName(typeof(TurretState), State);} }
+
         // building's current state {WAITING, ATTAKING}
         private TurretState State { get; set; }
 
@@ -25,7 +28,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private Monster Attacking { get; set; }
 
         // Rotation of the turret
-        public double Rotation { get; private set; }
+		[JsonProperty]
+		public double Rotation { get; private set; }
         
 		public Turret(Tile tile, Point pos) : base(tile, pos)
 		{
