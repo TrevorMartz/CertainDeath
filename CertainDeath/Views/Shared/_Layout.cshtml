@@ -31,9 +31,10 @@
 
     <div id="wrapper">
         <header id="topHeader">
+            <div class="logo-text">Certain Death</div>
             <nav>
-                @Ajax.ActionLink("Play", "Index", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" }) |
-                @Ajax.ActionLink("High Scores", "Leaderboard", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" }) |
+                @Ajax.ActionLink("Play", "Index", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
+                @Ajax.ActionLink("High Scores", "Leaderboard", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
                 @Ajax.ActionLink("How To Play", "HowToPlay", "Home", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "content" })
             </nav>
         </header>
