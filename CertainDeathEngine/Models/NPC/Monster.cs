@@ -104,11 +104,15 @@ namespace CertainDeathEngine.Models.NPC
 		{
             // check the clicks
 
-            var monsterSquare = new RowColumnPair(GameObject.ApproxSquare(Position));
+			var monsterSquares = this.CornerApproxSquares();
 		    lock (Tile.World.SquareClicks)
 		    {
-		        bool toRemoveSomthing = Tile.World.SquareClicks.Contains(monsterSquare);
-
+				bool toRemoveSomthing = false;
+				foreach (var square in monsterSquares)
+				{
+					var pair = new RowColumnPair(square);
+					if (Tile.World.SquareClicks.Contains(pair)) toRemoveSomthing = true;
+				}
 		        if (toRemoveSomthing)
 		        {
                     Tile.World.SquareClicks.Remove(monsterSquare);
