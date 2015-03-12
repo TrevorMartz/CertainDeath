@@ -31,11 +31,13 @@ namespace CertainDeathEngine.Factories
 			World = world;
 		}
 
+        long elapsed = 0;
 		// This will need to return something or have a call back
 		// To notify the game that there are new monsters
 		// This will be used for sending back Delta JSON
 		public void Update(long millis)
 		{
+            elapsed += millis;
 			_time += millis;
 			if (_delaying && _time > Delay)
 			{
@@ -44,7 +46,7 @@ namespace CertainDeathEngine.Factories
 				_time -= Delay;
 			}
 			if(!_delaying && _time > Rate) {
-				int monsters = (int)_time / Rate;
+				int monsters = (int)(_time / Rate * elapsed / 1000);
 				for (int i = 0; i < monsters; i++)
 					SpawnMonsters(SpawnSize);
 				_time -= monsters * Rate;
