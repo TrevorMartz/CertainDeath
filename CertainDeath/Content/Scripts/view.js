@@ -237,13 +237,13 @@ View = (function () {
                 		monster.y = ypos;
                 		monster.g = game.add.graphics(xpos, ypos - 7);
 
-                		monster.drawHealth = function (max, current) {
+                		monster.drawHealth = function (current, max) {
                 		    monster.g.clear();
                 		    monster.g.beginFill(0xFFFFFF);
-                		    monster.g.drawRect(0, 0, this.sprite.width, 5);
+                		    monster.g.drawRect(0, 0, tileSize, 5);
                 		    monster.g.endFill();
                 		    monster.g.beginFill(0xFF0000);
-                		    monster.g.drawRect(1, 1, (this.sprite.width - 2) * (current/max), 3);
+                		    monster.g.drawRect(1, 1, (tileSize - 2) * (current/max), 3);
                 		    monster.g.endFill();
                 		}
                 		monster.drawHealth(1,1);
@@ -253,8 +253,10 @@ View = (function () {
                 	}
 
                 	this.RemoveMonster = function (id) {
-                		var monster = this.monsters[id];
-                		monster.sprite.destroy();
+                	    if (this.monsters && this.monsters[id]) {
+                		    var monster = this.monsters[id];
+                		    monster.sprite.destroy();
+                	    }
                 	}
 
                 	this.UpdateMonsterStatus = function (id, status) {
@@ -396,7 +398,7 @@ View = (function () {
                     			if(this.monsters[id] != undefined) {
                     				this.UpdateMonsterPosition(id, update.MoveX, update.MoveY);
                     			}
-	  /*MonsterState*/  	} else if ("MonsterState" === type) {
+	  /*MonsterState*/  	} else if ("MonsterState" === type && this.monsters[id]) {
                     			this.UpdateMonsterStatus(id, update.State);
 	  /*Remove*/  			} else if ("Remove" === type) {
 	                   			if (this.monsters[id] !== "undefined") {
@@ -724,6 +726,7 @@ View = (function () {
                 this.disposables.push(g);
                 this.disposables.push(sprite);
 
+                g = this.game.add.graphics(this.x, this.y);
                 g.beginFill(0xFF9900);
                 g.moveTo(this.width, this.height / 2);
                 g.lineTo(this.width - 30, this.height / 2 + 30);
@@ -793,6 +796,7 @@ View = (function () {
         },
         onclick: {
             value: function (click) {
+                this.context.server.unregister(this.context.mainGameScreen);
                 this.context.mainGameScreen.destroy();
                 delete this.context.mainGameScreen;
                 this.context.mainGameScreen = new MainGameScreen(this.context.game, this.context.server, this.context.x + 35, this.context.y + 35, this.context.width - 75, this.context.height - 75);

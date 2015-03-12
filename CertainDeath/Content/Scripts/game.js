@@ -108,13 +108,17 @@ Server = (function () {
     }
 
     function unregister(listener){
-        throw new Error("Not yet implemented.");
+        for (var x in listeners) {
+            if (listeners[x] === listener) {
+                delete listeners[x];
+            }
+        }
     }
 	
     var first = true;
     function onmessage(message) {
         var obj = JSON.parse(message.data);
-        for (var x = 0; x < listeners.length; ++x) {
+        for (x in listeners) {
             for (var y = 0; y < listeners[x].subscribesTo.length; y++) {
                 var subs = listeners[x].subscribesTo[y].split('.');
                 var prop = obj;
@@ -159,6 +163,7 @@ Server = (function () {
     return {
         open: open,
         register: register,
+        unregister: unregister,
         close: close,
         send: send
     }
