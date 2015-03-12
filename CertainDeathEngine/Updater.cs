@@ -61,6 +61,15 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
+
+            lock (_game.World)
+            {
+                if (_game.World.HasEnded)
+                {
+                    _game.GameOver();
+                }
+            }
+
             //Log.Debug("Process delta time for world " + this._game.World.Id);
             lock (_game.World)
             {

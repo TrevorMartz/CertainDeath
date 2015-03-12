@@ -42,7 +42,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 if (TimeSinceGather >= 1000)
                 {
                     long timeToGather = (TimeSinceGather / 1000);
-                    int toGather = (int) (HarvestRate*timeToGather);
+                    int toGather = (int)(HarvestRate * timeToGather);
                     Gather(toGather);
                     TimeSinceGather -= timeToGather * 1000;
                 }
@@ -59,7 +59,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     if (rcp != null)
                     {
                         Square s = Tile.Squares[rcp.Row, rcp.Column];
-                        if (s != null)
+                        if (s != null && s.Resource != null)
                         {
                             this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                                                              {
@@ -72,17 +72,18 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                                                                  Row = rcp.Row.ToString(),
                                                                  Column = rcp.Column.ToString()
                                                              });
+
                             ResourceType type = s.Resource.Type;
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
                             Player.AddResource(type, gathered);
-                            if (s.Resource != null && s.Resource.Quantity <= 0)
+                            if (s.Resource == null)
                             {
                                 Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
-                                                            {
-                                                                Row = rcp.Row.ToString(),
-                                                                Column = rcp.Column.ToString()
-                                                            });
+                                {
+                                    Row = rcp.Row.ToString(),
+                                    Column = rcp.Column.ToString()
+                                });
                             }
                         }
                     }
@@ -90,12 +91,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     {
                         State = HarvesterState.IDLE;
                         this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                                                         {
-                                                             State = HarvesterState.IDLE.ToString()
-                                                         });
+                                                            {
+                                                                State = HarvesterState.IDLE.ToString()
+                                                            });
                         return;
                     }
-
                 }
             }
         }
@@ -104,10 +104,10 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         {
             int posrow = (int)TilePosition.Y;
             int poscol = (int)TilePosition.X;
-            int minrow = Math.Max(0, (int) TilePosition.Y - GatherRange);
-            int maxrow = Math.Min((int) TilePosition.Y + GatherRange, 20);
-            int mincol = Math.Max(0, (int) TilePosition.X - GatherRange);
-            int maxcol = Math.Min((int) TilePosition.X + GatherRange, 20);
+            int minrow = Math.Max(0, (int)TilePosition.Y - GatherRange);
+            int maxrow = Math.Min((int)TilePosition.Y + GatherRange, 20);
+            int mincol = Math.Max(0, (int)TilePosition.X - GatherRange);
+            int maxcol = Math.Min((int)TilePosition.X + GatherRange, 20);
 
             for (int row = minrow; row < maxrow; row++)
             {

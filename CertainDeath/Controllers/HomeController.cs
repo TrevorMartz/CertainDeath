@@ -118,6 +118,11 @@ namespace CertainDeath.Controllers
             return PartialView("_HowToPlay");
         }
 
+        public ActionResult GameOver()
+        {
+            return PartialView("_GameOver");
+        }
+
         public ActionResult LoadGame(int userid)
         {
             CertainDeathUser cdUser = _userDal.GetGameUser(userid);
@@ -130,7 +135,7 @@ namespace CertainDeath.Controllers
             CertainDeathUser cdUser = _userDal.GetGameUser(userid);
 
             // we need to create them a game world
-            Game game = (Game)_gameDal.CreateGame();
+            Game game = _gameDal.CreateGame();
             game.World.Score.UserId = cdUser.Id;
             _userDal.GiveGameUserAGameWorldId(cdUser.Id, game.World.Id);
             return View("Game", cdUser);

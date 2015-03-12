@@ -206,8 +206,8 @@ View = (function () {
                     delete this.monsters[x];
                 }
 				for (var x in this.buildings) {
-                    if (this.buildings[x]&& this.buildings[x].destroy) {
-                        this.buildings[x].destroy();
+                    if (this.buildings[x]&& this.buildings[x].sprite) {
+                        this.buildings[x].sprite.destroy();
 					}
                     delete this.buildings[x];
 				}
@@ -245,19 +245,20 @@ View = (function () {
                 		monster.y = ypos;
                 		monster.g = game.add.graphics(xpos, ypos - 7);
 
-                		monster.drawHealth = function (current, max) {
-                		    monster.g.clear();
-                		    monster.g.beginFill(0xFFFFFF);
-                		    monster.g.drawRect(0, 0, tileSize, 5);
-                		    monster.g.endFill();
-                		    monster.g.beginFill(0xFF0000);
-                		    monster.g.drawRect(1, 1, (tileSize - 2) * (current/max), 3);
-                		    monster.g.endFill();
-                		}
-                		monster.drawHealth(1,1);
+                		this.drawHealth.call(monster, 1, 1);
                 		this.monsters[id] = monster;
                 		this.UpdateMonsterPosition(id, xpos, ypos);
                 		this.UpdateMonsterStatus(id, status);
+                	}
+
+                	this.drawHealth = function (current, max) {
+                	    this.g.clear();
+                	    this.g.beginFill(0xFFFFFF);
+                	    this.g.drawRect(0, 0, tileSize, 5);
+                	    this.g.endFill();
+                	    this.g.beginFill(0xFF0000);
+                	    this.g.drawRect(1, 1, (tileSize - 2) * (current/max), 3);
+                	    this.g.endFill();
                 	}
 
                 	this.RemoveMonster = function (id) {
@@ -311,13 +312,26 @@ View = (function () {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
 										"objects", type);
                 		}
-                		this.buildings[id] = sprite;
+                		var building = {
+                		    "sprite": sprite,
+                		    "HealthPoints": 1,
+                		    "MaxHealthPoints": 1,
+                            "id" : id,
+                		    "g" : game.add.graphics(sprite.x + sprite.width/2 - 16, sprite.y + sprite.height/2 - 16 -7)
+                		}
+                		this.buildings[id] = building;
+                		this.drawHealth.call(building, 1, 1);
                 	}
 
                 	this.RemoveBuilding = function (id) {
                 		var building = this.buildings[id];
-						if(building)
-                			building.destroy();
+                		if (building) {
+                            if(building.sprite)
+                                building.sprite.destroy();
+                            if (building.g)
+                                building.g.destroy();
+                		}
+                		delete this.buildings[id];
                 	}
 
                 	this.BuildingState = function (id, state, rotation) {
@@ -350,9 +364,9 @@ View = (function () {
 
                 	this.TurretAttack = function (id) {
                 		var building = this.buildings[id];
-                		building.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
+                		building.sprite.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
                 			15, true);
-                		building.animations.play("attack");
+                		building.sprite.animations.play("attack");
                 	}
 
 /*Squares*/        if (property === "CurrentTile.Squares") {
@@ -440,7 +454,6 @@ View = (function () {
                     } else if (property === "CurrentTile.Buildings") {
                         for (var x = 0; x < msg.length; ++x) {
                         	var building = this.buildings[msg[x].Id];
-							debugger;
                         	if (building === undefined) {
 								var positions = msg[x].Position.split(",");
 								var xpos = parseFloat(positions[0]);
@@ -476,13 +489,16 @@ View = (function () {
                     			}
 	  /*Health*/			} else if ("Health" === type) {
 	                          if (this.monsters[id]) {
-	                              this.monsters[id].drawHealth(update.HealthPoints, update.MaxHealthPoints);
+	                              this.drawHealth.call(this.monsters[id], update.HealthPoints, update.MaxHealthPoints);
+	                              this.displayText(this.monsters[id].sprite.x + this.monsters[id].sprite.width / 2, this.monsters[id].sprite.y + this.monsters[id].sprite.height / 2, "-1");
+	                          } else if (this.buildings[id]) {
+	                              this.drawHealth.call(this.buildings[id], update.HealthPoints, update.MaxHealthPoints);
 	                          }
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
 	                            //this.resources[update["ResourceType"]] += update["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
-                    			window.location = "https://g.certaindeathgame.com:44300";
+                    			window.location = "https://g.certaindeathgame.com:44300/Home/GameOver";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
 	  							this.BuildingState(id, update.State, update.Rotation);
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
@@ -510,6 +526,26 @@ View = (function () {
                 this._placeState = {};
                 this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", type);
                 this._placeState.type = type;
+            }
+        },
+        displayText: {
+            value: function (x, y, txt, color, bg) {
+                if (!color)
+                    color = "#FF0000";
+                if (!bg)
+                    bg = "#FFFFFF";
+                var style = { font: "8px", fill: color, align: "center", stroke: bg, strokeThickness : 1 };
+                var text = this.game.add.text(x, y, txt, style);
+                text.anchor.set(0.5);
+                var anim = this.game.add.tween(text);
+                anim.to({ y: y - 100, alpha: 0 }, 1500, Phaser.Easing.Cubic.Out);
+                anim.onComplete.add(function () {
+                    this.text.destroy();
+                }, {
+                    text: text,
+                    anim: anim,
+                });
+                anim.start();
             }
         }
     });

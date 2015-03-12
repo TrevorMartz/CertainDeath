@@ -50,7 +50,8 @@ namespace CertainDeathEngine.DAL
             GameWorld world = LoadWorld(worldId);
             if (world.HasEnded)
             {
-                throw new Exception("The game has already ended");
+                return null;
+                //throw new Exception("The game has already ended");
             }
 
             return GetGameAndStartUpdateThread(world);
@@ -102,15 +103,15 @@ namespace CertainDeathEngine.DAL
             Log.Debug("Really starting the thread now");
             Game g = new Game(world);
 
-            foreach (var b in world.CurrentTile.Buildings)
-            {
-                world.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
-                                       {
-                                           PosX = b.Position.X,
-                                           PosY = b.Position.Y,
-                                           Type = b.Type.ToString()
-                                       });
-            }
+            //foreach (var b in world.CurrentTile.Buildings)
+            //{
+            //    world.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
+            //                           {
+            //                               PosX = b.Position.X,
+            //                               PosY = b.Position.Y,
+            //                               Type = b.Type.ToString()
+            //                           });
+            //}
 
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
