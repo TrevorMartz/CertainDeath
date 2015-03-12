@@ -453,7 +453,6 @@ View = (function () {
                     			window.location = "https://g.certaindeathgame.com:44300";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
 	                            if (this.buildings[id]&& update["Rotation"]) {
-									debugger;
 	                            	if (update.State == "ATTACKING") {
 										this.TurretAttack(id);
 	                            	}
