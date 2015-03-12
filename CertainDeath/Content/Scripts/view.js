@@ -459,6 +459,7 @@ View = (function () {
 	  /*Health*/			} else if ("Health" === type) {
 	                          if (this.monsters[id]) {
 	                              this.drawHealth.call(this.monsters[id], update.HealthPoints, update.MaxHealthPoints);
+	                              this.displayText(this.monsters[id].sprite.x + this.monsters[id].sprite.width / 2, this.monsters[id].sprite.y + this.monsters[id].sprite.height / 2, "-1");
 	                          } else if (this.buildings[id]) {
 	                              this.drawHealth.call(this.buildings[id], update.HealthPoints, update.MaxHealthPoints);
 	                          }
@@ -514,6 +515,26 @@ View = (function () {
                 this._placeState = {};
                 this._placeState.sprite = this.game.add.sprite(this.x, this.y, "objects", type);
                 this._placeState.type = type;
+            }
+        },
+        displayText: {
+            value: function (x, y, txt, color, bg) {
+                if (!color)
+                    color = "#FF0000";
+                if (!bg)
+                    bg = "#FFFFFF";
+                var style = { font: "8px", fill: color, align: "center", stroke: bg, strokeThickness : 1 };
+                var text = this.game.add.text(x, y, txt, style);
+                text.anchor.set(0.5);
+                var anim = this.game.add.tween(text);
+                anim.to({ y: y - 100, alpha: 0 }, 1500, Phaser.Easing.Cubic.Out);
+                anim.onComplete.add(function () {
+                    this.text.destroy();
+                }, {
+                    text: text,
+                    anim: anim,
+                });
+                anim.start();
             }
         }
     });
