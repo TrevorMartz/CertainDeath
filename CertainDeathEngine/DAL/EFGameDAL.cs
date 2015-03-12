@@ -1,5 +1,6 @@
 ﻿using CertainDeathEngine.DB;
 using CertainDeathEngine.Models;
+using CertainDeathEngine.Models.NPC;
 using CertainDeathEngine.Models.World;
 using CertainDeathEngine.WorldManager;
 using log4net;
@@ -100,6 +101,16 @@ namespace CertainDeathEngine.DAL
 
             Log.Debug("Really starting the thread now");
             Game g = new Game(world);
+
+            foreach (var b in world.CurrentTile.Buildings)
+            {
+                world.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
+                                       {
+                                           PosX = b.Position.X,
+                                           PosY = b.Position.Y,
+                                           Type = b.Type.ToString()
+                                       });
+            }
 
             // TODO: move the thread spawn to a better location
             Updater u = new Updater(g);
