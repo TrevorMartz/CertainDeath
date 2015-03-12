@@ -104,6 +104,15 @@ namespace CertainDeathEngine
                                                              ResourceType = curType.ToString(),
                                                              Amount = gathered
                                                          });
+
+                            if (square.Resource != null)
+                            {
+                                _game.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
+                                {
+                                    Row = click.Row.ToString(),
+                                    Column = click.Column.ToString()
+                                });
+                            }
                         }
                     }
                 }
