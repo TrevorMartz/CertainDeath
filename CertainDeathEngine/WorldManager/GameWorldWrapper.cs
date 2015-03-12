@@ -14,19 +14,16 @@ namespace CertainDeathEngine.WorldManager
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public GameWorld World { get; set; }
+        public bool HasEnded { get; set; }
         public long LastUpdateTime { get; set; }
         public long LastSaveTime { get; set; }
-
-        public void SetWorld(GameWorld world)
-        {
-            World = world;
-        }
 
 
         public byte[] EfSerialized
         {
             get // serialize
             {
+                HasEnded = World.HasEnded;
                 Log.Debug("Serializing game world with id " + World.Id);
                 try
                 {
@@ -55,6 +52,7 @@ namespace CertainDeathEngine.WorldManager
                         BinaryFormatter formatter = new BinaryFormatter();
                         GameWorld loadedWorld = (GameWorld)formatter.Deserialize(s);
                         World = loadedWorld;
+                        HasEnded = loadedWorld.HasEnded;
                     }
                 }
                 catch (Exception e)

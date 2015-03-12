@@ -87,7 +87,7 @@ namespace CertainDeath.Controllers
         {
             StartScreenViewModel ssvm = new StartScreenViewModel(cdUser.Id);
 
-            if (cdUser.WorldId > 0)
+            if (cdUser.WorldId > 0 && _gameDal.HasNotEndedVersionOfWorld(cdUser.WorldId))
             {
                 ssvm.LoadGame = true;
             }
