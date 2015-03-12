@@ -73,6 +73,9 @@ namespace CertainDeathEngine
                 Log.Debug("inside the threads lock");
                 if (_threads.ContainsKey(worldId))
                 {
+
+                    WorldManager.WorldManager.Instance.RemoveWorld(worldId);
+
                     Log.Debug("update thread for world is already running. aborting the thread "+ _threads[worldId].ManagedThreadId);
                     _threads[worldId].Abort();
                     Log.Debug("removing the thread from the collection.");

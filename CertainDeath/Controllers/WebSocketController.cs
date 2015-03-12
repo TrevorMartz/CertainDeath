@@ -112,6 +112,7 @@ namespace CertainDeath.Controllers
                 if (GameInstance == null)
                 {
                     // shayne, the world is over, so you need to tell the JS that it cant load and not to do what they did
+                    //Send("");
                 }
                 else
                 {
