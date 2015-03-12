@@ -81,7 +81,7 @@ namespace CertainDeathEngine.Factories
                 m = new Monster(randTile, Position, Goal, Speed, (MonsterName)RandomGen.Random.Next(Enum.GetValues(typeof(MonsterName)).Length))
                 {
                     Id = GetNextId(),
-                    Damage = 1
+                    Damage = 10
                 };
                 randTile.AddObject(m);
             }
