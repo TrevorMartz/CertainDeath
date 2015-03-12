@@ -132,17 +132,20 @@ namespace CertainDeathEngine.DAL
                 try
                 {
                     // todo: update instead of replace the world?
-                    _cdDbModel.Worlds.Add(new GameWorldWrapperWrapper()
-                    {
-                        Worlds = new GameWorldWrapper()
-                            {
-                                World = world,
-                                LastSaveTime = Environment.TickCount,
-                                LastUpdateTime = world.TimeLastUpdated
+                    GameWorldWrapper wrapper = new GameWorldWrapper()
+                                               {
+                                                   HasEnded = world.HasEnded,
+                                                   World = world,
+                                                   LastSaveTime = Environment.TickCount,
+                                                   LastUpdateTime = world.TimeLastUpdated
 
-                            },
-                        WorldId = world.Id
-                    });
+                                               };
+                    GameWorldWrapperWrapper wrapperWrapper = new GameWorldWrapperWrapper()
+                                                             {
+                                                                 Worlds = wrapper,
+                                                                 WorldId = world.Id
+                                                             };
+                    _cdDbModel.Worlds.Add(wrapperWrapper);
                     _cdDbModel.SaveChanges();
                     lock (world)
                     {

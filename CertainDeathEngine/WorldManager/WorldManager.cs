@@ -68,6 +68,21 @@ namespace CertainDeathEngine.WorldManager
             }
         }
 
+        public void RemoveWorld(int worldId)
+        {
+            lock (_worlds)
+            {
+                if (_worlds.ContainsKey(worldId))
+                {
+                    _worlds.Remove(worldId);
+                }
+                else
+                {
+                    Log.Warn("The world with if " + worldId + " was supposed to be removed, but it was not there");
+                }
+            }
+        }
+
         public IEnumerable<string> GetLoadedWorldIds()
         {
             return _worlds.Keys.Select(x => x.ToString()).ToList();
