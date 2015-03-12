@@ -192,9 +192,6 @@
     <Content Include="Content\Images\DIRT_old2.png" />
     <Content Include="Content\Images\GRASS1.png" />
     <Content Include="Content\Images\GRASS3.png" />
-    <Content Include="Content\Images\GunTurret.png" />
-    <Content Include="Content\Images\Lumbermill.png" />
-    <Content Include="Content\Images\Mine.png" />
     <Content Include="Content\Images\monsters.png" />
     <Content Include="Content\Images\Fire.png" />
     <Content Include="Content\Images\DIRT_old.png" />
@@ -203,9 +200,7 @@
     <Content Include="Content\Images\GRASS2.png" />
     <Content Include="Content\Images\GRASS7.png" />
     <Content Include="Content\Images\IRON.png" />
-    <Content Include="Content\Images\Quarry.png" />
     <Content Include="Content\Images\SAND.png" />
-    <Content Include="Content\Images\SAND1.png" />
     <Content Include="Content\Images\Shop.gif" />
     <Content Include="Content\Images\ShopButton.gif" />
     <Content Include="Content\Images\ShopButton.png" />
@@ -215,6 +210,7 @@
     <Content Include="Content\Images\GRASS_old.png" />
     <Content Include="Content\Images\spritesheet.png" />
     <Content Include="Content\Images\spritesheet2.png" />
+    <Content Include="Content\Images\spritesheet3.png" />
     <Content Include="Content\Images\STONE.png" />
     <Content Include="Content\Images\Torch sprite.png" />
     <Content Include="Content\Images\Torch.png" />
@@ -242,6 +238,7 @@
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.ttf" />
     <Content Include="Content\Fonts\slkscre\slkscr-webfont.woff" />
     <Content Include="Content\Images\monsters.json" />
+    <Content Include="Content\Images\spritesheet3.json" />
     <None Include="Properties\PublishProfiles\FirstAttempt.pubxml" />
     <None Include="readme.txt" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
