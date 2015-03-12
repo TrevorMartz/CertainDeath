@@ -13,7 +13,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private readonly WorldManager.WorldManager _worldManager = WorldManager.WorldManager.Instance;
 
         public FireOfLife(Tile tile)
-            : base(tile, new Point(Tile.SQUARES_PER_ROW_AND_COLUMN / 2, Tile.SQUARES_PER_ROW_AND_COLUMN / 2))
+            : base(tile, new Point(Tile.SQUARES_PER_ROW_AND_COLUMN / 2, Tile.SQUARES_PER_ROW_AND_COLUMN / 2), null)
         {
             Type = BuildingType.FIRE_OF_LIFE;
             MaxLevel = 5;

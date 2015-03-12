@@ -25,7 +25,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public Point TilePosition { get; set; }
 
-        public Building(Tile tile, Point position)
+        public Building(Tile tile, Point position, Cost cost)
         {
             Tile = tile;
             Height = Square.PIXEL_SIZE - 1;//TODO: this might be changed later

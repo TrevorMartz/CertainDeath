@@ -10,7 +10,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public Wall(Tile tile, Point pos) : base(tile, pos)
+        public Wall(Tile tile, Point pos, Cost cost) : base(tile, pos, cost)
         {
             Type = BuildingType.WALL;
             MaxLevel = 5;

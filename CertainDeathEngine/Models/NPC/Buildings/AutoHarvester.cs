@@ -16,8 +16,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         public HarvesterState State { get; set; }
         private Player Player { get; set; }
         private long TimeSinceGather { get; set; }
-        public AutoHarvester(Tile tile, Point position, BuildingType type, Cost cost, Player p)
-            : base(tile, position)
+        public AutoHarvester(Tile tile, Point position, BuildingType type, Player p, Cost cost)
+            : base(tile, position, cost)
         {
 
             Type = type;
