@@ -32,9 +32,6 @@ namespace CertainDeathEngine.Factories
 		}
 
         long elapsed = 0;
-		// This will need to return something or have a call back
-		// To notify the game that there are new monsters
-		// This will be used for sending back Delta JSON
 		public void Update(long millis)
 		{
             elapsed += millis;
@@ -62,10 +59,6 @@ namespace CertainDeathEngine.Factories
 
 		public Monster BuildMonster(string monsterType)
 		{
-			// top (x, 0)
-			// bottom (x, Tile.TOTAL_PIXELS)
-			// left (0, y)
-			// right (Tile.TOTAL_PIXELS, y)
             Monster m;
 			Tile randTile;
             lock (World)

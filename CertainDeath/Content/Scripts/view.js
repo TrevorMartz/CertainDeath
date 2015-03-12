@@ -206,10 +206,14 @@ View = (function () {
                     delete this.monsters[x];
                 }
 				for (var x in this.buildings) {
-                    if (this.buildings[x]&& this.buildings[x].sprite) {
-                        this.buildings[x].sprite.destroy();
-					}
-                    delete this.buildings[x];
+                    var building = this.buildings[x];
+                		if (building) {
+                            if (building.sprite)
+                                building.sprite.destroy();
+                            if (building.g)
+                                building.g.destroy();
+                        }
+                	delete this.buildings[x];
 				}
 
                 if (this._placeState) {
