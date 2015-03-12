@@ -23,7 +23,7 @@ namespace CertainDeathEngine.WorldManager
         {
             get // serialize
             {
-                HasEnded = World.HasEnded;
+                //HasEnded = World.HasEnded;
                 Log.Debug("Serializing game world with id " + World.Id);
                 try
                 {
@@ -52,7 +52,7 @@ namespace CertainDeathEngine.WorldManager
                         BinaryFormatter formatter = new BinaryFormatter();
                         GameWorld loadedWorld = (GameWorld)formatter.Deserialize(s);
                         World = loadedWorld;
-                        HasEnded = loadedWorld.HasEnded;
+                        //HasEnded = loadedWorld.HasEnded;
                     }
                 }
                 catch (Exception e)
