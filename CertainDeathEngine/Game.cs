@@ -99,15 +99,15 @@ namespace CertainDeathEngine
 
         private string SendBuildigUpdatesBecauseWeChangedSomething()
         {
-            foreach (var b in World.CurrentTile.Buildings)
-            {
-                World.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
-                {
-                    PosX = b.Position.X,
-                    PosY = b.Position.Y,
-                    Type = b.Type.ToString()
-                });
-            }
+            //foreach (var b in World.CurrentTile.Buildings)
+            //{
+            //    World.AddUpdateMessage(new PlaceBuildingUpdateMessage(b.Id)
+            //    {
+            //        PosX = b.Position.X,
+            //        PosY = b.Position.Y,
+            //        Type = b.Type.ToString()
+            //    });
+            //}
             return ToJSON();
         }
 

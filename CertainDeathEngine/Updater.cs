@@ -61,6 +61,15 @@ namespace CertainDeathEngine
 
         private void ProcessDeltaTime(int delta)
         {
+
+            lock (_game.World)
+            {
+                if (_game.World.HasEnded)
+                {
+                    _game.GameOver();
+                }
+            }
+
             //Log.Debug("Process delta time for world " + this._game.World.Id);
             lock (_game.World)
             {
@@ -120,7 +129,7 @@ namespace CertainDeathEngine
 
             // add spawns
             //Log.Debug("Running monster generator");
-            _game.MonsterGenerator.Update(delta);
+            _game.MonsterGenerator.Update(delta * delta);
 
             // save everything
             if ((_updateCount % 1000) == 0) // about one minute

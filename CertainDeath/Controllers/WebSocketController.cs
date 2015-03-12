@@ -58,6 +58,12 @@ namespace CertainDeath.Controllers
                 _statisticsDal = statisticsDal;
                 GameWorldId = worldId;
                 GameInstance = gameDal.CreateGame(GameWorldId);
+                if (GameInstance == null)
+                {
+                    // todo: make this go to the end screen
+                    // i did it somethere else later....
+
+                }
                 _running = false;
             }
 
@@ -103,10 +109,17 @@ namespace CertainDeath.Controllers
 
             public override void OnOpen()
             {
-                _running = true;
-                _thisEndOfTheWebSocketTread = new Thread(SendUpdates);
-                _thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
-                _thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
+                if (GameInstance == null)
+                {
+                    // shayne, the world is over, so you need to tell the JS that it cant load and not to do what they did
+                }
+                else
+                {
+                    _running = true;
+                    _thisEndOfTheWebSocketTread = new Thread(SendUpdates);
+                    _thisEndOfTheWebSocketTread.Name = "thisEndOfTheWebSocketTread for world " + GameWorldId;
+                    _thisEndOfTheWebSocketTread.Start(); // Should be a safe call since the thread terminates when the connection closes
+                }
             }
 
             public void SendUpdates()
