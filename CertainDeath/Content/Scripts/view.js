@@ -405,7 +405,7 @@ View = (function () {
 	                            //this.resources[update["ResourceType"]] += update["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
-                    			window.location = "~/g.certaindeathgame.com:44300";
+                    			window.location = "https://g.certaindeathgame.com:44300";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
 
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
