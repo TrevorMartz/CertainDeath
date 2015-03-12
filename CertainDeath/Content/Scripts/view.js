@@ -302,6 +302,11 @@ View = (function () {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8, "objects");
                 			sprite.animations.add("fire", ["FIRE1", "FIRE2", "FIRE3", "FIRE4"], 5, true);
                 			sprite.animations.play("fire");
+                		} else if (type == "TURRET") {
+                			sprite = game.add.sprite(
+								xpos / 32 * tileSize + this.boardX * 7 / 8 - 3.5 * tileSize,
+								ypos / 32 * tileSize +this.boardY * 7 / 8 -3.5 * tileSize,
+								"turrets", "TURRET");
                 		} else {
                 			sprite = game.add.sprite(xpos / 32 * tileSize + this.boardX * 7 / 8, ypos / 32 * tileSize + this.boardY * 7 / 8,
 										"objects", type);
@@ -313,7 +318,14 @@ View = (function () {
                 		var building = this.buildings[id];
 						if(building)
                 			building.destroy();
-					}
+                	}
+
+                	this.TurretAttack = function (id, rotation) {
+                		var building = this.buildings[id];
+                		building.animations.add("attack", ["TURRET", "TURRET01", "TURRET02", "TURRET03", "TURRET04", "TURRET05", "TURRET06", "TURRET07", "TURRET08", "TURRET09", "TURRET010", "TURRET011", "TURRET012"],
+                			15, true);
+                		building.animations.play("attack");
+                	}
 
 /*Squares*/        if (property === "CurrentTile.Squares") {
 
@@ -440,7 +452,20 @@ View = (function () {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			window.location = "https://g.certaindeathgame.com:44300";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
-	                            if (this.buildings[id] && update["Rotation"]) {
+	                            if (this.buildings[id]&& update["Rotation"]) {
+									debugger;
+	                            	if (update.State == "ATTACKING") {
+										this.TurretAttack(id);
+	                            	}
+	                            	else if (update.State == "WAITING") {
+	                            		if (this.buildings[id].animations) {
+	                            			this.buildings[id].animations.stop("attack", true);
+	                            		}
+	                            	}
+	                            	else {
+										// something about autoharvesters
+									}
+
 	                                this.buildings[id].anchor.setTo(0.5, 0.5);
 	                                if (!this.buildings[id].offset) {
 	                                    this.buildings[id].offset = true;

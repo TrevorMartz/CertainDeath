@@ -47,6 +47,7 @@ function preload () {
     game.load.atlasJSONHash("objects", "/Content/Images/spritesheet3.png", "/Content/Images/spritesheet3.json");
     //game.load.atlasJSONHash("stone_golem", "/Content/Images/stone_golem.png", "/Content/Images/stone_golem.json");
     game.load.atlasJSONHash("monsters", "/Content/Images/monsters.png", "/Content/Images/monsters.json");
+	game.load.atlasJSONHash("turrets", "/Content/Images/turrets.png", "/Content/Images/turrets.json");
 	//server = new Server("", onerror, onclose);
 }
 
