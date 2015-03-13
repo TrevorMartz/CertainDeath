@@ -34,7 +34,7 @@ namespace CertainDeathEngine.DAL
             var users = _cdDbModel.Users.Include("FBUser").ToList();
             Dictionary<Score, MyAppUser> userScores = new Dictionary<Score, MyAppUser>();
             foreach (var score in _cdDbModel.Scores.ToList())
-                userScores.Add(score, users.Where(u => u.Id == score.UserId).FirstOrDefault().FBUser);
+                userScores.Add(score, users.Single(u => u.Id == score.UserId).FBUser);
             return userScores;
 
             //return _cdDbModel.Scores.OrderByDescending(x => x.Kills).ToList();
