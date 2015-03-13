@@ -67,7 +67,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 																	ResourceType = s.Resource.Type.ToString(),
 																	Amount = toGather
 																});
-							this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+							if(current)
+								this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
 																{
 																	Amount = toGather,
 																	Row = rcp.Row.ToString(),
