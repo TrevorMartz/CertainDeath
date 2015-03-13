@@ -81,7 +81,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             Row = TilePosition.X.ToString(),
                             Column = TilePosition.Y.ToString()
                         });
-                }
+                } 
             }
         }
 
