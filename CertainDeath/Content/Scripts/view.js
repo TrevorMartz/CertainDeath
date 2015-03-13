@@ -517,7 +517,10 @@ View = (function () {
 
 	  /*World*/   			} else if ("World" === type) {
 
-                    		}
+	                        } else if ("RemoveResourceFromSquare" == type) {
+	                            var r = this.resources[update["Column"]][update["Row"]];
+	                            this.displayText(r.x + r.width / 2, r.y + r.height / 2, "+1", "#00FF44");
+	                        }
                     	}
                     }
                 } // end if
