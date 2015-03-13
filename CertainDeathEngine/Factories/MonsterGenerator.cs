@@ -29,6 +29,10 @@ namespace CertainDeathEngine.Factories
 		public MonsterGenerator(GameWorld world) : base(world)
 		{
 			World = world;
+			InitialSpawnSize = 5;
+			SpawnSize = 1; 
+			Delay = 20000;
+			Rate = 10000;
 		}
 
         long elapsed = 0;

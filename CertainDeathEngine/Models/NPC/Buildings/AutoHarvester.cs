@@ -78,8 +78,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
                         {
                             Amount = 1,
-                            Row = TilePosition.X.ToString(),
-                            Column = TilePosition.Y.ToString()
+                            Row = TilePosition.Y.ToString(),
+                            Column = TilePosition.X.ToString()
                         });
                 }
             }
