@@ -151,8 +151,8 @@ View = (function () {
                             var request = {
                                 "event": "placeBuilding",
                                 "type": this._placeState.type,
-                                "x": Math.floor((game.input.activePointer.x - this.boardX) / (tileSize)),
-                                "y": Math.floor((game.input.activePointer.y - this.boardY) / (tileSize))
+                                "col": Math.floor((game.input.activePointer.x - this.boardX) / (tileSize)),
+                                "row": Math.floor((game.input.activePointer.y - this.boardY) / (tileSize))
                             };
                             this.server.send(JSON.stringify(request));
 
@@ -162,8 +162,8 @@ View = (function () {
                             // Send a click event to the server
                             this.server.send(JSON.stringify({
                                 "event": "click",
-                                "x": (game.input.activePointer.x - this.boardX) / (tileSize),
-                                "y": (game.input.activePointer.y - this.boardY) / (tileSize)
+                                "col": (game.input.activePointer.x - this.boardX) / (tileSize),
+                                "row": (game.input.activePointer.y - this.boardY) / (tileSize)
                             }));
                         }
                     }
@@ -183,37 +183,37 @@ View = (function () {
         },
         destroy: {
             value: function () {
-                for (var x = 0; x < this.tiles.length; ++x) {
-                    for (var y = 0; y < this.tiles[x].length; ++y) {
-                        if (this.tiles[x][y] && this.tiles[x][y].destroy) {
-                            this.tiles[x][y].destroy();
+                for (var col = 0; col < this.tiles.length; ++col) {
+                    for (var row = 0; row < this.tiles[col].length; ++row) {
+                        if (this.tiles[col][row] && this.tiles[col][row].destroy) {
+                            this.tiles[col][row].destroy();
                         }
-                        delete this.tiles[x][y];
+                        delete this.tiles[col][row];
                     }
                 }
-                for (var x = 0; x < this.resources.length; ++x) {
-                    for (var y = 0; y < this.resources.length; ++y) {
-                        if(this.resources[x][y] && this.resources[x][y].destroy)
-                            this.resources[x][y].destroy();
-                        delete this.resources[x][y];
+                for (var col = 0; col < this.resources.length; ++col) {
+                    for (var row = 0; row < this.resources.length; ++row) {
+                        if(this.resources[col][row] && this.resources[col][row].destroy)
+                            this.resources[col][row].destroy();
+                        delete this.resources[col][row];
                     }
                 }
-                for (var x in this.monsters) {
-                    if (this.monsters[x] && this.monsters[x].sprite.destroy) {
-                        this.monsters[x].sprite.destroy();
-                        this.monsters[x].g.destroy();
+                for (var col in this.monsters) {
+                    if (this.monsters[col] && this.monsters[col].sprite.destroy) {
+                        this.monsters[col].sprite.destroy();
+                        this.monsters[col].g.destroy();
                     }
-                    delete this.monsters[x];
+                    delete this.monsters[col];
                 }
-				for (var x in this.buildings) {
-                    var building = this.buildings[x];
+				for (var col in this.buildings) {
+                    var building = this.buildings[col];
                 		if (building) {
                             if (building.sprite)
                                 building.sprite.destroy();
                             if (building.g)
                                 building.g.destroy();
                         }
-                	delete this.buildings[x];
+                	delete this.buildings[col];
 				}
 
                 if (this._placeState) {
@@ -382,43 +382,41 @@ View = (function () {
                             tileSize = 64;
                         else if (tileSize > 32)
                             tileSize = 32;
-
                         this.boardX = (this.width - this.squaresWide * tileSize) / 2 + this.x;
                         this.boardY = (this.height - this.squaresHigh * tileSize) / 2 + this.y;
-
-                        for (var i = 0; i < msg.length; i++) {
-                            for (var j = 0; j < msg[i].length; j++) {
-                                if (this.tiles[i] === undefined) {
-                                    this.tiles[i] = new Array();
+                        for (var row = 0; row < msg.length; row++) {
+                            for (var col = 0; col < msg[row].length; col++) {
+                            	if (this.tiles[col] === undefined) {
+                            		this.tiles[col] = new Array();
                                 }
 
-                                if (this.tiles[i][j] === undefined || this.tiles[i][j] === null) {
+                                if (this.tiles[col][row] === undefined || this.tiles[col][row] === null) {
                                     //var rand = Math.ceil(Math.random() * 3);
-                                    var sprite = game.add.sprite(i * tileSize + this.boardX, j * tileSize + this.boardY,
-                                        "objects", msg[i][j].TypeName);
+                                    var sprite = game.add.sprite(col * tileSize + this.boardX, row * tileSize + this.boardY,
+                                        "objects", msg[row][col].TypeName);
                                     sprite.scale.setTo(tileSize / sprite.width);
-                                    this.tiles[i][j] = sprite;
+                                    this.tiles[col][row] = sprite;
                                 }
 
-                                if (this.resources[i] === undefined) {
-                                    this.resources[i] = new Array();
+                                if (this.resources[col] === undefined) {
+                                    this.resources[col] = new Array();
                                 }
 
-                                if (msg[i][j].ResourceName !== undefined) {
-                                    if (this.resources[i][j] !== undefined && msg[i][j] != this.resources[i][j].key) {
-                                        this.resources[i][j].destroy();
-                                        this.resources[i][j] = null;
+                                if (msg[row][col].ResourceName !== undefined) {
+                                    if (this.resources[col][row] !== undefined && msg[row][col] != this.resources[col][row].key) {
+                                        this.resources[col][row].destroy();
+                                        this.resources[col][row] = null;
                                     }
 
-                                    if (this.resources[i][j] === undefined || this.resources[i][j] === null) {
-                                        var sprite2 = game.add.sprite(i * tileSize + this.boardX, j * tileSize + this.boardY,
-                                            "objects", msg[i][j].ResourceName);
+                                    if (this.resources[col][row] === undefined || this.resources[col][row] === null) {
+                                        var sprite2 = game.add.sprite(col * tileSize + this.boardX, row * tileSize + this.boardY,
+                                            "objects", msg[row][col].ResourceName);
                                         sprite2.scale.setTo(tileSize / sprite2.width);
-                                        this.resources[i][j] = sprite2;
+                                        this.resources[col][row] = sprite2;
                                     }
-                                } else if(this.resources[i][j] != undefined){
-                                    this.resources[i][j].destroy();
-                                    delete this.resources[i][j];
+                                } else if(this.resources[col][row] != undefined){
+                                    this.resources[col][row].destroy();
+                                    delete this.resources[col][row];
                                 }
                             } // end for
                         } // end for
@@ -517,7 +515,12 @@ View = (function () {
 
 	  /*World*/   			} else if ("World" === type) {
 
-                    		}
+	                        } else if ("RemoveResourceFromSquare" == type) {
+	                        	var r = this.resources[msg[x]["Column"]][msg[x]["Row"]];
+	                            if (r) {
+	                            	this.displayText(r.x + r.width / 2, r.y + r.height / 2, msg[x]["Amount"], "#00FF44");
+	                            }
+	                        }
                     	}
                     }
                 } // end if

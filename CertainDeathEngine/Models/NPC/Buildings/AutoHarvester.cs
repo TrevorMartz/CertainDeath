@@ -69,6 +69,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             break;
                     }
                     Player.AddResource(toGather, 1);
+                    Tile.World.Score.AddResource(toGather, 1);
                     this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                     {
                         ResourceType = toGather.ToString(),
@@ -78,8 +79,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
                         {
                             Amount = 1,
-                            Row = TilePosition.X.ToString(),
-                            Column = TilePosition.Y.ToString()
+                            Row = TilePosition.Y.ToString(),
+                            Column = TilePosition.X.ToString()
                         });
                 } 
             }
@@ -115,6 +116,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
                             Player.AddResource(type, gathered);
+                            Tile.World.Score.AddResource(type, gathered);
                             if (s.Resource == null && current)
                             {
                                 Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
@@ -176,7 +178,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 HarvestRate = Level * 2;
                 MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
-                GatherRange = Level * 5;
+                GatherRange = Level * 3;
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)

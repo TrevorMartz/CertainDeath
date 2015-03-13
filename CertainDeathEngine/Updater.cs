@@ -100,7 +100,7 @@ namespace CertainDeathEngine
                 {
                     foreach (var click in tempClicks)
                     {
-                        Square square = _game.World.CurrentTile.Squares[click.Column, click.Row];
+                        Square square = _game.World.CurrentTile.Squares[click.Row, click.Column];
                         if (square.Resource != null)
                         {
                             ResourceType curType = square.Resource.Type;
@@ -113,6 +113,12 @@ namespace CertainDeathEngine
                                                              ResourceType = curType.ToString(),
                                                              Amount = gathered
                                                          });
+							_game.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+								{
+									Amount = gathered,
+									Row = click.Row.ToString(),
+									Column = click.Column.ToString()
+								});
 
                             if (square.Resource == null)
                             {

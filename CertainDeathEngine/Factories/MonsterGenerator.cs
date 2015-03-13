@@ -23,12 +23,19 @@ namespace CertainDeathEngine.Factories
 		// How many monsters spawn after the delay is over
 		public int InitialSpawnSize { get; set; }
 
-		// How many monsters spawn after the initial spawn
-		public int SpawnSize { get; set; }
+		public IncreaseRate HealthIncreaseRate { get; set; }
+		public IncreaseRate DamageIncreaseRate { get; set; }
+		public IncreaseRate SpawnIncreaseRate { get; set; }
 
 		public MonsterGenerator(GameWorld world) : base(world)
 		{
+			SpawnIncreaseRate = new IncreaseRate() { Rate = 1.05, Current = 2 };
+			HealthIncreaseRate = new IncreaseRate() { Rate = 1.10, Current = 50 };
+			DamageIncreaseRate = new IncreaseRate() { Rate = 1.01, Current = 10 };
 			World = world;
+			InitialSpawnSize = 5;
+			Delay = 10000;
+			Rate = 10000;
 		}
 
         long elapsed = 0;
@@ -43,13 +50,21 @@ namespace CertainDeathEngine.Factories
 				_time -= Delay;
 			}
 			if(!_delaying && _time > Rate) {
-				int monsters = (int)(_time / Rate);// * elapsed / 1000);
-				for (int i = 0; i < monsters; i++)
-					SpawnMonsters(SpawnSize);
-				_time -= monsters * Rate;
+				int spawns = (int)(_time / Rate);// * elapsed / 1000);
+				for (int i = 0; i < spawns; i++) {
+					SpawnMonsters((int)SpawnIncreaseRate.Current);
+					Increase();
+				}
+				_time -= spawns * Rate;
 			}
 		}
 
+		private void Increase()
+		{
+			SpawnIncreaseRate.Increase();
+			HealthIncreaseRate.Increase();
+			DamageIncreaseRate.Increase();
+		}
 
 		public void SpawnMonsters(int num)
 		{
@@ -73,10 +88,10 @@ namespace CertainDeathEngine.Factories
 
 				Point Goal = new Point(Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2, Tile.TOTAL_PIXELS / 2 + Square.PIXEL_SIZE / 2);
                 int Speed = 25;
-                m = new Monster(randTile, Position, Goal, Speed, (MonsterName)RandomGen.Random.Next(Enum.GetValues(typeof(MonsterName)).Length))
+                m = new Monster(randTile, Position, Goal, Speed, (int)HealthIncreaseRate.Current, (MonsterName)RandomGen.Random.Next(Enum.GetValues(typeof(MonsterName)).Length))
                 {
                     Id = GetNextId(),
-                    Damage = 10
+                    Damage = (int)DamageIncreaseRate.Current
                 };
                 randTile.AddObject(m);
             }
@@ -108,5 +123,16 @@ namespace CertainDeathEngine.Factories
 		//			placement);
 		//	}
 
+	}
+
+	public class IncreaseRate
+	{
+		public double Rate { get; set; }
+		public double Current { get; set; }
+
+		public void Increase()
+		{
+			Current *= Rate;
+		}
 	}
 }

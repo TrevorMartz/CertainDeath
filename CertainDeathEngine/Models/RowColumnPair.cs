@@ -38,7 +38,7 @@ namespace CertainDeathEngine.Models
 
         public override int GetHashCode()
         {
-            unchecked { return (Row * 397) ^ Column; }
+            unchecked { return (Row * 397) + Column * 17; }
         }
     }
 }

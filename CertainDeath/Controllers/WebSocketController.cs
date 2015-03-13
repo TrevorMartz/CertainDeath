@@ -74,15 +74,15 @@ namespace CertainDeath.Controllers
 
                 if (result["event"] == "click")
                 {
-                    GameInstance.SquareClicked(new RowColumnPair((int)(float)result.y, (int)(float)result.x));
+                    GameInstance.SquareClicked(new RowColumnPair((int)(float)result.row, (int)(float)result.col));
                 }
                 else if (result["event"] == "placeBuilding")
                 {
                     string type = result["type"];
                     BuildingType btype = (BuildingType)Enum.Parse(typeof(BuildingType), type);
-                    int x = result.x;
-                    int y = result.y;
-                    GameInstance.BuildBuildingAtSquare(y, x, btype);
+                    int col = result.col;
+                    int row = result.row;
+                    GameInstance.BuildBuildingAtSquare(row, col, btype);
                 }
                 else if (result["event"] == "moveTile")
                 {

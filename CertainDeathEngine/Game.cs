@@ -32,7 +32,7 @@ namespace CertainDeathEngine
             _worldCreation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
-            MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 5, SpawnSize = 1, Delay = 20000, Rate = 10000 };
+            MonsterGenerator = new MonsterGenerator(World);
             MonsterGenerator.Update(1);
         }
 
@@ -182,6 +182,11 @@ namespace CertainDeathEngine
          */
         public void SquareClicked(RowColumnPair click)
         {
+            click.Column = (click.Column < 0) ? 0 : click.Column;
+            click.Column = (click.Column > 19) ? 19 : click.Column;
+            click.Row = (click.Row < 0) ? 0 : click.Row;
+            click.Row = (click.Row > 19) ? 19 : click.Row;
+
             World.AddClick(click);
         }
 

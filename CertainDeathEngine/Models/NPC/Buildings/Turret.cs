@@ -112,12 +112,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
         private void Attack(long millis)
         {
             TimeSinceDamage += millis;
-            if (TimeSinceDamage >= 1000)
+            if (TimeSinceDamage >= 400)
             {
-                long timeToDamage = (TimeSinceDamage / 1000);
+                long timeToDamage = (TimeSinceDamage / 400);
                 float damage = Damage * timeToDamage;
                 Attacking.HealthPoints -= damage;
-                TimeSinceDamage -= timeToDamage * 1000;
+                TimeSinceDamage -= timeToDamage * 400;
 				if (Tile == Tile.World.CurrentTile)
 					this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
 					{

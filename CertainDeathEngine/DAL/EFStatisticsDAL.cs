@@ -31,13 +31,11 @@ namespace CertainDeathEngine.DAL
 
         public Dictionary<Score, MyAppUser> GetHighScores(int qty)
         {
-            var users = _cdDbModel.Users.ToList();
-            Dictionary<Score, MyAppUser> userScores = new Dictionary<Score, MyAppUser>();
-            foreach (var score in _cdDbModel.Scores.ToList())
-                userScores.Add(score, users.Where(u => u.Id == score.UserId).FirstOrDefault().FBUser);
-            return userScores;
-
-            //return _cdDbModel.Scores.OrderByDescending(x => x.Kills).ToList();
+            List<CertainDeathUser> users = _cdDbModel.Users.Include("FBUser").ToList();
+            return _cdDbModel.Scores
+                .ToList()
+                .OrderByDescending(x=>x.TotalResources)
+                .ToDictionary(score => score, score => users.Single(u => u.Id == score.UserId).FBUser);
         }
     }
 }

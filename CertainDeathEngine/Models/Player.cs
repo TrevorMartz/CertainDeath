@@ -38,7 +38,7 @@ namespace CertainDeathEngine.Models
         {
             lock (Resources)
             {
-                if (Resources[type] > count)
+                if (Resources[type] >= count)
                 {
                     Resources[type] -= count;
                 }
