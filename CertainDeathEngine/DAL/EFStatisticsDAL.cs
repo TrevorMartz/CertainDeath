@@ -31,7 +31,7 @@ namespace CertainDeathEngine.DAL
 
         public Dictionary<Score, MyAppUser> GetHighScores(int qty)
         {
-            var users = _cdDbModel.Users.ToList();
+            var users = _cdDbModel.Users.Include("FBUser").ToList();
             Dictionary<Score, MyAppUser> userScores = new Dictionary<Score, MyAppUser>();
             foreach (var score in _cdDbModel.Scores.ToList())
                 userScores.Add(score, users.Where(u => u.Id == score.UserId).FirstOrDefault().FBUser);
