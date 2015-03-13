@@ -162,8 +162,8 @@ View = (function () {
                             // Send a click event to the server
                             this.server.send(JSON.stringify({
                                 "event": "click",
-                                "x": (game.input.activePointer.x - this.boardX) / (tileSize),
-                                "y": (game.input.activePointer.y - this.boardY) / (tileSize)
+                                "col": (game.input.activePointer.x - this.boardX) / (tileSize),
+                                "row": (game.input.activePointer.y - this.boardY) / (tileSize)
                             }));
                         }
                     }
@@ -382,7 +382,6 @@ View = (function () {
                             tileSize = 64;
                         else if (tileSize > 32)
                             tileSize = 32;
-                        console.log(msg);
                         this.boardX = (this.width - this.squaresWide * tileSize) / 2 + this.x;
                         this.boardY = (this.height - this.squaresHigh * tileSize) / 2 + this.y;
                         for (var row = 0; row < msg.length; row++) {

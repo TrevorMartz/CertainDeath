@@ -74,7 +74,7 @@ namespace CertainDeath.Controllers
 
                 if (result["event"] == "click")
                 {
-                    GameInstance.SquareClicked(new RowColumnPair((int)(float)result.y, (int)(float)result.x));
+                    GameInstance.SquareClicked(new RowColumnPair((int)(float)result.row, (int)(float)result.col));
                 }
                 else if (result["event"] == "placeBuilding")
                 {
