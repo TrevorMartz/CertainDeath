@@ -69,6 +69,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             break;
                     }
                     Player.AddResource(toGather, 1);
+                    Tile.World.Score.AddResource(toGather, 1);
                     this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
                     {
                         ResourceType = toGather.ToString(),
@@ -115,6 +116,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
                             Player.AddResource(type, gathered);
+                            Tile.World.Score.AddResource(type, gathered);
                             if (s.Resource == null && current)
                             {
                                 Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
