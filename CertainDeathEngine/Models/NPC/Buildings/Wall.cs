@@ -31,7 +31,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             if (Level < MaxLevel)
             {
                 Level++;
-                MaxHealthPoints = 300 * Level;
+                MaxHealthPoints = 1000 * Level;
                 HealthPoints = MaxHealthPoints;
                 if (Tile != null)
                 {

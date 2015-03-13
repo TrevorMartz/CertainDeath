@@ -27,7 +27,7 @@ namespace CertainDeathEngine.Models
                 { BuildingType.AUTO_HARVESTER_FARM, new Cost() { Costs = { { ResourceType.COAL, 50 }, {ResourceType.CORN, 50} } } },
                 { BuildingType.AUTO_HARVESTER_LUMBER_MILL, new Cost() { Costs = { { ResourceType.STONE, 50 }, { ResourceType.CORN, 25 } } } },
                 { BuildingType.TURRET, new Cost { Costs = { {ResourceType.IRON, 100}, {ResourceType.COAL, 100}, {ResourceType.STONE, 50}, {ResourceType.WOOD, 50}, {ResourceType.CORN, 50} } } },
-                { BuildingType.WALL, new Cost { Costs = { {ResourceType.STONE, 200}, {ResourceType.CORN, 100} } } }
+                { BuildingType.WALL, new Cost { Costs = { {ResourceType.STONE, 100} } } }
             };
 
         [NonSerialized]

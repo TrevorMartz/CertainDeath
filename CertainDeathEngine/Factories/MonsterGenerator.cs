@@ -35,7 +35,7 @@ namespace CertainDeathEngine.Factories
 			World = world;
 			InitialSpawnSize = 5;
 			Delay = 10000;
-			Rate = 5000;
+			Rate = 10000;
 		}
 
         long elapsed = 0;
