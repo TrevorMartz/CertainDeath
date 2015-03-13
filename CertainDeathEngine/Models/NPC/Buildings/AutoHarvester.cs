@@ -32,19 +32,55 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         public override void Update(long millis)
         {
+            TimeSinceGather += millis;
             if (HealthPoints <= 0)
             {
                 Remove();
             }
             if (State == HarvesterState.GATHERING)
             {
-                TimeSinceGather += millis;
                 if (TimeSinceGather >= 1000)
                 {
                     long timeToGather = (TimeSinceGather / 1000);
                     int toGather = (int)(HarvestRate * timeToGather);
                     Gather(toGather);
                     TimeSinceGather -= timeToGather * 1000;
+                }
+            }
+            else
+            {
+                if (TimeSinceGather >= 5000)
+                {
+                    TimeSinceGather -= 5000;
+                    ResourceType toGather = ResourceType.CORN;//only given default because i have to, will ALWAYS be set in the switch.
+                    switch (Type)
+                    {
+                        case BuildingType.AUTO_HARVESTER_FARM:
+                            toGather = ResourceType.CORN;
+                            break;
+                        case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
+                            toGather = ResourceType.WOOD;
+                            break;
+                        case BuildingType.AUTO_HARVESTER_MINE:
+                            toGather = (RandomGen.Random.Next(2) == 0 ? ResourceType.COAL : ResourceType.IRON);
+                            break;
+                        case BuildingType.AUTO_HARVESTER_QUARRY:
+                            toGather = ResourceType.STONE;
+                            break;
+                    }
+                    Player.AddResource(toGather, 1);
+                    this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                    {
+                        ResourceType = toGather.ToString(),
+                        Amount = 1
+                    });
+                    if (Tile == Tile.World.CurrentTile)
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+                        {
+                            Amount = 1,
+                            Row = TilePosition.X.ToString(),
+                            Column = TilePosition.Y.ToString()
+                        });
                 }
             }
         }
@@ -59,7 +95,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     if (rcp != null)
                     {
                         Square s = Tile.Squares[rcp.Row, rcp.Column];
-						bool current = Tile == Tile.World.CurrentTile;
+                        bool current = Tile == Tile.World.CurrentTile;
                         if (s != null && s.Resource != null)
                         {
 							this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
@@ -67,7 +103,8 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 																	ResourceType = s.Resource.Type.ToString(),
 																	Amount = toGather
 																});
-							this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+							if(current)
+								this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
 																{
 																	Amount = toGather,
 																	Row = rcp.Row.ToString(),
@@ -78,7 +115,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
                             Player.AddResource(type, gathered);
-							if (s.Resource == null && current)
+                            if (s.Resource == null && current)
                             {
                                 Tile.World.AddUpdateMessage(new TheSquareNoLongerHasAResourceUpdateMessage(0)
                                 {
@@ -90,12 +127,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     }
                     else
                     {
-                        //State = HarvesterState.IDLE;
-                        //this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                        //                                {
-                        //                                    State = HarvesterState.IDLE.ToString()
-                        //                                });
-                        //return;
+                        State = HarvesterState.IDLE;
+                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+                                                        {
+                                                            State = HarvesterState.IDLE.ToString()
+                                                        });
+                        return;
                     }
                 }
             }
@@ -103,8 +140,6 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 
         private RowColumnPair FindGatherableSquare()
         {
-            int posrow = (int)TilePosition.Y;
-            int poscol = (int)TilePosition.X;
             int minrow = Math.Max(0, (int)TilePosition.Y - GatherRange);
             int maxrow = Math.Min((int)TilePosition.Y + GatherRange, 20);
             int mincol = Math.Max(0, (int)TilePosition.X - GatherRange);
@@ -141,7 +176,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 HarvestRate = Level * 2;
                 MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
-                GatherRange = Level * 2;
+                GatherRange = Level * 5;
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
