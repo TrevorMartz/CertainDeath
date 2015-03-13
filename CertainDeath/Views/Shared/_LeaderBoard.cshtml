@@ -28,7 +28,7 @@
                 @if (Model != null) { 
                     foreach (Score score in Model.Keys)
                     {
-                        if (score != null) 
+                        if (Model[score] != null) 
                         { 
                             long millis = score.Survived;
                             double secs = millis / 1000;
@@ -40,7 +40,6 @@
                             DateTime saveDate = new DateTime(score.SaveDate);
                             <tr>
                                 <td>@score.Id</td>
-                                <td>@score.WorldId</td>
                                 <td>@saveDate</td>
                                 <td>@score.Kills</td>
                                 <td>@score.Buildings</td>
