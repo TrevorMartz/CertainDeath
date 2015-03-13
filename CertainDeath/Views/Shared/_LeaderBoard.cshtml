@@ -15,11 +15,10 @@
                 <tr>
                     <th>Player</th>
                     <th>World</th>
-                    <th>Date</th>
+                    <th>Date Saved</th>
                     <th>Kills</th>
                     <th>Buildings</th>
                     <th>Time Survived</th>
-                    <th>Fire Level</th>
                     <th>Resources Collected</th>
                 </tr>
 
@@ -27,7 +26,8 @@
             <tbody>
                 @foreach (CertainDeathEngine.Models.User.Score score in Model)
                 {
-                    double secs = score.Survived.TotalSeconds;
+                    long millis = score.Survived;
+                    double secs = millis / 1000;
                     int minutes = (int)(secs / 60);
                     secs -= minutes * 60;
                     int hours = (int)(minutes / 60);
@@ -41,7 +41,6 @@
                         <td>@score.Kills</td>
                         <td>@score.Buildings</td>
                         <td>@hours:@minutes:@secs</td>
-                        <td>@score.FireLevel</td>
                         <td>@score.TotalResources</td>
                     </tr>
                 }

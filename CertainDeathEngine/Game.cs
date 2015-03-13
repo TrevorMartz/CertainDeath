@@ -170,7 +170,7 @@ namespace CertainDeathEngine
 
         public void SaveScore()
         {
-            World.Score.Survived = new DateTime() - _worldCreation;
+            World.Score.Survived = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - (_worldCreation.Ticks / TimeSpan.TicksPerMillisecond);
             _statisticsDal.SaveScore(World.Score);
         }
 
