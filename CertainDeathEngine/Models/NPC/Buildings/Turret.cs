@@ -48,7 +48,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
             }
 			if (State == TurretState.ATTACKING)
 			{
-				if (Attacking.HealthPoints <= 0)
+				if (Attacking.HealthPoints <= 0 || Attacking == null)
 				{
 					// someone else killed it, do nothing this step
 					// If we can sell buildings there could be a problem here
