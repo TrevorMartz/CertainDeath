@@ -19,7 +19,7 @@ namespace CertainDeathEngine.DAL
 
         public void SaveScore(Score score)
         {
-            score.SaveDate = Environment.TickCount;
+            score.SaveDate = DateTime.Now.Ticks;
             _cdDbModel.Scores.Add(score);
             _cdDbModel.SaveChanges();
         }
