@@ -20,7 +20,7 @@ namespace CertainDeathEngine
         public GameFactory BuildingFactory;
         public MonsterGenerator MonsterGenerator;
         private readonly UpdateManager _updateManager;
-        private readonly DateTime _worldCreation;
+        private readonly long _worldCreation;
         private readonly IStatisticsDAL _statisticsDal = new EFStatisticsDAL();
 
         public Game(GameWorld world)
@@ -29,7 +29,7 @@ namespace CertainDeathEngine
 
             Init.InitAll();
             World = world;
-            _worldCreation = new DateTime();
+            _worldCreation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             _updateManager = UpdateManager.Instance;
             BuildingFactory = new GameFactory(World);
             MonsterGenerator = new MonsterGenerator(World) { InitialSpawnSize = 5, SpawnSize = 1, Delay = 20000, Rate = 10000 };
@@ -170,7 +170,7 @@ namespace CertainDeathEngine
 
         public void SaveScore()
         {
-            World.Score.Survived = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - (_worldCreation.Ticks / TimeSpan.TicksPerMillisecond);
+            World.Score.Survived = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - _worldCreation;
             _statisticsDal.SaveScore(World.Score);
         }
 
