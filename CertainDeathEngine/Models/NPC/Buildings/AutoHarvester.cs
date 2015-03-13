@@ -93,12 +93,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     }
                     else
                     {
-                        State = HarvesterState.IDLE;
-                        this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-														{
-															State = HarvesterState.IDLE.ToString()
-														});
-                        return;
+                        //State = HarvesterState.IDLE;
+                        //this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+                        //                                {
+                        //                                    State = HarvesterState.IDLE.ToString()
+                        //                                });
+                        //return;
                     }
                 }
             }
