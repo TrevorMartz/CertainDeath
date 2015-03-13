@@ -62,21 +62,18 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 						bool current = Tile == Tile.World.CurrentTile;
                         if (s != null && s.Resource != null)
                         {
-							if (current)
-							{
-								this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
-																 {
-																	 ResourceType = s.Resource.Type.ToString(),
-																	 Amount = toGather
-																 });
-								this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
-																 {
-																	 Amount = toGather,
-																	 Row = rcp.Row.ToString(),
-																	 Column = rcp.Column.ToString()
-																 });
+							this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+																{
+																	ResourceType = s.Resource.Type.ToString(),
+																	Amount = toGather
+																});
+							this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+																{
+																	Amount = toGather,
+																	Row = rcp.Row.ToString(),
+																	Column = rcp.Column.ToString()
+																});
 
-							}
                             ResourceType type = s.Resource.Type;
                             int gathered = s.GatherResource(toGather);
                             toGather -= gathered;
