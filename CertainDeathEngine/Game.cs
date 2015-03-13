@@ -182,6 +182,11 @@ namespace CertainDeathEngine
          */
         public void SquareClicked(RowColumnPair click)
         {
+            click.Column = (click.Column < 0) ? 0 : click.Column;
+            click.Column = (click.Column > 19) ? 19 : click.Column;
+            click.Row = (click.Row < 0) ? 0 : click.Row;
+            click.Row = (click.Row > 19) ? 19 : click.Row;
+
             World.AddClick(click);
         }
 
