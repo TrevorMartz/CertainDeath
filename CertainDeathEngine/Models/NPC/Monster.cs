@@ -118,11 +118,12 @@ namespace CertainDeathEngine.Models.NPC
 		        {
                     Tile.World.SquareClicks.Remove(monsterSquare);
                     this.HealthPoints -= 10;
-                    this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(this.Id)
-                    {
-                        HealthPoints = this.HealthPoints,
-                        MaxHealthPoints = this.MaxHealthPoints
-                    });
+					if(Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(this.Id)
+						{
+							HealthPoints = this.HealthPoints,
+							MaxHealthPoints = this.MaxHealthPoints
+						});
 
 		        }
 		    }
@@ -141,11 +142,11 @@ namespace CertainDeathEngine.Models.NPC
 					// someone else killed it, do nothing this step, then start walking
 					// If we can sell buildings there could be a problem here
 					State = MonsterState.WALKING;
-
-                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
-                    {
-                        State = MonsterState.WALKING.ToString()
-                    });
+					if (Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
+						{
+							State = MonsterState.WALKING.ToString()
+						});
 					Attacking = null;
 				}
 				else
@@ -160,10 +161,11 @@ namespace CertainDeathEngine.Models.NPC
 				{
 					Attacking = colide;
                     State = MonsterState.ATTACKING;
-                    this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
-                    {
-                        State = MonsterState.ATTACKING.ToString()
-                    });
+					if (Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
+						{
+							State = MonsterState.ATTACKING.ToString()
+						});
 				}
 			}
 		}
@@ -272,11 +274,12 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
-            this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
-            {
-                HealthPoints = Attacking.HealthPoints,
-                MaxHealthPoints = Attacking.MaxHealthPoints
-            });
+			if (Tile == Tile.World.CurrentTile)
+				this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
+				{
+					HealthPoints = Attacking.HealthPoints,
+					MaxHealthPoints = Attacking.MaxHealthPoints
+				});
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.Remove();

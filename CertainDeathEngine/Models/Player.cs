@@ -22,7 +22,7 @@ namespace CertainDeathEngine.Models
             //add all the reources to the dictionary. Does not need lock because it is a constructor. Multiple threads will never be in the same constructor.
             foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
             {
-                Resources.Add(type, 50);
+                Resources.Add(type, 100);
             }
         }
 

@@ -474,19 +474,18 @@ View = (function () {
                     } // end if building property
 /*updates*/		  else if (property === "updates") {
                     	for (var x = 0; x < msg.length; ++x) {
-                    		var update = msg[x];
-                    		var type = update.UType;
-                    		var id = update.ObjectId;
+                    		var type = msg[x].UType;
+                    		var id = msg[x].ObjectId;
 
 	  /*PlaceMonster*/     	if ("PlaceMonster" === type) {
 	                   			if (this.monsters[id] == undefined) 
-	  								this.PlaceMonster(id, update.PosX, update.PosY, update.Type, update.Direction, update.State);
+	  								this.PlaceMonster(id, msg[x].PosX, msg[x].PosY, msg[x].Type, msg[x].Direction, msg[x].State);
 	  /*Move*/  			} else if ("Move" === type) {
                     			if(this.monsters[id] != undefined) {
-                    				this.UpdateMonsterPosition(id, update.MoveX, update.MoveY);
+                    				this.UpdateMonsterPosition(id, msg[x].MoveX, msg[x].MoveY);
                     			}
 	  /*MonsterState*/  	} else if ("MonsterState" === type && this.monsters[id]) {
-                    			this.UpdateMonsterStatus(id, update.State);
+                    			this.UpdateMonsterStatus(id, msg[x].State);
 	  /*Remove*/  			} else if ("Remove" === type) {
 	                   			if (this.monsters[id] != undefined) {
                     				this.RemoveMonster(id);
@@ -495,22 +494,23 @@ View = (function () {
                     			}
 	  /*Health*/			} else if ("Health" === type) {
 	                          if (this.monsters[id]) {
-	                              this.drawHealth.call(this.monsters[id], update.HealthPoints, update.MaxHealthPoints);
+	                              this.drawHealth.call(this.monsters[id], msg[x].HealthPoints, msg[x].MaxHealthPoints);
 	                              this.displayText(this.monsters[id].sprite.x + this.monsters[id].sprite.width / 2, this.monsters[id].sprite.y + this.monsters[id].sprite.height / 2, "-1");
 	                          } else if (this.buildings[id]) {
-	                              this.drawHealth.call(this.buildings[id], update.HealthPoints, update.MaxHealthPoints);
+	                              this.drawHealth.call(this.buildings[id], msg[x].HealthPoints, msg[x].MaxHealthPoints);
 	                          }
 	  /*AddResouce*/  		} else if ("AddResourceToPlayer" === type) {
-	                            //this.resources[update["ResourceType"]] += update["Amount"];
+	                            //this.resources[msg[x]["ResourceType"]] += msg[x]["Amount"];
 	  /*GameOver*/  		} else if ("GameOver" === type) {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			window.location = "https://g.certaindeathgame.com:44300/Home/GameOver";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
-	  							this.BuildingState(id, update.State, update.Rotation);
+								//This is wrong either way I do it, there are some inconsistencies somehwere
+	  							this.BuildingState(id, msg[x].State, msg[x].Rotation);
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
-	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
+	  							this.PlaceBuilding(id, msg[x].PosX, msg[x].PosY, msg[x].Type);
 	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
-	                            this.resources[update["Row"]][update["Column"]].destroy();
+	                            this.resources[msg[x]["Row"]][msg[x]["Column"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {

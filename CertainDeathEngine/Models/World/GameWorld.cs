@@ -22,12 +22,12 @@ namespace CertainDeathEngine.Models
         public static Dictionary<BuildingType, Cost>
             BuildingCostsForTheWorld = new Dictionary<BuildingType, Cost>()
             {
-                { BuildingType.AUTO_HARVESTER_MINE, new Cost() { Costs = { { ResourceType.COAL, 30 }, { ResourceType.STONE, 25 } } } },
-                { BuildingType.AUTO_HARVESTER_QUARRY, new Cost() { Costs = { { ResourceType.IRON, 25 }, { ResourceType.COAL, 20 } } } },
-                { BuildingType.AUTO_HARVESTER_FARM, new Cost() { Costs = { { ResourceType.WOOD, 25 }, { ResourceType.COAL, 15 }, {ResourceType.CORN, 10} } } },
-                { BuildingType.AUTO_HARVESTER_LUMBER_MILL, new Cost() { Costs = { { ResourceType.STONE, 20 }, { ResourceType.IRON, 15 } } } },
-                { BuildingType.TURRET, new Cost { Costs = { {ResourceType.STONE, 40}, {ResourceType.IRON, 40}, {ResourceType.CORN, 15} } } },
-                { BuildingType.WALL, new Cost { Costs = { {ResourceType.WOOD, 40}, {ResourceType.STONE, 40}, {ResourceType.CORN, 15} } } }
+                { BuildingType.AUTO_HARVESTER_MINE, new Cost() { Costs = { { ResourceType.WOOD, 50 }, { ResourceType.CORN, 25 } } } },
+                { BuildingType.AUTO_HARVESTER_QUARRY, new Cost() { Costs = { { ResourceType.IRON, 50 }, { ResourceType.CORN, 25 } } } },
+                { BuildingType.AUTO_HARVESTER_FARM, new Cost() { Costs = { { ResourceType.COAL, 50 }, {ResourceType.CORN, 50} } } },
+                { BuildingType.AUTO_HARVESTER_LUMBER_MILL, new Cost() { Costs = { { ResourceType.STONE, 50 }, { ResourceType.CORN, 25 } } } },
+                { BuildingType.TURRET, new Cost { Costs = { {ResourceType.IRON, 100}, {ResourceType.COAL, 100}, {ResourceType.STONE, 50}, {ResourceType.WOOD, 50}, {ResourceType.CORN, 50} } } },
+                { BuildingType.WALL, new Cost { Costs = { {ResourceType.STONE, 200}, {ResourceType.CORN, 100} } } }
             };
 
         [NonSerialized]

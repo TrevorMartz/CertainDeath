@@ -53,11 +53,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 					// someone else killed it, do nothing this step
 					// If we can sell buildings there could be a problem here
                     State = TurretState.WAITING;
-                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                    {
-                        State = TurretState.WAITING.ToString(),
-                        Rotation = Rotation
-                    });
+					if (Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+						{
+							State = TurretState.WAITING.ToString(),
+							Rotation = Rotation
+						});
 					Attacking = null;
 				}
 				else
@@ -72,11 +73,12 @@ namespace CertainDeathEngine.Models.NPC.Buildings
 				{
 					Attacking = monsterToAttack;
                     State = TurretState.ATTACKING;
-                    this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-                    {
-                        State = TurretState.ATTACKING.ToString(),
-                        Rotation = this.Rotation
-                    });
+					if (Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+						{
+							State = TurretState.ATTACKING.ToString(),
+							Rotation = this.Rotation
+						});
 				}
 			}
         }
@@ -116,22 +118,24 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 float damage = Damage * timeToDamage;
                 Attacking.HealthPoints -= damage;
                 TimeSinceDamage -= timeToDamage * 1000;
-                this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
-                {
-                    HealthPoints = Attacking.HealthPoints,
-                    MaxHealthPoints = Attacking.MaxHealthPoints
-                });
+				if (Tile == Tile.World.CurrentTile)
+					this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
+					{
+						HealthPoints = Attacking.HealthPoints,
+						MaxHealthPoints = Attacking.MaxHealthPoints
+					});
 
                 if (Attacking.HealthPoints <= 0)
                 {
                     Attacking.Remove();
                     State = TurretState.WAITING;
                     Attacking = null;
-					this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
-					{
-						State = TurretState.WAITING.ToString(),
-						Rotation = Rotation
-					});
+					if (Tile == Tile.World.CurrentTile)
+						this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+						{
+							State = TurretState.WAITING.ToString(),
+							Rotation = Rotation
+						});
                 }
             }
         }
