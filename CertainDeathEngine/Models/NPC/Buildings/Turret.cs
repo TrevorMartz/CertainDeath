@@ -127,6 +127,11 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                     Attacking.Remove();
                     State = TurretState.WAITING;
                     Attacking = null;
+					this.Tile.World.AddUpdateMessage(new BuildingStateChangeUpdateMessage(this.Id)
+					{
+						State = TurretState.WAITING.ToString(),
+						Rotation = Rotation
+					});
                 }
             }
         }
