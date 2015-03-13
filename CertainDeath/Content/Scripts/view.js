@@ -505,11 +505,11 @@ View = (function () {
                     			game.world.forEach(function (child) {  if(child.animations != undefined) child.animations.stop() }, this, true)
                     			window.location = "https://g.certaindeathgame.com:44300/Home/GameOver";
 	  /*BuildingState*/		} else if ("BuildingState" === type) {
-								//This is wrong either way I do it, there are some inconsistencies somehwere
 	  							this.BuildingState(id, msg[x].State, msg[x].Rotation);
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, msg[x].PosX, msg[x].PosY, msg[x].Type);
 	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
+								//This is wrong either way I do it, there are some inconsistencies somehwere
 	                            this.resources[msg[x]["Row"]][msg[x]["Column"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
