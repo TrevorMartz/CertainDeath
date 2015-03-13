@@ -509,15 +509,18 @@ View = (function () {
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, msg[x].PosX, msg[x].PosY, msg[x].Type);
 	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
-								//This is wrong either way I do it, there are some inconsistencies somehwere
-	                            this.resources[msg[x]["Column"]][msg[x]["Row"]].destroy();
+								if(this.resources[msg[x]["Column"]][msg[x]["Row"]])
+									this.resources[msg[x]["Column"]][msg[x]["Row"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {
 
 	  /*World*/   			} else if ("World" === type) {
 
-                    		}
+	                        } else if ("RemoveResourceFromSquare" == type) {
+	                            var r = this.resources[update["Column"]][update["Row"]];
+	                            this.displayText(r.x + r.width / 2, r.y + r.height / 2, "+1", "#00FF44");
+	                        }
                     	}
                     }
                 } // end if
