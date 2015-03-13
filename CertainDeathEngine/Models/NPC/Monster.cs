@@ -85,9 +85,9 @@ namespace CertainDeathEngine.Models.NPC
 		[JsonProperty]
 		public string Name { get { return Enum.GetName(typeof(MonsterName), MonsterName); } }
 
-		public Monster(Tile t, Point starting, Point goal, int speed, MonsterName name = MonsterName.STONE_GOLEM)
+		public Monster(Tile t, Point starting, Point goal, int speed, int health, MonsterName name = MonsterName.STONE_GOLEM)
 		{
-			MaxHealthPoints = (new Random().Next(3)+1) * 50;
+			MaxHealthPoints = health;
 			HealthPoints = MaxHealthPoints;
 			Tile = t;
 			Position = starting;

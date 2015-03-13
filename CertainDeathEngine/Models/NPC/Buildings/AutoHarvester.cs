@@ -176,7 +176,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 HarvestRate = Level * 2;
                 MaxHealthPoints = 200 * Level;
                 HealthPoints = MaxHealthPoints;
-                GatherRange = Level * 5;
+                GatherRange = Level * 3;
                 if (Tile != null)
                 {
                     this.Tile.World.AddUpdateMessage(new UpgradeBuildingUpdateMessage(this.Id)
