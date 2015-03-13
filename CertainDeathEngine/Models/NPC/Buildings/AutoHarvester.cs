@@ -59,7 +59,7 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                             toGather = ResourceType.CORN;
                             break;
                         case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
-                            toGather = (ResourceType.WOOD;
+                            toGather = ResourceType.WOOD;
                             break;
                         case BuildingType.AUTO_HARVESTER_MINE:
                             toGather = (RandomGen.Random.Next(2) == 0 ? ResourceType.COAL : ResourceType.IRON);
@@ -74,6 +74,13 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                         ResourceType = toGather.ToString(),
                         Amount = 1
                     });
+                    if (Tile == Tile.World.CurrentTile)
+                        this.Tile.World.AddUpdateMessage(new RemoveResourceFromSquareUpdateMessage(0)
+                        {
+                            Amount = 1,
+                            Row = TilePosition.X.ToString(),
+                            Column = TilePosition.Y.ToString()
+                        });
                 }
             }
         }
