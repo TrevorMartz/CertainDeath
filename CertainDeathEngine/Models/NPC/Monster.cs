@@ -274,16 +274,25 @@ namespace CertainDeathEngine.Models.NPC
 		{
 			float damage = Damage * (millis / 1000.0f);
 			Attacking.HealthPoints -= damage;
+
 			if (Tile == Tile.World.CurrentTile)
 				this.Tile.World.AddUpdateMessage(new HealthUpdateMessage(Attacking.Id)
 				{
 					HealthPoints = Attacking.HealthPoints,
 					MaxHealthPoints = Attacking.MaxHealthPoints
 				});
+
 			if (Attacking.HealthPoints <= 0)
 			{
                 Attacking.Remove();
                 State = MonsterState.WALKING;
+
+				if (Tile == Tile.World.CurrentTile)
+					this.Tile.World.AddUpdateMessage(new MonsterStateChangeUpdateMessage(this.Id)
+					{
+						State = MonsterState.WALKING.ToString()
+					});
+
                 Attacking = null;
 			}
 		}
