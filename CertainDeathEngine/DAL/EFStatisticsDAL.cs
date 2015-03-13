@@ -29,10 +29,15 @@ namespace CertainDeathEngine.DAL
             return _cdDbModel.Scores.Where(x => x.UserId == userId);
         }
 
-        public IEnumerable<Score> GetHighScores(int qty)
+        public Dictionary<Score, MyAppUser> GetHighScores(int qty)
         {
-            //High score will be determined by time survived. The rest are just stats.
-            return _cdDbModel.Scores.OrderByDescending(x => x.Kills).ToList();
+            var users = _cdDbModel.Users.ToList();
+            Dictionary<Score, MyAppUser> userScores = new Dictionary<Score, MyAppUser>();
+            foreach (var score in _cdDbModel.Scores.ToList())
+                userScores.Add(score, users.Where(u => u.Id == score.Id).FirstOrDefault().FBUser);
+            return userScores;
+
+            //return _cdDbModel.Scores.OrderByDescending(x => x.Kills).ToList();
         }
     }
 }
