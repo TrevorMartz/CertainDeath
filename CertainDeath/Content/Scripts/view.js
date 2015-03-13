@@ -510,7 +510,7 @@ View = (function () {
 	  							this.PlaceBuilding(id, msg[x].PosX, msg[x].PosY, msg[x].Type);
 	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
 								//This is wrong either way I do it, there are some inconsistencies somehwere
-	                            this.resources[msg[x]["Row"]][msg[x]["Column"]].destroy();
+	                            this.resources[msg[x]["Column"]][msg[x]["Row"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {
