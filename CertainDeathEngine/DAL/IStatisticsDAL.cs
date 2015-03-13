@@ -10,6 +10,6 @@ namespace CertainDeathEngine.DAL
 
         IQueryable<Score> GetScoresForUser(int userId);
 
-        IEnumerable<Score> GetHighScores(int qty);
+        Dictionary<Score, MyAppUser> GetHighScores(int qty);
     }
 }

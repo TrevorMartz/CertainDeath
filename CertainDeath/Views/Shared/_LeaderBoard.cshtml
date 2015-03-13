@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CertainDeathEngine.Models.User.Score>
+﻿@using CertainDeathEngine.Models.User
+@model Dictionary<Score, MyAppUser>
 
 @{
     ViewBag.Title = "LeaderBoard";
@@ -24,25 +25,29 @@
 
             </thead>
             <tbody>
-                @foreach (CertainDeathEngine.Models.User.Score score in Model)
-                {
-                    long millis = score.Survived;
-                    double secs = millis / 1000;
-                    int minutes = (int)(secs / 60);
-                    secs -= minutes * 60;
-                    int hours = (int)(minutes / 60);
-                    minutes -= hours * 60;
+                @if (Model != null) { 
+                    foreach (Score score in Model.Keys)
+                    {
+                        if (Model[score] != null) 
+                        { 
+                            long millis = score.Survived;
+                            double secs = millis / 1000;
+                            int minutes = (int)(secs / 60);
+                            secs -= minutes * 60;
+                            int hours = (int)(minutes / 60);
+                            minutes -= hours * 60;
 
-                    DateTime saveDate = new DateTime(score.SaveDate);
-                    <tr>
-                        <td>@score.UserId</td>
-                        <td>@score.WorldId</td>
-                        <td>@saveDate</td>
-                        <td>@score.Kills</td>
-                        <td>@score.Buildings</td>
-                        <td>@hours:@minutes:@secs</td>
-                        <td>@score.TotalResources</td>
-                    </tr>
+                            DateTime saveDate = new DateTime(score.SaveDate);
+                            <tr>
+                                <td>@score.Id</td>
+                                <td>@saveDate</td>
+                                <td>@score.Kills</td>
+                                <td>@score.Buildings</td>
+                                <td>@hours:@minutes:@secs</td>
+                                <td>@score.TotalResources</td>
+                            </tr>
+                        }
+                    }
                 }
             </tbody>
         </table>
