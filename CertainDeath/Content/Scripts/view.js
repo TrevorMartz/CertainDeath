@@ -510,7 +510,7 @@ View = (function () {
 	  /*PlaceBuilding*/ 	} else if ("PlaceBuilding" === type) {
 	  							this.PlaceBuilding(id, update.PosX, update.PosY, update.Type);
 	  /*RemoveResource*/	} else if ("TheSquareNoLongerHasAResource" === type) {
-	                            this.resources[update["Column"]][update["Row"]].destroy();
+	                            this.resources[update["Row"]][update["Column"]].destroy();
 	  /*UpdateCost*/		} else if ("UpdateCost" === type) {
 
 	  /*Upgrade*/    		} else if ("Upgrade" === type) {
