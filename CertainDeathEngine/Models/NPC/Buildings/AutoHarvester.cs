@@ -52,21 +52,28 @@ namespace CertainDeathEngine.Models.NPC.Buildings
                 if (TimeSinceGather >= 5000)
                 {
                     TimeSinceGather -= 5000;
+                    ResourceType toGather = ResourceType.CORN;//only given default because i have to, will ALWAYS be set in the switch.
                     switch (Type)
                     {
                         case BuildingType.AUTO_HARVESTER_FARM:
-                            Player.AddResource(ResourceType.CORN, 1);
+                            toGather = ResourceType.CORN;
                             break;
                         case BuildingType.AUTO_HARVESTER_LUMBER_MILL:
-                            Player.AddResource(ResourceType.WOOD, 1);
+                            toGather = (ResourceType.WOOD;
                             break;
                         case BuildingType.AUTO_HARVESTER_MINE:
-                            Player.AddResource((RandomGen.Random.Next(2) == 0 ? ResourceType.COAL : ResourceType.IRON), 1);
+                            toGather = (RandomGen.Random.Next(2) == 0 ? ResourceType.COAL : ResourceType.IRON);
                             break;
                         case BuildingType.AUTO_HARVESTER_QUARRY:
-                            Player.AddResource(ResourceType.STONE, 1);
+                            toGather = ResourceType.STONE;
                             break;
                     }
+                    Player.AddResource(toGather, 1);
+                    this.Tile.World.AddUpdateMessage(new AddResourceToPlayerUpdateMessage(this.Tile.World.Player.Id)
+                    {
+                        ResourceType = toGather.ToString(),
+                        Amount = 1
+                    });
                 }
             }
         }
