@@ -2,6 +2,7 @@
     font-family: "Segoe UI", Arial;
     margin: 0;
     padding: 0;
+    background: url('Images/Background.PNG') repeat;
 }
 h1, h2, h3, h4, h5 {
     font-family: silkscreen;
@@ -110,7 +111,8 @@ header#topHeader a:hover{
 
 #wrapper {
     margin: 0 auto;
-    width: 740px;
+    width: 760px;
+    background: white;
 }
 
 #content {

@@ -76,7 +76,7 @@ function create () {
     });
     Server.open();
 
-    game.stage.backgroundColor = 0xbbddff;
+    game.stage.backgroundColor = 0xb8ffff;
 }
 
 function update () {
