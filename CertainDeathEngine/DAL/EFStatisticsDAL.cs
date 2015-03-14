@@ -34,7 +34,7 @@ namespace CertainDeathEngine.DAL
             List<CertainDeathUser> users = _cdDbModel.Users.Include("FBUser").ToList();
             return _cdDbModel.Scores
                 .ToList()
-                .OrderByDescending(x=>x.TotalResources)
+                .OrderByDescending(x=>x.UserScore)
                 .ToDictionary(score => score, score => users.Single(u => u.Id == score.UserId).FBUser);
         }
     }

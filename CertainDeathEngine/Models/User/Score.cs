@@ -43,6 +43,16 @@ namespace CertainDeathEngine.Models.User
             }
         }
 
+        public int UserScore
+        {
+            get
+            {
+                int score = 0;
+                score = ((Buildings * 3) * Kills) + ((int)Survived / 10000) + (TotalResources * 4) * FireLevel;
+                return score;
+            }
+        }
+
         public void AddResource(ResourceType type, int count)
         {
             lock (ResourcesCollected)
