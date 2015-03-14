@@ -14,6 +14,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Rank</th>
                     <th>Player</th>
                     <th>Date Saved</th>
                     <th>Kills</th>
@@ -26,6 +27,7 @@
             </thead>
             <tbody>
                 @if (Model != null) {
+                    int position = 1;
                     foreach (Score score in Model.Keys)
                     {
                         long millis = score.Survived;
@@ -37,6 +39,7 @@
 
                         DateTime saveDate = new DateTime(score.SaveDate);
                         <tr>
+                            <td>@position</td>
                             @if (Model[score] != null) { <td>@Model[score].Name</td> }
                             else { <td>NULL</td> }
                             <td>@saveDate</td>
@@ -46,6 +49,7 @@
                             <td>@score.TotalResources</td>
                             <td>@score.UserScore</td>
                         </tr>
+                        position++;
                     }
                 }
             </tbody>
