@@ -144,5 +144,15 @@ namespace CertainDeath.Controllers
         {
             return PartialView("_Privacy");
         }
+
+        public ActionResult Support()
+        {
+            return PartialView("_Support");
+        }
+
+        public ActionResult ToS()
+        {
+            return PartialView("_ToS");
+        }
     }
 }
