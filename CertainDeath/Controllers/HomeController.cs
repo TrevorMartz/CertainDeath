@@ -131,7 +131,6 @@ namespace CertainDeath.Controllers
 
         public ActionResult NewGame(int userid)
         {
-
             CertainDeathUser cdUser = _userDal.GetGameUser(userid);
 
             // we need to create them a game world
@@ -139,6 +138,11 @@ namespace CertainDeath.Controllers
             game.World.Score.UserId = cdUser.Id;
             _userDal.GiveGameUserAGameWorldId(cdUser.Id, game.World.Id);
             return View("Game", cdUser);
+        }
+
+        public ActionResult Privacy()
+        {
+            return PartialView("_Privacy");
         }
     }
 }
